@@ -12,20 +12,57 @@ static class ServiceExtensions
 	/// <summary>
 	/// 控制命令
 	/// </summary>
-	enum Command
+	private enum Command
 	{
 		Start,
 		Stop,
 	}
 	/// <summary>
+	/// 使用windows服务
+	/// </summary>
+	/// <param name="hostBuilder"></param> 
+	/// <returns></returns>
+	public static IHostBuilder UseWindowsService(this IHostBuilder hostBuilder)
+	{
+		return WindowsServiceLifetimeHostBuilderExtensions.UseWindowsService(hostBuilder);
+	}
+
+	/// <summary>
+	/// 运行主机
+	/// </summary>
+	/// <param name="app"></param>
+	/// <param name="singleton"></param>
+	public static void Run(this WebApplication app, bool singleton)
+	{
+		var logger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger(nameof(CMS));
+		if (UseCommand(logger) == false)
+		{
+			using var mutex = new Mutex(true, "Global\\CMS", out var firstInstance);
+			if (singleton == false || firstInstance)
+			{
+				app.Run();
+			}
+			else
+			{
+				logger.LogWarning($"程序将自动关闭：系统已运行其它实例");
+			}
+		}
+	}
+
+	[SupportedOSPlatform("linux")]
+	[DllImport("libc", SetLastError = true)]
+	private static extern uint geteuid();
+
+
+	/// <summary>
 	/// 使用命令
 	/// </summary>
 	/// <param name="logger"></param>
 	/// <returns></returns>
-	internal static bool UseCommand(ILogger logger)
+	private static bool UseCommand(ILogger logger)
 	{
 		var args = Environment.GetCommandLineArgs();
-		if (!Enum.TryParse<Command>(args.Skip(1).FirstOrDefault(), true, out var cmd))
+		if (Enum.TryParse<Command>(args.Skip(1).FirstOrDefault(), true, out var cmd) == false)
 		{
 			return false;
 		}
@@ -33,13 +70,13 @@ static class ServiceExtensions
 		var action = cmd == Command.Start ? "启动" : "停止";
 		try
 		{
-			if (OperatingSystem.IsLinux())
-			{
-				UseCommandAtLinux(cmd);
-			}
-			else if (OperatingSystem.IsWindows())
+			if (OperatingSystem.IsWindows())
 			{
 				UseCommandAtWin(cmd);
+			}
+			else if (OperatingSystem.IsLinux())
+			{
+				UseCommandAtLinux(cmd);
 			}
 			else
 			{
@@ -53,9 +90,6 @@ static class ServiceExtensions
 		}
 		return true;
 	}
-	[SupportedOSPlatform("linux")]
-	[DllImport("libc", SetLastError = true)]
-	private static extern uint geteuid();
 
 
 	/// <summary>
@@ -63,7 +97,7 @@ static class ServiceExtensions
 	/// </summary> 
 	/// <param name="cmd"></param>
 	[SupportedOSPlatform("linux")]
-	static void UseCommandAtLinux(Command cmd)
+	private static void UseCommandAtLinux(Command cmd)
 	{
 		if (geteuid() != 0)
 		{
@@ -107,8 +141,6 @@ static class ServiceExtensions
 			Process.Start("systemctl", "daemon-reload").WaitForExit();
 		}
 	}
-
-
 
 	/// <summary>
 	/// 应用控制指令

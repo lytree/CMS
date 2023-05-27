@@ -4,15 +4,6 @@ namespace CMS.Api;
 
 static class Startup
 {
-	/// <summary>
-	/// 使用windows服务
-	/// </summary>
-	/// <param name="hostBuilder"></param> 
-	/// <returns></returns>
-	public static IHostBuilder UseWindowsService(this IHostBuilder hostBuilder)
-	{
-		return WindowsServiceLifetimeHostBuilderExtensions.UseWindowsService(hostBuilder);
-	}
 
 	/// <summary>
 	/// 创建host
@@ -101,26 +92,4 @@ static class Startup
 
 		app.MapControllers();
 	}
-	/// <summary>
-	/// 运行主机
-	/// </summary>
-	/// <param name="app"></param>
-	/// <param name="singleton"></param>
-	public static void Run(this WebApplication app, bool singleton)
-	{
-		var logger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger(nameof(CMS));
-		if (ServiceExtensions.UseCommand(logger) == false)
-		{
-			using var mutex = new Mutex(true, "Global\\CMS", out var firstInstance);
-			if (singleton == false || firstInstance)
-			{
-				app.Run();
-			}
-			else
-			{
-				logger.LogWarning($"程序将自动关闭：系统已运行其它实例");
-			}
-		}
-	}
-	
 }
