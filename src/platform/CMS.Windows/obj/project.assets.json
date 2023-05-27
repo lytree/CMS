@@ -2335,9 +2335,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Code\\VS\\CMS\\src\\platform\\CMS.Windows\\CMS.Platform.Windows.csproj",
-      "projectName": "CMS.Platform.Windows",
-      "projectPath": "D:\\Code\\VS\\CMS\\src\\platform\\CMS.Windows\\CMS.Platform.Windows.csproj",
+      "projectUniqueName": "D:\\Code\\VS\\CMS\\src\\platform\\CMS.Windows\\CMS.Windows.csproj",
+      "projectName": "CMS.Windows",
+      "projectPath": "D:\\Code\\VS\\CMS\\src\\platform\\CMS.Windows\\CMS.Windows.csproj",
       "packagesPath": "E:\\C#\\nuget",
       "outputPath": "D:\\Code\\VS\\CMS\\src\\platform\\CMS.Windows\\obj\\",
       "projectStyle": "PackageReference",

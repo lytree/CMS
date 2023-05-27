@@ -20,10 +20,6 @@ static class ServiceExtensions
 		Stop,
 	}
 
-	[SupportedOSPlatform("linux")]
-	[DllImport("libc", SetLastError = true)]
-	private static extern uint geteuid();
-
 	/// <summary>
 	/// 使用windows服务
 	/// </summary>

@@ -1,4 +1,7 @@
 using CMS.Web;
+using Microsoft.AspNetCore.Builder;
+using System;
+using System.IO;
 
 var contentRoot = Path.GetDirectoryName(Environment.ProcessPath);
 if (string.IsNullOrEmpty(contentRoot) == false)
@@ -12,10 +15,12 @@ var options = new WebApplicationOptions
 };
 
 var builder = WebApplication.CreateBuilder(options);
+builder.CreateWebApplication();
+// Add services to the container.
 
-Startup.ConfigureServices(builder);
 var app = builder.Build();
 
-Startup.ConfigureApp(app);
+app.ConfigureApp();
+
 
 app.Run();

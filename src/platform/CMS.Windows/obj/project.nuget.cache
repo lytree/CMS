@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Bn/IcjfcVmrlD8aYQoxGUswPwvIS27Nm4bFbhtaQP07SrvB8YZiM87h6vB4TeXC1D34ZBGw25RoQONR43x1RFg==",
+  "dgSpecHash": "xJXjGCf36+KPMwzcdT8ubcZHVdNE5t9AZI3WaoHEFZF1F60g+9QUko9ReLZacK/OVZV4ubTiG2qslZLA0nqUlQ==",
   "success": true,
-  "projectFilePath": "D:\\Code\\VS\\CMS\\src\\platform\\CMS.Windows\\CMS.Platform.Windows.csproj",
+  "projectFilePath": "D:\\Code\\VS\\CMS\\src\\platform\\CMS.Windows\\CMS.Windows.csproj",
   "expectedPackageFiles": [
     "E:\\C#\\nuget\\microsoft.extensions.caching.abstractions\\7.0.0\\microsoft.extensions.caching.abstractions.7.0.0.nupkg.sha512",
     "E:\\C#\\nuget\\microsoft.extensions.caching.memory\\7.0.0\\microsoft.extensions.caching.memory.7.0.0.nupkg.sha512",

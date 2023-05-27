@@ -1,16 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fs3XnwZnd1MAl19FWU1fgmp0yx+3jMUmcFUNJWpsj3zXwzTumWKRo+jvcL1gYToABkR5S0xS/sMoUNBQbwsERw==",
+  "dgSpecHash": "QVWWodXn8x1EGo359y8db01AgxrNFxTSIUBnjJsE10DkU+vB33FSZ79G2gynyJChqzq1TGmJGWBKLAn3cKm3Gg==",
   "success": true,
-  "projectFilePath": "D:\\Code\\VS\\CMS\\src\\platform\\CMS.Linux\\CMS.Platform.Linux.csproj",
-  "expectedPackageFiles": [
-    "E:\\C#\\nuget\\microsoft.extensions.configuration.abstractions\\7.0.0\\microsoft.extensions.configuration.abstractions.7.0.0.nupkg.sha512",
-    "E:\\C#\\nuget\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0\\microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",
-    "E:\\C#\\nuget\\microsoft.extensions.fileproviders.abstractions\\7.0.0\\microsoft.extensions.fileproviders.abstractions.7.0.0.nupkg.sha512",
-    "E:\\C#\\nuget\\microsoft.extensions.hosting.abstractions\\7.0.0\\microsoft.extensions.hosting.abstractions.7.0.0.nupkg.sha512",
-    "E:\\C#\\nuget\\microsoft.extensions.logging.abstractions\\7.0.0\\microsoft.extensions.logging.abstractions.7.0.0.nupkg.sha512",
-    "E:\\C#\\nuget\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512",
-    "E:\\C#\\nuget\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
-  ],
+  "projectFilePath": "D:\\Code\\VS\\CMS\\src\\platform\\CMS.Linux\\CMS.Linux.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }
