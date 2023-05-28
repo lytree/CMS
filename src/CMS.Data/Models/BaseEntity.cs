@@ -10,10 +10,8 @@ namespace CMS.Data.Models
 	public class BaseEntity
 	{
 		[Column(Name = "create_time")]
-		[CreateTime()]
-		public DateTime CreateTime { get; set; }
-		[LastUpdateTime()]
+		public DateTime? CreateTime { get; set; }
 		[Column(Name = "update_time")]
-		public DateTime UpdateTime { get; set; }
+		public DateTime? UpdateTime { get; set; }
 	}
 }

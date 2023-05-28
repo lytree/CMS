@@ -2,7 +2,7 @@
 
 namespace CMS.Data.Models;
 [Table(Name = "photo")]
-public class Photo
+public class Photo: BaseEntity
 {
 	[Column(IsIdentity = false, IsPrimary = true)]
 	public string Id { get; set; }

@@ -7,7 +7,7 @@ namespace CMS.Data.Models;
 /// </summary>
 /// 
 [Table(Name = "link")]
-public class Link
+public class Link : BaseEntity
 {
 	[Column(IsIdentity = true, IsPrimary = true)]
 	public int Id { get; set; }

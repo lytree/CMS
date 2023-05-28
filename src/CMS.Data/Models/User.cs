@@ -2,10 +2,10 @@
 
 namespace CMS.Data.Models;
 [Table(Name = "user")]
-public class User
+public class User : BaseEntity
 {
-	[Column(IsIdentity = false, IsPrimary = true)]
-	public string Id { get; set; }
+	[Column(IsIdentity = true, IsPrimary = true)]
+	public int Id { get; set; }
 	public string Name { get; set; }
 	public string Password { get; set; }
 }

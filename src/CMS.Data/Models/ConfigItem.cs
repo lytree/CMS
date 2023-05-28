@@ -9,7 +9,8 @@ using System.Xml.Linq;
 
 namespace CMS.Data.Models
 {
-	public class ConfigItem
+	[Table(Name = "config_item")]
+	public class ConfigItem: BaseEntity
 	{
 		[Column(IsIdentity = true, IsPrimary = true)]
 		public int Id { get; set; }

@@ -7,7 +7,7 @@ namespace CMS.Data.Models;
 /// </summary>
 /// 
 [Table(Name = "link_exchange")]
-public class LinkExchange
+public class LinkExchange: BaseEntity
 {
 	[Column(IsIdentity = true, IsPrimary = true)]
 	public int Id { get; set; }

@@ -2,7 +2,7 @@
 
 namespace CMS.Data.Models;
 [Table(Name = "category")]
-public class Category
+public class Category : BaseEntity
 {
 	[Column(IsIdentity = true, IsPrimary = true)]
 	public int Id { get; set; }
@@ -16,7 +16,9 @@ public class Category
 	/// </summary> 
 	[Column(Name = "visible")]
 	public bool Visible { get; set; } = true;
-
-	public Category? Parent { get; set; }
-	public List<Post> Posts { get; set; }
+	/// <summary>
+	/// 分类封面
+	/// </summary>
+	[Column(Name = "category_cover")]
+	public string Cover { get; set; }
 }

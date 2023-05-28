@@ -7,7 +7,7 @@ namespace CMS.Data.Models;
 /// 配置项目
 /// </summary>
 [Table(Name = "config_group")]
-public class ConfigGroup
+public class ConfigGroup: BaseEntity
 {
 	[Column(IsIdentity = true, IsPrimary = true)]
 	public int Id { get; set; }

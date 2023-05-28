@@ -8,7 +8,7 @@ namespace CMS.Data.Models;
 /// </summary>
 /// 
 [Table(Name = "post")]
-public class Post
+public class Post: BaseEntity
 {
 	[Column(IsIdentity = false, IsPrimary = true)]
 	public string Id { get; set; }
@@ -53,28 +53,4 @@ public class Post
 	[Column(Name = "post_title")]
 	public string? Path { get; set; }
 
-	/// <summary>
-	/// 创建时间
-	/// </summary>
-	[Column(Name = "create_time")]
-	public DateTime CreationTime { get; set; }
-
-	/// <summary>
-	/// 上次更新时间
-	/// </summary>
-	[Column(Name = "last_update_time")]
-	public DateTime LastUpdateTime { get; set; }
-
-	/// <summary>
-	/// 分类ID
-	/// </summary>
-	[Column(Name = "post_title")]
-	public int CategoryId { get; set; }
-
-	/// <summary>
-	/// 分类
-	/// </summary>
-	public Category? Category { get; set; }
-
-	public string? Categories { get; set; }
 }
