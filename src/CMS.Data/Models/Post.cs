@@ -8,7 +8,7 @@ namespace CMS.Data.Models;
 /// </summary>
 /// 
 [Table(Name = "post")]
-public class Post: BaseEntity
+public class Post : BaseEntity
 {
 	[Column(IsIdentity = false, IsPrimary = true)]
 	public string Id { get; set; }
@@ -53,4 +53,7 @@ public class Post: BaseEntity
 	[Column(Name = "post_title")]
 	public string? Path { get; set; }
 
+
+	public List<Category> Categories { get; set; }
+	public List<Tag> Tags { get; set; }
 }

@@ -34,6 +34,14 @@ namespace CMS.Data
 					new User(){
 						Name="admin",
 						Password = "test"
+						},
+					new User(){
+						Name="test",
+						Password = "test"
+						},
+					new User(){
+						Name="test1",
+						Password = "test"
 						}
 					});
 			});
