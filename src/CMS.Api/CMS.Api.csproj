@@ -13,10 +13,16 @@
 		<PackageReference Include="PInvoke.AdvApi32" Version="0.7.124" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Extensions\" />
+	  <ProjectReference Include="..\CMS.Common\CMS.Common.csproj" />
+	  <ProjectReference Include="..\CMS.Service\CMS.Service.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Model\Response\" />
 	</ItemGroup>
 
 </Project>

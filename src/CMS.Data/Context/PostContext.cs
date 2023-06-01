@@ -9,18 +9,21 @@ using System.Threading.Tasks;
 
 namespace CMS.Data.Context
 {
-    public class PostContext : DbContext
-    {
-        public DbSet<Post> Posts { get; set; }
+	public class PostContext : DbContext
+	{
+		public DbSet<Post> Posts { get; set; }
 
-        public DbSet<Category> Categories { get; set; }
+		public DbSet<Category> Categories { get; set; }
 
-        public DbSet<Tag> Tags { get; set; }
-        public DbSet<PostContext> Contexts { get; set; }
+		public DbSet<Tag> Tags { get; set; }
 
-        protected override void OnModelCreating(ICodeFirst codeFirst)
-        {
+		public DbSet<PostContext> Contexts { get; set; }
 
-        }
-    }
+		public DbSet<Comment> Comment { get; set; }
+
+		protected override void OnModelCreating(ICodeFirst codeFirst)
+		{
+
+		}
+	}
 }

@@ -1,5 +1,4 @@
-﻿using CMS.Data.Models;
-using FreeSql;
+﻿using FreeSql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace CMS.Data.Context
 {
-	public class CategoryContext : DbContext
+	public class PhotoContext : DbContext
 	{
-		public DbSet<Category> Categories { get; set; }
-
-		public DbSet<Post> Posts { get; set; }
+		public DbSet<PhotoContext> Photo { get; set; }
 
 		protected override void OnModelCreating(ICodeFirst codeFirst)
 		{

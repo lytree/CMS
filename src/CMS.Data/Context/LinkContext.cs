@@ -8,11 +8,9 @@ using System.Threading.Tasks;
 
 namespace CMS.Data.Context
 {
-	public class CategoryContext : DbContext
+	public class LinkContext : DbContext
 	{
-		public DbSet<Category> Categories { get; set; }
-
-		public DbSet<Post> Posts { get; set; }
+		public DbSet<Link> Links { get; set; }
 
 		protected override void OnModelCreating(ICodeFirst codeFirst)
 		{

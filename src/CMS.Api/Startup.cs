@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using CMS.Api.Extensions;
+using CMS.Api.Filters;
 
 namespace CMS.Api;
 
@@ -66,10 +68,17 @@ static class Startup
 		var services = builder.Services;
 		var configuration = builder.Configuration;
 		services.Configure<AppOptions>(configuration);
-		services.AddControllers();
+		services.AddControllers(options =>
+		{
+			options.Filters.Add<ResultFilterAttribute>();
+
+		});
 		// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 		builder.Services.AddEndpointsApiExplorer();
-		builder.Services.AddSwaggerGen();
+		builder.Services.AddSwaggerGen(option =>
+		{
+			
+		});
 		services.AddHostedService<HostService>();
 	}
 

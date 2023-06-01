@@ -22,5 +22,6 @@ namespace CMS.Data.Models
 		/// </summary> 
 		[Column(Name = "visible")]
 		public bool Visible { get; set; } = true;
+		public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
 	}
 }

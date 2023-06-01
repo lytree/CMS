@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Common", "src\CMS.Commo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.CMS.Data", "test\Test.CMS.Data\Test.CMS.Data.csproj", "{7731D01D-0896-4BA6-8FAB-0651292363AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS.Api", "src\CMS.Api\CMS.Api.csproj", "{C5C6A8CE-0811-4D9F-9147-BC5939FDC04A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Api", "src\CMS.Api\CMS.Api.csproj", "{C5C6A8CE-0811-4D9F-9147-BC5939FDC04A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS.Service", "src\CMS.Service\CMS.Service.csproj", "{011AFBA6-D35F-4983-8079-83C52196B468}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{C5C6A8CE-0811-4D9F-9147-BC5939FDC04A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5C6A8CE-0811-4D9F-9147-BC5939FDC04A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5C6A8CE-0811-4D9F-9147-BC5939FDC04A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{011AFBA6-D35F-4983-8079-83C52196B468}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{011AFBA6-D35F-4983-8079-83C52196B468}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{011AFBA6-D35F-4983-8079-83C52196B468}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{011AFBA6-D35F-4983-8079-83C52196B468}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

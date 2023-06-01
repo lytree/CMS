@@ -9,6 +9,7 @@ public class Category : BaseEntity
 
 	[Column(Name = "category_name")]
 	public string Name { get; set; }
+
 	[Column(Name = "parent_id")]
 	public int ParentId { get; set; }
 	/// <summary>
@@ -21,4 +22,6 @@ public class Category : BaseEntity
 	/// </summary>
 	[Column(Name = "category_cover")]
 	public string Cover { get; set; }
+
+	public virtual ICollection<Post> Posts { get; set; }= new List<Post>();
 }

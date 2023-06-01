@@ -1,4 +1,5 @@
 using CMS.Api;
+using CMS.Api.Extensions;
 using Microsoft.AspNetCore.Builder;
 using System;
 using System.IO;
