@@ -8,13 +8,11 @@ using System.Threading.Tasks;
 
 namespace CMS.Data.Context
 {
-	public class PhotoContext : DbContext
-	{
-		public DbSet<Photo> Photo { get; set; }
+    public class ConfigContext : DbContext
+    {
+        public DbSet<ConfigItem> item { set; get; }
+        public DbSet<ConfigGroup> group { set; get; }
 
-		protected override void OnModelCreating(ICodeFirst codeFirst)
-		{
 
-		}
-	}
+    }
 }

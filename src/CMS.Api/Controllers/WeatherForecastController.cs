@@ -3,7 +3,7 @@ using CMS.Api.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace CMS.Api;
+namespace CMS.Api.Controller;
 
 [ApiController]
 [Route("[controller]")]

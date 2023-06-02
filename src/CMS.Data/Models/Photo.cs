@@ -37,9 +37,4 @@ public class Photo: BaseEntity
 	[Column(Name = "photo_width")]
 	public long Width { get; set; }
 
-	/// <summary>
-	/// 创建时间
-	/// </summary>
-	[Column(Name = "create_time")]
-	public DateTime CreateTime { get; set; }
 }
