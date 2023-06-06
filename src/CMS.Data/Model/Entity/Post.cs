@@ -13,7 +13,7 @@ public class Post : BaseEntity
 	[Column("id")]
 	[Key]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-	public int Id { get; set; }
+	public int? Id { get; set; }
 
 	/// <summary>
 	/// 标题
@@ -54,9 +54,10 @@ public class Post : BaseEntity
 	/// </summary>
 	[Column("post_path")]
 	public string? Path { get; set; }
-
+	[FreeSql.DataAnnotations.Navigate(nameof(PostContext.PostId))]
 	public virtual IEnumerable<PostContext> Contexts { get; set; } = new List<PostContext>();
 	public virtual IEnumerable<Category> Categories { get; set; } = new List<Category>();
 	public virtual IEnumerable<Tag> Tags { get; set; } = new List<Tag>();
+	[FreeSql.DataAnnotations.Navigate(nameof(Comment.PostId))]
 	public virtual IEnumerable<Comment> Comments { get; set; } = new List<Comment>();
 }

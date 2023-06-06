@@ -15,7 +15,8 @@ namespace CMS.Model.Entity;
 public class PostContext
 {
 	[Column("id")]
-	[Key][DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+	[Key]
+	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public int Id { get; set; }
 
 	[Column("post_id")]
@@ -25,7 +26,7 @@ public class PostContext
 	/// </summary>
 	/// []
 	/// 
-	[Column("post_context",TypeName = "longtext")]
+	[Column("post_context", TypeName = "longtext")]
 	public string Context { get; set; }
 
 
@@ -33,5 +34,6 @@ public class PostContext
 	public DateTime Version { get; set; }
 
 
+	[FreeSql.DataAnnotations.Navigate(nameof(PostId))]
 	public virtual Post Post { get; set; }
 }

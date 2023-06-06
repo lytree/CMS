@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using CMS.Data.Context;
 using CMS.Model;
 using CMS.Model.DTO;
 using CMS.Model.Entity;
 using CMS.Model.Param;
-using Microsoft.EntityFrameworkCore;
+using FreeSql;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using System;
@@ -19,31 +18,23 @@ public class LinksService
 {
 	private readonly ILogger<LinksService> _logger;
 	private readonly IMapper _mapper;
-	private readonly DataContext _dataContext;
-	public LinksService(ILoggerFactory loggerFactory, IMapper mapper, DataContext dataContext)
+	private readonly IBaseRepository<Link> _repository;
+	public LinksService(ILoggerFactory loggerFactory, IMapper mapper, IBaseRepository<Link> repository)
 	{
 		_logger = loggerFactory == null ? NullLogger<LinksService>.Instance : loggerFactory.CreateLogger<LinksService>();
 		_mapper = mapper;
-		_dataContext = dataContext;
+		_repository = repository;
 	}
 
 	public IEnumerable<LinkDto> GetAll()
 	{
-		var links = _dataContext.Set<Link>();
-		return _mapper.Map<List<LinkDto>>(links.AsNoTracking().ToList()).AsEnumerable();
+		var links = _repository.Select.ToList();
+		return _mapper.Map<List<LinkDto>>(links).AsEnumerable();
 	}
 
 	public void SaveLink(LinkParam param)
 	{
-		var link = _mapper.Map<LinkParam,Link>(param);
-		if (link.Id != null)
-		{
-			_dataContext.Set<Link>().Update(link);
-		}
-		else
-		{
-			_dataContext.Set<Link>().Add(link);
-		}
-		_dataContext.SaveChanges();
+		var link = _mapper.Map<LinkParam, Link>(param);
+		_repository.InsertOrUpdate(link);
 	}
 }

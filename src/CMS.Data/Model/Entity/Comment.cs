@@ -17,7 +17,7 @@ namespace CMS.Model.Entity
 		[Column("id")]
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int Id { get; set; }
+		public int? Id { get; set; }
 
 		/**
 		 * 此评论的用户名
@@ -29,13 +29,13 @@ namespace CMS.Model.Entity
 		 * 此评论这的邮箱地址
 		 */
 		[Column("comment_email", TypeName = "varchar(200)")]
-		public string Email { get; set; }
+		public string? Email { get; set; }
 
 		/**
 		 * 评论者的ip地址
 		 */
 		[Column("comment_ip", TypeName = "varchar(200)")]
-		public string CommentIp { get; set; }
+		public string? CommentIp { get; set; }
 		/**
 		 * 此评论是回复哪个评论的
 		 */
@@ -66,6 +66,7 @@ namespace CMS.Model.Entity
 		[Column("post_id")]
 		public int PostId { get; set; }
 
+		[FreeSql.DataAnnotations.Navigate(nameof(PostId))]
 		public virtual Post Post { get; set; }
 	}
 }
