@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using CMS.Data.Model.Entities.User;
 using CMS.Web.Service.Cms.Account;
 using CMS.Web.Service.Cms.Admins;
-using LinCms.Entities;
+
 
 namespace CMS.Web.Service.Cms.Users;
 

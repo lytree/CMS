@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.User;
+using CMS.Data.Model.Enums;
+using CMS.Web.Data;
 using CMS.Web.Service.Cms.Admins;
-using LinCms.Data;
-using LinCms.Data.Enums;
-using LinCms.Entities;
+
 
 namespace CMS.Web.Service.Cms.Users;
 

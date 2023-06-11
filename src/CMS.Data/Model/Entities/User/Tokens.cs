@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CMS.Data.Model.DTO;
+namespace CMS.Data.Model.Entities.User;
 
 
 /// <summary>
 /// 访问令牌
 /// </summary>
 [Serializable]
-public class TokensDto
+public class Tokens
 {
-    public TokensDto(string accessToken, string refreshToken)
+    public Tokens(string accessToken, string refreshToken)
     {
         AccessToken = accessToken ?? throw new ArgumentNullException(nameof(accessToken));
         RefreshToken = refreshToken ?? throw new ArgumentNullException(nameof(refreshToken));

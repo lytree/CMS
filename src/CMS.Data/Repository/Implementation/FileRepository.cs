@@ -1,5 +1,5 @@
-﻿using CMS.Data.Data.Options;
-using CMS.Data.Model.Entities.Other;
+﻿using CMS.Data.Model.Entities;
+using CMS.Data.Options;
 using FreeSql;
 using Microsoft.Extensions.Options;
 

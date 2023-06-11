@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CMS.Web.Service;
+using CMS.Data.Exceptions;
+using CMS.Data.Model.Entities.Blog;
+using CMS.Data.Model.Entities.User;
+using CMS.Data.Repository;
+using CMS.Web.Data;
 using CMS.Web.Service.Blog.Notifications;
 using DotNetCore.CAP;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Cms.Users;
-using LinCms.Data;
-using LinCms.Entities;
-using LinCms.Entities.Blog;
-using LinCms.Exceptions;
-using LinCms.Extensions;
-using LinCms.IRepositories;
-using LinCms.Security;
+
 
 namespace CMS.Web.Service.Blog.UserSubscribes;
 
@@ -92,7 +88,6 @@ public class UserSubscribeService : ApplicationService, IUserSubscribeService
 		return new PagedResultDto<UserSubscribeDto>(userSubscribes, count);
 	}
 
-	[Transactional]
 	public async Task CreateAsync(long subscribeUserId)
 	{
 		if (subscribeUserId == CurrentUser.FindUserId())
@@ -134,7 +129,6 @@ public class UserSubscribeService : ApplicationService, IUserSubscribeService
 		capTransaction.Commit(UnitOfWorkManager.Current);
 	}
 
-	[Transactional]
 	public async Task DeleteAsync(long subscribeUserId)
 	{
 		bool any = await _userSubscribeRepository.Select.AnyAsync(r =>

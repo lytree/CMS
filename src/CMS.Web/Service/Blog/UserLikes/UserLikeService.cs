@@ -1,4 +1,8 @@
-﻿using System;
+﻿using CMS.Data.Model.Entities.Blog;
+using CMS.Data.Repository;
+using CMS.Web.Service.Blog.Articles;
+using CMS.Web.Service.Blog.Comments;
+using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -6,12 +10,12 @@ namespace CMS.Web.Service.Blog.UserLikes;
 
 public class UserLikeService : ApplicationService, IUserLikeService
 {
-	private readonly IAuditBaseRepository<UserLike> _userLikeRepository;
+	private readonly IAuditBaseRepository<UserLike,long> _userLikeRepository;
 	private readonly IArticleService _articleService;
 	private readonly ICommentService _commentService;
 
 	public UserLikeService(
-		IAuditBaseRepository<UserLike> userLikeRepository,
+		IAuditBaseRepository<UserLike,long> userLikeRepository,
 		IArticleService articleService,
 		ICommentService commentService)
 	{

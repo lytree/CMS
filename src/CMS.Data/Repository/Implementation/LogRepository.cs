@@ -1,5 +1,5 @@
 ﻿using System;
-using CMS.Data.Model.Entities.Other;
+using CMS.Data.Model.Entities;
 using FreeSql;
 
 namespace CMS.Data.Repository.Implementation;

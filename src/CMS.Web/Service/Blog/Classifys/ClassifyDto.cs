@@ -3,7 +3,7 @@
 
 namespace CMS.Web.Service.Blog.Classifys;
 
-public class ClassifyDto : EntityDto<long>, ICreateAuditEntity<long>
+public class ClassifyDto
 {
 	public string Thumbnail { get; set; }
 	public string ThumbnailDisplay { get; set; }

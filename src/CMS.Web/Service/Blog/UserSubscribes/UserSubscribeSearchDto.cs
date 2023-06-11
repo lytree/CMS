@@ -1,4 +1,6 @@
-﻿using LinCms.Data;
+﻿
+
+using CMS.Web.Data;
 
 namespace CMS.Web.Service.Blog.UserSubscribes;
 

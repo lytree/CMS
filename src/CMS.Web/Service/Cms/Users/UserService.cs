@@ -2,19 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CMS.Data.Exceptions;
+using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.User;
+using CMS.Data.Model.Enums;
+using CMS.Data.Repository;
+using CMS.Web.Data;
 using CMS.Web.Service.Cms.Admins;
 using CMS.Web.Service.Cms.Groups;
 using CMS.Web.Service.Cms.Permissions;
 using DotNetCore.Security;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Common;
-using LinCms.Data;
-using LinCms.Data.Enums;
-using LinCms.Entities;
-using LinCms.Exceptions;
-using LinCms.Extensions;
-using LinCms.IRepositories;
-using LinCms.Security;
+
 
 namespace CMS.Web.Service.Cms.Users;
 public class UserService : ApplicationService, IUserService
@@ -60,7 +58,6 @@ public class UserService : ApplicationService, IUserService
 		return _userRepository.Where(r => r.Username == username).FirstAsync();
 	}
 
-	[Transactional]
 	public async Task DeleteAsync(long userId)
 	{
 		await _userRepository.DeleteAsync(new LinUser() { Id = userId });
@@ -97,7 +94,7 @@ public class UserService : ApplicationService, IUserService
 		return new PagedResultDto<UserDto>(linUsers, totalCount);
 	}
 
-	[Transactional]
+
 	public async Task CreateAsync(LinUser user, List<long> groupIds, string password)
 	{
 		if (!string.IsNullOrEmpty(user.Username))
@@ -118,7 +115,7 @@ public class UserService : ApplicationService, IUserService
 				throw new CMSException("注册邮箱重复，请重新输入", ErrorCode.RepeatField);
 			}
 		}
-		user.Salt = long.Newlong().ToString();
+		user.Salt = Guid.NewGuid().ToString();
 		string encryptPassword = _cryptographyService.Encrypt(password, user.Salt);
 		user.LinUserGroups = new List<LinUserGroup>();
 		groupIds?.ForEach(groupId =>
@@ -141,7 +138,7 @@ public class UserService : ApplicationService, IUserService
 	/// <param name="id"></param>
 	/// <param name="updateUserDto"></param>    
 	/// <returns></returns>
-	[Transactional]
+
 	public async Task UpdateAync(long id, UpdateUserDto updateUserDto)
 	{
 		LinUser linUser = await _userRepository.Where(r => r.Id == id).ToOneAsync();

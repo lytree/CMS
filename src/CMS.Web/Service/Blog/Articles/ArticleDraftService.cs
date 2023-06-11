@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CMS.Data.Exceptions;
+using CMS.Data.Model.Entities.Blog;
+using CMS.Data.Repository;
 using CMS.Web.Service.Blog.ArticleDrafts;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Entities.Blog;
-using LinCms.Exceptions;
-using LinCms.Security;
 
 namespace CMS.Web.Service.Blog.Articles;
 
 public class ArticleDraftService : ApplicationService, IArticleDraftService
 {
-	private readonly IAuditBaseRepository<ArticleDraft> _articleDraftRepository;
-	public ArticleDraftService(IAuditBaseRepository<ArticleDraft> articleDraftRepository)
+	private readonly IAuditBaseRepository<ArticleDraft,long> _articleDraftRepository;
+	public ArticleDraftService(IAuditBaseRepository<ArticleDraft,long> articleDraftRepository)
 	{
 		_articleDraftRepository = articleDraftRepository;
 	}

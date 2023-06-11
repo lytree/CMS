@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using CMS.Data.Model.Enums;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
-using LinCms.Data.Enums;
+
 
 namespace CMS.Web.Service.Cms.Users;
 

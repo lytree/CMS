@@ -1,4 +1,4 @@
-﻿using CMS.Data.Model.Entities.Other;
+﻿using CMS.Data.Model.Entities;
 using CMS.Data.Repository;
 using FreeSql;
 using System.Linq.Expressions;

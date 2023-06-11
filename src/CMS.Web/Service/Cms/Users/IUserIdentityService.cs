@@ -1,7 +1,8 @@
-﻿using System;
+﻿using CMS.Data.Model.Entities.User;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LinCms.Entities;
+
 
 namespace CMS.Web.Service.Cms.Users;
 

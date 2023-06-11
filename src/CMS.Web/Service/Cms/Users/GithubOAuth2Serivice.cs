@@ -1,24 +1,21 @@
-﻿using System;
+﻿using CMS.Data.Model.Const;
+using CMS.Data.Model.Entities.User;
+using CMS.Data.Model.Enums;
+using CMS.Data.Repository;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.GitHub;
-using IGeekFan.FreeKit.Extras.Dependency;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Common;
-using LinCms.Data.Enums;
-using LinCms.Entities;
-using LinCms.IRepositories;
+
 
 namespace CMS.Web.Service.Cms.Users;
 
-[DisableConventionalRegistration]
 public class GithubOAuth2Serivice : OAuthService, IOAuth2Service
 {
 	private readonly IUserRepository _userRepository;
-	private readonly IAuditBaseRepository<LinUserIdentity> _userIdentityRepository;
+	private readonly IAuditBaseRepository<LinUserIdentity, long> _userIdentityRepository;
 
-	public GithubOAuth2Serivice(IAuditBaseRepository<LinUserIdentity> userIdentityRepository, IUserRepository userRepository) : base(userIdentityRepository)
+	public GithubOAuth2Serivice(IAuditBaseRepository<LinUserIdentity, long> userIdentityRepository, IUserRepository userRepository) : base(userIdentityRepository)
 	{
 		_userIdentityRepository = userIdentityRepository;
 		_userRepository = userRepository;
@@ -38,14 +35,14 @@ public class GithubOAuth2Serivice : OAuthService, IOAuth2Service
 		long userId = 0;
 		if (linUserIdentity == null)
 		{
-			string email = principal.FindFirst(ClaimTypes.Email)?.Value;
-			string name = principal.FindFirst(ClaimTypes.Name)?.Value;
+			string? email = principal.FindFirst(CMS.Data.Model.Const.ClaimTypes.Email)?.Value;
+			string? name = principal.FindFirst(CMS.Data.Model.Const.ClaimTypes.Name)?.Value;
 			string gitHubName = principal.FindFirst(GitHubAuthenticationConstants.Claims.Name)?.Value;
 			string gitHubApiUrl = principal.FindFirst(GitHubAuthenticationConstants.Claims.Url)?.Value;
-			string HtmlUrl = principal.FindFirst(LinConsts.Claims.HtmlUrl)?.Value;
-			string avatarUrl = principal.FindFirst(LinConsts.Claims.AvatarUrl)?.Value;
-			string bio = principal.FindFirst(LinConsts.Claims.Bio)?.Value;
-			string blogAddress = principal.FindFirst(LinConsts.Claims.BlogAddress)?.Value;
+			string HtmlUrl = principal.FindFirst(CMSConsts.Claims.HtmlUrl)?.Value;
+			string avatarUrl = principal.FindFirst(CMSConsts.Claims.AvatarUrl)?.Value;
+			string bio = principal.FindFirst(CMSConsts.Claims.Bio)?.Value;
+			string blogAddress = principal.FindFirst(CMSConsts.Claims.BlogAddress)?.Value;
 
 			LinUser user = new()
 			{
@@ -59,7 +56,7 @@ public class GithubOAuth2Serivice : OAuthService, IOAuth2Service
 				{
 					new()
 					{
-						GroupId = LinConsts.Group.User
+						GroupId = CMSConsts.Group.User
 					}
 				},
 				Nickname = gitHubName,

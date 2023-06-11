@@ -2,27 +2,23 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using LinCms.Common;
-using LinCms.Data.Options;
-using IGeekFan.FreeKit.Extras.Dependency;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Entities;
-using LinCms.Exceptions;
+using CMS.Data.Exceptions;
+using CMS.Data.Model.Entities;
+using CMS.Data.Options;
+using CMS.Data.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Qiniu.Http;
-using Qiniu.Storage;
-using Qiniu.Util;
+
 
 namespace CMS.Web.Service.Cms.Files;
 
-[DisableConventionalRegistration]
+
 public class QiniuService : IFileService
 {
-	private readonly IAuditBaseRepository<LinFile> _fileRepository;
+	private readonly IAuditBaseRepository<LinFile,long> _fileRepository;
 	private readonly FileStorageOption _fileStorageOption;
 
-	public QiniuService(IAuditBaseRepository<LinFile> fileRepository, IOptions<FileStorageOption> fileStorageOption)
+	public QiniuService(IAuditBaseRepository<LinFile, long> fileRepository, IOptions<FileStorageOption> fileStorageOption)
 	{
 		_fileRepository = fileRepository;
 		_fileStorageOption = fileStorageOption.Value;

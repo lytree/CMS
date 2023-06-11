@@ -4,6 +4,7 @@ using CMS.Data.Model.Entities.Base;
 using FreeSql.DataAnnotations;
 using CMS.Data.Model.Entities.User;
 using CMS.Data.Exceptions;
+using CMS.Data.Model.Entities.Blog;
 
 namespace CMS.Data.Model.Entities
 {

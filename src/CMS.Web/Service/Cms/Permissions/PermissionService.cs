@@ -1,13 +1,14 @@
-﻿using System;
+﻿using CMS.Data.Model.Const;
+using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.User;
+using CMS.Data.Repository;
+using CMS.Web.Data;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Common;
-using LinCms.Data;
-using LinCms.Entities;
-using LinCms.Security;
+
 
 namespace CMS.Web.Service.Cms.Permissions;
 
@@ -42,7 +43,7 @@ public class PermissionService : ApplicationService, IPermissionService
 	public async Task<bool> CheckPermissionAsync(string module, string permission)
 	{
 		//默认Admin角色拥有所有权限
-		if (CurrentUser.IsInGroup(LinConsts.Group.Admin)) return true;
+		if (CurrentUser.IsInGroup(CMSConsts.Group.Admin)) return true;
 		long[] groups = CurrentUser.FindGroupIds().Select(long.Parse).ToArray();
 
 		LinPermission linPermission = await _permissionRepository.Where(r => r.Module == module && r.Name == permission).FirstAsync();
@@ -127,7 +128,7 @@ public class PermissionService : ApplicationService, IPermissionService
 		List<TreePermissionDto> treePermissionDtos = permissions.GroupBy(r => r.Module).Select(r =>
 			new TreePermissionDto
 			{
-				Rowkey = long.Newlong().ToString(),
+				Rowkey = Guid.NewGuid().ToString(),
 				Children = new List<TreePermissionDto>(),
 				Name = r.Key,
 			}).ToList();

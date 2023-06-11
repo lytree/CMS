@@ -1,24 +1,21 @@
-﻿using System;
+﻿using CMS.Data.Model.Entities.User;
+using CMS.Data.Model.Enums;
+using CMS.Data.Repository;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.QQ;
-using LinCms.Common;
-using LinCms.Data.Enums;
-using IGeekFan.FreeKit.Extras.Dependency;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Entities;
-using LinCms.IRepositories;
+
 
 namespace CMS.Web.Service.Cms.Users;
 
-[DisableConventionalRegistration]
+
 public class QQOAuth2Service : OAuthService, IOAuth2Service
 {
 	private readonly IUserRepository _userRepository;
-	private readonly IAuditBaseRepository<LinUserIdentity> _userIdentityRepository;
+	private readonly IAuditBaseRepository<LinUserIdentity,long> _userIdentityRepository;
 
-	public QQOAuth2Service(IAuditBaseRepository<LinUserIdentity> userIdentityRepository, IUserRepository userRepository) : base(userIdentityRepository)
+	public QQOAuth2Service(IAuditBaseRepository<LinUserIdentity,long> userIdentityRepository, IUserRepository userRepository) : base(userIdentityRepository)
 	{
 		_userIdentityRepository = userIdentityRepository;
 		_userRepository = userRepository;
@@ -39,8 +36,8 @@ public class QQOAuth2Service : OAuthService, IOAuth2Service
 		if (linUserIdentity == null)
 		{
 
-			string nickname = principal.FindFirst(ClaimTypes.Name)?.Value ?? "默认昵称";
-			string gender = principal.FindFirst(ClaimTypes.Gender)?.Value;
+			string nickname = principal.FindFirst(CMS.Data.Model.Const.ClaimTypes.Name)?.Value ?? "默认昵称";
+			string gender = principal.FindFirst(CMS.Data.Model.Const.ClaimTypes.Gender)?.Value;
 			string picture = principal.FindFirst(QQAuthenticationConstants.Claims.PictureUrl)?.Value;
 			string picture_medium = principal.FindFirst(QQAuthenticationConstants.Claims.PictureMediumUrl)?.Value;
 			string picture_full = principal.FindFirst(QQAuthenticationConstants.Claims.PictureFullUrl)?.Value;

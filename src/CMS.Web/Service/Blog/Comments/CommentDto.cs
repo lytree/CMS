@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using CMS.Web.Service.Cms.Users;
-using IGeekFan.FreeKit.Extras.AuditEntity;
+
 
 namespace CMS.Web.Service.Blog.Comments;
 
-public class CommentDto : EntityDto<long>, ICreateAuditEntity<long>
+public class CommentDto 
 {
+	public int Id { get; set; }
 	/// <summary>
 	/// 回复评论Id
 	/// </summary>

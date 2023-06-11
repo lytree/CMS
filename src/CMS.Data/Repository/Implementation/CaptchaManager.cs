@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
-
+using CMS.Data.Model.Entities.User;
+using CMS.Data.Repository;
+using CMS.Data.Utils;
 using DotNetCore.Security;
 using Newtonsoft.Json;
 using SkiaSharp;
 
-namespace CMS.Data.Manager.Implementation;
+namespace CMS.Data.Repository.Implementation;
 
 public class CaptchaManager : ICaptchaManager
 {
@@ -25,7 +27,7 @@ public class CaptchaManager : ICaptchaManager
     public string GetTag(string captcha, string salt = "cryptography_salt", int seconds = 300)
     {
         if (string.IsNullOrWhiteSpace(salt)) salt = Salt;
-        LoginCaptchaBO captchaBo = new(captcha, GetTimeStamp(seconds));
+        LoginCaptcha captchaBo = new(captcha, GetTimeStamp(seconds));
         var json = JsonConvert.SerializeObject(captchaBo);
         return _cryptographyService.Encrypt(json, salt);
     }
@@ -58,16 +60,16 @@ public class CaptchaManager : ICaptchaManager
 
     public string GetRandomCaptchaBase64(string captcha)
     {
-        var bytes = GetVerifyCode(captcha);
+        var bytes = ImgHelper.GetVerifyCode(captcha);
         return Convert.ToBase64String(bytes);
     }
 
-    public LoginCaptchaBO DecodeTag(string tag, string salt = "cryptography_salt")
+    public LoginCaptcha DecodeTag(string tag, string salt = "cryptography_salt")
     {
         if (string.IsNullOrWhiteSpace(salt)) salt = Salt;
         string json = _cryptographyService.Decrypt(tag, salt);
-        var loginCaptchaBo = JsonConvert.DeserializeObject<LoginCaptchaBO>(json);
+        var loginCaptchaBo = JsonConvert.DeserializeObject<LoginCaptcha>(json);
         return loginCaptchaBo;
     }
-   
+
 }

@@ -1,9 +1,8 @@
 ﻿using System;
-using IGeekFan.FreeKit.Extras.AuditEntity;
 
 namespace CMS.Web.Service.Cms.Users;
 
-public class UserNoviceDto : EntityDto<long>
+public class UserNoviceDto 
 {
 	public string Introduction { get; set; }
 	public string Username { get; set; }

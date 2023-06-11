@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using CMS.Data.Model.Enums;
 using CMS.Web.Service.Cms.Groups;
-using IGeekFan.FreeKit.Extras.AuditEntity;
-using LinCms.Data.Enums;
+
 
 namespace CMS.Web.Service.Cms.Users;
 
-public class UserInformation : EntityDto<long>
+public class UserInformation 
 {
 	/// <summary>
 	/// 昵称

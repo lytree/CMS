@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace CMS.Data.Manager;
+namespace CMS.Data.Model.Entities.User;
 
-public class LoginCaptchaBO
+public class LoginCaptcha
 {
-    public LoginCaptchaBO()
+    public LoginCaptcha()
     {
     }
 
-    public LoginCaptchaBO(string captcha, long expired)
+    public LoginCaptcha(string captcha, long expired)
     {
         Captcha = captcha ?? throw new ArgumentNullException(nameof(captcha));
         Expired = expired;

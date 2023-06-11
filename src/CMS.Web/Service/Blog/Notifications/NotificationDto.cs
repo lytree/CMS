@@ -1,11 +1,11 @@
 ﻿using System;
+using CMS.Data.Model.Entities.Blog;
 using CMS.Web.Service.Cms.Users;
-using IGeekFan.FreeKit.Extras.AuditEntity;
-using LinCms.Entities.Blog;
+
 
 namespace CMS.Web.Service.Blog.Notifications;
 
-public class NotificationDto : EntityDto<long>
+public class NotificationDto
 {
 	public NotificationType NotificationType { get; set; }
 	public OpenUserDto UserInfo { get; set; }

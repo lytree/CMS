@@ -1,5 +1,6 @@
-﻿using System;
-using LinCms.Data;
+﻿using CMS.Web.Data;
+using System;
+
 
 namespace CMS.Web.Service.Blog.Comments;
 

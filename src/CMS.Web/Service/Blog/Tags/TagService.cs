@@ -2,25 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CMS.Data.Exceptions;
+using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Blog;
+using CMS.Data.Repository;
+using CMS.Web.Data;
 using CMS.Web.Service.Blog.UserSubscribes;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Data;
-using LinCms.Data.Enums;
-using LinCms.Entities.Blog;
-using LinCms.Exceptions;
-using LinCms.Extensions;
-using LinCms.IRepositories;
-using LinCms.Security;
+
 
 namespace CMS.Web.Service.Blog.Tags;
 
 public class TagService : ApplicationService, ITagService
 {
-	private readonly IAuditBaseRepository<UserTag> _userTagRepository;
-	private readonly IAuditBaseRepository<Tag> _tagRepository;
-	private readonly IAuditBaseRepository<TagArticle> _tagArticleRepository;
+	private readonly IAuditBaseRepository<UserTag,long> _userTagRepository;
+	private readonly IAuditBaseRepository<Tag,long> _tagRepository;
+	private readonly IAuditBaseRepository<TagArticle, long> _tagArticleRepository;
 	private readonly IFileRepository _fileRepository;
-	public TagService(IAuditBaseRepository<Tag> tagRepository, IAuditBaseRepository<UserTag> userTagRepository, IAuditBaseRepository<TagArticle> tagArticleRepository, IFileRepository fileRepository)
+	public TagService(IAuditBaseRepository<Tag,long> tagRepository, IAuditBaseRepository<UserTag,long> userTagRepository, IAuditBaseRepository<TagArticle,long> tagArticleRepository, IFileRepository fileRepository)
 	{
 		_tagRepository = tagRepository;
 		_userTagRepository = userTagRepository;

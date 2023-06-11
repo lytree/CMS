@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CMS.Data.Exceptions;
+using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Blog;
+using CMS.Data.Repository;
 using CMS.Web.Service;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Entities.Blog;
-using LinCms.Exceptions;
-using LinCms.Security;
+
 
 namespace CMS.Web.Service.Blog.Tags;
 
 public class UserTagService : ApplicationService, IUserTagService
 {
-	private readonly IAuditBaseRepository<Tag> _tagRepository;
-	private readonly IAuditBaseRepository<UserTag> _userTagRepository;
+	private readonly IAuditBaseRepository<Tag,long> _tagRepository;
+	private readonly IAuditBaseRepository<UserTag,long> _userTagRepository;
 	private readonly ITagService _tagService;
 
-	public UserTagService(ITagService tagService, IAuditBaseRepository<Tag> tagRepository, IAuditBaseRepository<UserTag> userTagRepository)
+	public UserTagService(ITagService tagService, IAuditBaseRepository<Tag,long> tagRepository, IAuditBaseRepository<UserTag,long> userTagRepository)
 	{
 		_tagService = tagService;
 		_tagRepository = tagRepository;
 		_userTagRepository = userTagRepository;
 	}
 
-	[Transactional]
 	public async Task CreateUserTagAsync(long tagId)
 	{
 		Tag tag = await _tagRepository.Select.Where(r => r.Id == tagId).ToOneAsync();
@@ -46,7 +46,6 @@ public class UserTagService : ApplicationService, IUserTagService
 		await _tagService.UpdateSubscribersCountAsync(tagId, 1);
 	}
 
-	[Transactional]
 	public async Task DeleteUserTagAsync(long tagId)
 	{
 		bool any = await _userTagRepository.Select.AnyAsync(r => r.CreateUserId == CurrentUser.FindUserId() && r.TagId == tagId);

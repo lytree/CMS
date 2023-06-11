@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CMS.Data.Exceptions;
+using CMS.Data.Model.Entities.User;
+using CMS.Data.Model.Enums;
+using CMS.Data.Options;
+using CMS.Data.Repository;
+using CMS.Data.Repository.Implementation;
 using CMS.Web.Service.Cms.Users;
-using IGeekFan.FreeKit.Email;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using IGeekFan.FreeKit.Extras.Security;
-using LinCms.Data.Enums;
-using LinCms.Data.Options;
-using LinCms.Domain.Captcha;
-using LinCms.Entities;
-using LinCms.Exceptions;
+
 using Microsoft.Extensions.Options;
 using MimeKit;
 

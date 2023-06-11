@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CMS.Data.Model.Entities.Settings;
+using CMS.Data.Model.Entities;
 using FreeSql;
 
 namespace CMS.Data.Repository.Implementation;

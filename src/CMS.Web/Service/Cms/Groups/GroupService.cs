@@ -2,15 +2,15 @@
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using CMS.Data.Exceptions;
+using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.User;
+using CMS.Data.Model.Enums;
+using CMS.Data.Repository;
 using CMS.Web.Service.Cms.Permissions;
 using FreeSql.Internal.ObjectPool;
 
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Common;
-using LinCms.Data.Enums;
-using LinCms.Entities;
-using LinCms.Exceptions;
-using LinCms.Security;
+
 using Microsoft.AspNetCore.Http;
 
 namespace CMS.Web.Service.Cms.Groups;
@@ -125,7 +125,6 @@ public class GroupService : ApplicationService, IGroupService
 	/// </summary>
 	/// <param name="id"></param>
 	/// <returns></returns>
-	[Transactional]
 	public async Task DeleteAsync(long id)
 	{
 		LinGroup linGroup = await _groupRepository.Where(r => r.Id == id).FirstAsync();
@@ -157,7 +156,7 @@ public class GroupService : ApplicationService, IGroupService
 
 	}
 
-	[Transactional]
+
 	public async Task DeleteUserGroupAsync(long userId)
 	{
 		await _userGroupRepository.DeleteAsync(r => r.UserId == userId);
@@ -173,7 +172,7 @@ public class GroupService : ApplicationService, IGroupService
 		return _userGroupRepository.Where(r => r.UserId == userId).ToListAsync(r => r.GroupId);
 	}
 
-	[Transactional]
+	
 	public Task DeleteUserGroupAsync(long userId, List<long> deleteGroupIds)
 	{
 		if (deleteGroupIds == null || deleteGroupIds.IsEmpty())
@@ -181,7 +180,7 @@ public class GroupService : ApplicationService, IGroupService
 		return _userGroupRepository.DeleteAsync(r => r.UserId == userId && deleteGroupIds.Contains(r.GroupId));
 	}
 
-	[Transactional]
+	
 	public async Task AddUserGroupAsync(long userId, List<long> addGroupIds)
 	{
 		if (addGroupIds == null || addGroupIds.IsEmpty())

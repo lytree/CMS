@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using CMS.Data.Data;
 using FreeSql;
 
 namespace CMS.Data.Extensions

@@ -1,17 +1,18 @@
-﻿using System;
+﻿using CMS.Data.Model.Entities.User;
+using CMS.Data.Repository;
+using CMS.Web.Data;
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Data;
-using LinCms.Entities;
+
 
 namespace CMS.Web.Service.Cms.Users;
 
 public abstract class OAuthService : IOAuth2Service
 {
-	private readonly IAuditBaseRepository<LinUserIdentity> _userIdentityRepository;
+	private readonly IAuditBaseRepository<LinUserIdentity,long> _userIdentityRepository;
 
-	public OAuthService(IAuditBaseRepository<LinUserIdentity> userIdentityRepository)
+	public OAuthService(IAuditBaseRepository<LinUserIdentity,long> userIdentityRepository)
 	{
 		_userIdentityRepository = userIdentityRepository;
 	}

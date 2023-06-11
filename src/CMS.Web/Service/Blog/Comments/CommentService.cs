@@ -2,29 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CMS.Web.Service;
+using CMS.Data.Exceptions;
+using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Blog;
+using CMS.Data.Repository;
+using CMS.Web.Data;
 using CMS.Web.Service.Blog.Notifications;
+using CMS.Web.Service.Cms.Users;
 using DotNetCore.CAP;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Cms.Users;
-using LinCms.Data;
-using LinCms.Entities.Blog;
-using LinCms.Exceptions;
-using LinCms.Extensions;
-using LinCms.IRepositories;
-using LinCms.Security;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CMS.Web.Service.Blog.Comments;
 
 public class CommentService : ApplicationService, ICommentService
 {
-	private readonly IAuditBaseRepository<Comment> _commentRepository;
-	private readonly IAuditBaseRepository<Article> _articleRepository;
+	private readonly IAuditBaseRepository<Comment,long> _commentRepository;
+	private readonly IAuditBaseRepository<Article,long> _articleRepository;
 	private readonly IFileRepository _fileRepository;
 	private readonly ICapPublisher _capBus;
 
-	public CommentService(IAuditBaseRepository<Comment> commentRepository, IAuditBaseRepository<Article> articleRepository,
+	public CommentService(IAuditBaseRepository<Comment,long> commentRepository, IAuditBaseRepository<Article,long> articleRepository,
 		IFileRepository fileRepository, ICapPublisher capBus)
 	{
 		_commentRepository = commentRepository;
@@ -127,7 +124,6 @@ public class CommentService : ApplicationService, ICommentService
 		return new PagedResultDto<CommentDto>(comments, totalCount);
 	}
 
-	[Transactional]
 	public async Task CreateAsync(CreateCommentDto createCommentDto)
 	{
 
@@ -180,7 +176,6 @@ public class CommentService : ApplicationService, ICommentService
 	/// 删除评论并同步随笔数量
 	/// </summary>
 	/// <param name="comment"></param>
-	[Transactional]
 	public async Task DeleteAsync(Comment comment)
 	{
 		int affrows = 0;
@@ -208,7 +203,6 @@ public class CommentService : ApplicationService, ICommentService
 		}
 	}
 
-	[Transactional]
 	public async Task DeleteMyComment(long id)
 	{
 		Comment comment = await _commentRepository.Select.Where(r => r.Id == id).FirstAsync();
@@ -222,7 +216,7 @@ public class CommentService : ApplicationService, ICommentService
 			throw new CMSException("无权限删除他人的评论");
 		}
 
-		using ICapTransaction capTransaction = UnitOfWorkManager.Current.BeginTransaction(_capBus, false);
+		using ICapTransaction capTransaction = UnitOfWorkManager.Current.GetOrBeginTransaction(_capBus, false);
 
 		await DeleteAsync(comment);
 

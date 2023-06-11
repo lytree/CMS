@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using LinCms.Data;
-using LinCms.Entities.Blog;
+using CMS.Data.Model.Entities;
+using CMS.Web.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CMS.Web.Service.Blog.Comments;

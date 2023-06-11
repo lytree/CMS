@@ -1,23 +1,21 @@
-﻿using System;
+﻿using CMS.Data.Model.Entities.Blog;
+using CMS.Data.Repository;
+using CMS.Web.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Data;
-using LinCms.Entities.Blog;
-using LinCms.Extensions;
-using LinCms.IRepositories;
-using LinCms.Security;
+
 
 namespace CMS.Web.Service.Blog.Notifications;
 
 public class NotificationService : ApplicationService, INotificationService
 {
-	private readonly IAuditBaseRepository<Notification> _notificationRepository;
+	private readonly IAuditBaseRepository<Notification,long> _notificationRepository;
 	private readonly IFileRepository _fileRepository;
 
-	public NotificationService(IAuditBaseRepository<Notification> notificationRepository, IFileRepository fileRepository)
+	public NotificationService(IAuditBaseRepository<Notification,long> notificationRepository, IFileRepository fileRepository)
 	{
 		_notificationRepository = notificationRepository;
 		_fileRepository = fileRepository;

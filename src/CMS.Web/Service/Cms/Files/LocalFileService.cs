@@ -2,32 +2,28 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using LinCms.Common;
-using LinCms.Data.Options;
-using IGeekFan.FreeKit.Extras.Dependency;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using IGeekFan.FreeKit.Extras.Security;
-using LinCms.Entities;
-using LinCms.Exceptions;
+using CMS.Data.Exceptions;
+using CMS.Data.Model.Entities;
+using CMS.Data.Options;
+using CMS.Data.Repository;
+using CMS.Data.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
 namespace CMS.Web.Service.Cms.Files;
 
-[DisableConventionalRegistration]
+
 public class LocalFileService : IFileService
 {
 	private readonly IWebHostEnvironment _hostingEnv;
 	private readonly IAuditBaseRepository<LinFile, long> _fileRepository;
 	private readonly FileStorageOption _fileStorageOption;
-	private readonly ICurrentUser _currentUser;
-	public LocalFileService(IWebHostEnvironment hostingEnv, IAuditBaseRepository<LinFile, long> fileRepository, IOptions<FileStorageOption> fileStorageOption, ICurrentUser currentUser)
+	public LocalFileService(IWebHostEnvironment hostingEnv, IAuditBaseRepository<LinFile, long> fileRepository, IOptions<FileStorageOption> fileStorageOption)
 	{
 		_hostingEnv = hostingEnv;
 		_fileRepository = fileRepository;
 		_fileStorageOption = fileStorageOption.Value;
-		_currentUser = currentUser;
 	}
 
 	/// <summary>
@@ -43,7 +39,7 @@ public class LocalFileService : IFileService
 			throw new CMSException("文件为空");
 		}
 
-		string saveFileName = long.Newlong() + Path.GetExtension(file.FileName);
+		string saveFileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
 
 		//得到 assets/202005
 		string path = Path.Combine(_fileStorageOption.LocalFile.PrefixPath, DateTime.Now.ToString("yyyyMM"));
@@ -76,7 +72,7 @@ public class LocalFileService : IFileService
 	/// <returns></returns>
 	public async Task<FileDto> UploadAsync(IFormFile file, int key = 0)
 	{
-		string md5 = LinCmsUtils.GetHash<MD5>(file.OpenReadStream());
+		string md5 = CMSUtils.GetHash<MD5>(file.OpenReadStream());
 		LinFile linFile = await _fileRepository.Where(r => r.Md5 == md5 && r.Type == 1).OrderByDescending(r => r.CreateTime).FirstAsync();
 
 		if (linFile != null && File.Exists(Path.Combine(_hostingEnv.WebRootPath, linFile.Path)))

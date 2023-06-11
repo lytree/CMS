@@ -42,4 +42,8 @@ public static class ClaimTypes
 	/// 姓名
 	/// </summary>
 	public const string Name = System.Security.Claims.ClaimTypes.GivenName;
+	/// <summary>
+	/// 姓名
+	/// </summary>
+	public const string Gender = System.Security.Claims.ClaimTypes.Gender;
 }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LinCms.Entities;
+using CMS.Data.Model.Entities.User;
 
 namespace CMS.Web.Service.Cms.Groups;
 

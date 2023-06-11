@@ -1,8 +1,8 @@
-﻿using IGeekFan.FreeKit.Extras.AuditEntity;
+﻿
 
 namespace CMS.Web.Service.Cms.Users;
 
-public class OpenUserDto : EntityDto<long>
+public class OpenUserDto 
 {
 	public OpenUserDto(string nickname)
 	{
@@ -12,7 +12,7 @@ public class OpenUserDto : EntityDto<long>
 	public OpenUserDto()
 	{
 	}
-
+	public long Id { get; set; }
 	public string Introduction { get; set; }
 	public string Username { get; set; }
 	public string Nickname { get; set; }

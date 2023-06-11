@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LinCms.Entities.Blog;
+using CMS.Data.Model.Entities.Blog;
 
 namespace CMS.Web.Service.Blog.UserLikes;
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CMS.Web.Service.Blog.Classifys;
 
-public interface IClassifyService : ICrudAppService<ClassifyDto, ClassifyDto, long, ClassifySearchDto, CreateUpdateClassifyDto, CreateUpdateClassifyDto>
+public interface IClassifyService 
 {
 	List<ClassifyDto> GetListByUserId(long? userId);
 	Task UpdateArticleCountAsync(long? id, int inCreaseCount);

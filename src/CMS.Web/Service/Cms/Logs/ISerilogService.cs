@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
-using LinCms.Data;
-using LinCms.Entities;
+using CMS.Data.Model.Entities;
+using CMS.Web.Data;
+
 
 namespace CMS.Web.Service.Cms.Logs;
 

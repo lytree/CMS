@@ -2,42 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CMS.Data.Exceptions;
+using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Blog;
+using CMS.Data.Repository;
+using CMS.Web.Data;
 using CMS.Web.Service;
 using CMS.Web.Service.Blog.Classifys;
 using CMS.Web.Service.Blog.UserSubscribes;
-using IGeekFan.FreeKit.Extras;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Blog.Tags;
-using LinCms.Data;
-using LinCms.Data.Enums;
-using LinCms.Entities.Blog;
-using LinCms.Exceptions;
-using LinCms.Extensions;
-using LinCms.IRepositories;
-using LinCms.Security;
 
 namespace CMS.Web.Service.Blog.Articles;
 
 public class ArticleService : ApplicationService, IArticleService
 {
-	private readonly IAuditBaseRepository<Article> _articleRepository;
-	private readonly IAuditBaseRepository<ArticleDraft> _articleDraftRepository;
-	private readonly IAuditBaseRepository<UserLike> _userLikeRepository;
-	private readonly IAuditBaseRepository<Comment> _commentRepository;
-	private readonly IAuditBaseRepository<TagArticle> _tagArticleRepository;
+	private readonly IAuditBaseRepository<Article, long> _articleRepository;
+	private readonly IAuditBaseRepository<ArticleDraft, long> _articleDraftRepository;
+	private readonly IAuditBaseRepository<UserLike, long> _userLikeRepository;
+	private readonly IAuditBaseRepository<Comment, long> _commentRepository;
+	private readonly IAuditBaseRepository<TagArticle, long> _tagArticleRepository;
 	private readonly IClassifyService _classifyService;
-	private readonly IAuditBaseRepository<Tag> _tagRepository;
+	private readonly IAuditBaseRepository<Tag, long> _tagRepository;
 	private readonly IUserSubscribeService _userSubscribeService;
 	private readonly IFileRepository _fileRepository;
 	public ArticleService(
-		IAuditBaseRepository<Article> articleRepository,
-		IAuditBaseRepository<TagArticle> tagArticleRepository,
-		IAuditBaseRepository<UserLike> userLikeRepository,
-		IAuditBaseRepository<Comment> commentRepository,
+		IAuditBaseRepository<Article, long> articleRepository,
+		IAuditBaseRepository<TagArticle, long> tagArticleRepository,
+		IAuditBaseRepository<UserLike, long> userLikeRepository,
+		IAuditBaseRepository<Comment, long> commentRepository,
 		IClassifyService classifyService,
-		IAuditBaseRepository<Tag> tagRepository,
+		IAuditBaseRepository<Tag, long> tagRepository,
 		IUserSubscribeService userSubscribeService,
-		IAuditBaseRepository<ArticleDraft> articleDraftRepository,
+		IAuditBaseRepository<ArticleDraft, long> articleDraftRepository,
 		IFileRepository fileRepository
 	)
 	{
@@ -98,7 +93,6 @@ public class ArticleService : ApplicationService, IArticleService
 		return new PagedResultDto<ArticleListDto>(articleDtos, totalCount);
 	}
 
-	[Transactional]
 	public async Task DeleteAsync(long id)
 	{
 		Article article = _articleRepository.Select.Where(r => r.Id == id).IncludeMany(r => r.Tags).ToOne();

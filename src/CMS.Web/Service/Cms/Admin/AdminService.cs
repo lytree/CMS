@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CMS.Data.Model.Entities;
+using CMS.Data.Repository;
 using CMS.Web.Service.Cms.Admins;
 using CMS.Web.Service.Cms.Permissions;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Entities;
 
 namespace CMS.Web.Service.Cms.Admin;
 
 public class AdminService : ApplicationService, IAdminService
 {
-	private readonly IAuditBaseRepository<LinPermission> _permissionRepository;
-	public AdminService(IAuditBaseRepository<LinPermission> permissionRepository)
+	private readonly IAuditBaseRepository<LinPermission,long> _permissionRepository;
+	public AdminService(IAuditBaseRepository<LinPermission,long> permissionRepository)
 	{
 		_permissionRepository = permissionRepository;
 	}

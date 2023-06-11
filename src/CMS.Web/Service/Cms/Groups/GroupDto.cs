@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using IGeekFan.FreeKit.Extras.AuditEntity;
-using LinCms.Entities;
+﻿using CMS.Data.Model.Entities;
+using System.Collections.Generic;
+
 
 namespace CMS.Web.Service.Cms.Groups;
 
-public class GroupDto : Entity<long>
+public class GroupDto 
 {
 	public List<LinPermission> Permissions { get; set; }
 	public string Name { get; set; }

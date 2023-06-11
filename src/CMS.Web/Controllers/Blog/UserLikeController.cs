@@ -4,7 +4,7 @@ using CMS.Data.Model.Entities;
 using CMS.Data.Model.Entities.Blog;
 using CMS.Data.Repository;
 using CMS.Web.Data;
-using CMS.Web.Service;
+using CMS.Web.Extensions;
 using CMS.Web.Service.Blog.Notifications;
 using CMS.Web.Service.Blog.UserLikes;
 using DotNetCore.CAP;

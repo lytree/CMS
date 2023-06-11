@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LinCms.Entities.Settings;
+using CMS.Data.Model.Entities;
 
 namespace CMS.Web.Service.Cms.Settings;
 

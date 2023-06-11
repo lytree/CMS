@@ -1,5 +1,6 @@
-﻿using System;
-using LinCms.Entities.Blog;
+﻿using CMS.Data.Model.Entities.Blog;
+using System;
+
 
 namespace CMS.Web.Service.Blog.Notifications;
 

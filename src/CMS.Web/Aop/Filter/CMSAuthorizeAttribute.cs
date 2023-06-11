@@ -30,13 +30,13 @@ namespace CMS.Web.Aop.Filter
 			//}
 
 			IAuthorizationService authorizationService = (IAuthorizationService)context.HttpContext.RequestServices.GetService(typeof(IAuthorizationService));
-			AuthorizationResult validJti = await authorizationService.AuthorizeAsync(context.HttpContext, context, new ValidJtiRequirement());
+			AuthorizationResult validJti = await authorizationService.AuthorizeAsync(context.HttpContext.User, context, new ValidJtiRequirement());
 			if (!validJti.Succeeded)
 			{
 				return;
 			}
 
-			await authorizationService.AuthorizeAsync(context.HttpContext, context, new ModuleAuthorizationRequirement(Module, Permission));
+			await authorizationService.AuthorizeAsync(context.HttpContext.User, context, new ModuleAuthorizationRequirement(Module, Permission));
 		}
 
 		public override string ToString()

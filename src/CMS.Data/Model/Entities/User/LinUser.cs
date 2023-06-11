@@ -114,7 +114,7 @@ namespace CMS.Data.Model.Entities.User
 
 		public void SetNewPasswordResetCode()
 		{
-			PasswordResetCode = long.Newlong().ToString("N").Truncate(328);
+			PasswordResetCode = Guid.NewGuid().ToString("N").Truncate(328);
 		}
 
 		public bool IsActive()

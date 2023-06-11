@@ -4,12 +4,12 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Autofac;
+using CMS.Data.Model.Entities;
+using CMS.Data.Repository;
+using CMS.Web.Data;
+using CMS.Web.Data.Options;
 using CMS.Web.Service.Blog.Tags;
 using CMS.Web.Service.Cms.Files;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Data;
-using LinCms.Data.Options;
-using LinCms.Entities.Blog;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,8 +30,8 @@ public class QiniuController : ControllerBase
 	private readonly IFileService _fileService;
 	private readonly IWebHostEnvironment _hostingEnv;
 	private readonly ITagService _tagService;
-	private readonly IAuditBaseRepository<Tag> _tagAuditBaseRepository;
-	public QiniuController(IWebHostEnvironment hostingEnv, IOptionsSnapshot<FileStorageOption> optionsSnapshot, IComponentContext componentContext, ITagService tagService, IAuditBaseRepository<Tag> tagAuditBaseRepository)
+	private readonly IAuditBaseRepository<Tag,long> _tagAuditBaseRepository;
+	public QiniuController(IWebHostEnvironment hostingEnv, IOptionsSnapshot<FileStorageOption> optionsSnapshot, IComponentContext componentContext, ITagService tagService, IAuditBaseRepository<Tag, long> tagAuditBaseRepository)
 	{
 		var _fileStorageOption = optionsSnapshot.Value;
 		_hostingEnv = hostingEnv;

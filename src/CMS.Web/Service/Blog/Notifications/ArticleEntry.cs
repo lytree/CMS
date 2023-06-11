@@ -1,10 +1,11 @@
 ﻿using System;
-using IGeekFan.FreeKit.Extras.AuditEntity;
+
 
 namespace CMS.Web.Service.Blog.Notifications;
 
-public class ArticleEntry : EntityDto<long>
+public class ArticleEntry 
 {
+	public int Id { get; set; }
 	public string Title { get; set; }
 
 }

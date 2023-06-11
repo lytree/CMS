@@ -12,7 +12,7 @@ using CMS.Web.Service.Blog.Classifys;
 
 namespace CMS.Web.Service.Blog.Classifies;
 
-public class ClassifyService : CrudAppService<Classify, ClassifyDto, ClassifyDto, long, ClassifySearchDto, CreateUpdateClassifyDto, CreateUpdateClassifyDto>, IClassifyService
+public class ClassifyService :  IClassifyService
 {
 	private readonly IFileRepository _fileRepository;
 

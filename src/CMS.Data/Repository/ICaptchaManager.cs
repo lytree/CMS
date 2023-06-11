@@ -1,4 +1,6 @@
-﻿namespace CMS.Data.Manager;
+﻿using CMS.Data.Model.Entities.User;
+
+namespace CMS.Data.Repository;
 
 public interface ICaptchaManager
 {
@@ -38,5 +40,5 @@ public interface ICaptchaManager
     /// <param name="tag"></param>
     /// <param name="salt"></param>
     /// <returns></returns>
-    LoginCaptchaBO DecodeTag(string tag, string salt = "cryptography_salt");
+    LoginCaptcha DecodeTag(string tag, string salt = "cryptography_salt");
 }

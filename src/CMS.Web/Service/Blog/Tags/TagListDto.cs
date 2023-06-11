@@ -1,13 +1,14 @@
 ﻿using System;
-using IGeekFan.FreeKit.Extras.AuditEntity;
+
 
 namespace CMS.Web.Service.Blog.Tags;
 
 /// <summary>
 /// 后台列表List
 /// </summary>
-public class TagListDto : EntityDto<long>
+public class TagListDto 
 {
+	public long Id { get; set; }
 	public string Thumbnail { get; set; }
 	public string ThumbnailDisplay { get; set; }
 	public string TagName { get; set; }

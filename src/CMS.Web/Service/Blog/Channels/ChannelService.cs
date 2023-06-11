@@ -90,7 +90,7 @@ public class ChannelService : ApplicationService, IChannelService
 		await _channelRepository.InsertAsync(channel);
 	}
 
-	[Transactional]
+
 	public async Task UpdateAsync(long id, CreateUpdateChannelDto updateChannel)
 	{
 		Channel channel = await _channelRepository.Select.Where(r => r.Id == id).ToOneAsync();

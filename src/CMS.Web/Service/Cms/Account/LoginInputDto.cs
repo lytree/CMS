@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using JetBrains.Annotations;
-using Microsoft.AspNetCore.Mvc;
+
 
 namespace CMS.Web.Service.Cms.Account;
 
@@ -23,7 +22,6 @@ public class LoginInputDto
 	/// <summary>
 	/// 验证码
 	/// </summary>
-	[CanBeNull]
 	public string Captcha { get; set; }
 
 }

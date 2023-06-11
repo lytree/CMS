@@ -1,24 +1,22 @@
-﻿using System;
+﻿using CMS.Data.Model.Const;
+using CMS.Data.Model.Entities.User;
+using CMS.Data.Model.Enums;
+using CMS.Data.Repository;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AspNet.Security.OAuth.Gitee;
-using LinCms.Common;
-using LinCms.Data.Enums;
-using IGeekFan.FreeKit.Extras.Dependency;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Entities;
-using LinCms.IRepositories;
+
 
 namespace CMS.Web.Service.Cms.Users;
 
-[DisableConventionalRegistration]
+
 public class GiteeOAuth2Service : OAuthService, IOAuth2Service
 {
 	private readonly IUserRepository _userRepository;
-	private readonly IAuditBaseRepository<LinUserIdentity> _userIdentityRepository;
+	private readonly IAuditBaseRepository<LinUserIdentity,long> _userIdentityRepository;
 
-	public GiteeOAuth2Service(IAuditBaseRepository<LinUserIdentity> userIdentityRepository, IUserRepository userRepository) : base(userIdentityRepository)
+	public GiteeOAuth2Service(IAuditBaseRepository<LinUserIdentity,long> userIdentityRepository, IUserRepository userRepository) : base(userIdentityRepository)
 	{
 		_userIdentityRepository = userIdentityRepository;
 		_userRepository = userRepository;
@@ -54,7 +52,7 @@ public class GiteeOAuth2Service : OAuthService, IOAuth2Service
 				{
 					new()
 					{
-						GroupId = LinConsts.Group.User
+						GroupId = CMSConsts.Group.User
 					}
 				},
 				Nickname = nickname,

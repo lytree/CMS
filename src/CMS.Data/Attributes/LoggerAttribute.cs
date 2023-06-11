@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CMS.Web.Aop.Attributes
+namespace CMS.Data.Attributes
 {
 	[AttributeUsage(AttributeTargets.Method)]
 	public class LoggerAttribute : Attribute

@@ -1,12 +1,11 @@
 ﻿using Autofac;
 using AutoMapper;
 using CMS.Data.Exceptions;
-using CMS.Data.Manager;
-using CMS.Data.Manager.Implementation;
-using CMS.Data.Model.DTO;
 using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.User;
 using CMS.Data.Model.Enums;
 using CMS.Data.Repository;
+using CMS.Data.Repository.Implementation;
 using CMS.Data.Utils;
 using CMS.Web.Aop.Attributes;
 using CMS.Web.Data;
@@ -82,7 +81,7 @@ public class AccountController : ApiControllerBase
 	[DisableAuditing]
 	[ServiceFilter(typeof(RecaptchaVerifyActionFilter))]
 	[HttpPost("login")]
-	public Task<TokensDto> Login([FromBody] LoginInputDto loginInputDto, [FromHeader] string? tag)
+	public Task<Tokens> Login([FromBody] LoginInputDto loginInputDto, [FromHeader] string? tag)
 	{
 		if (_loginCaptchaOption.Enabled == true)
 		{
@@ -107,7 +106,7 @@ public class AccountController : ApiControllerBase
 	/// </summary>
 	/// <returns></returns>
 	[HttpGet("refresh")]
-	public async Task<TokensDto> GetRefreshTokenAsync()
+	public async Task<Tokens> GetRefreshTokenAsync()
 	{
 		string? refreshToken = await HttpContext.GetTokenAsync("Bearer", "access_token");
 		if (refreshToken == null)

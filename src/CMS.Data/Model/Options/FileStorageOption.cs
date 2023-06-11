@@ -1,4 +1,4 @@
-﻿namespace CMS.Web.Data.Options
+﻿namespace CMS.Data.Options
 {
 	public class FileStorageOption
 	{

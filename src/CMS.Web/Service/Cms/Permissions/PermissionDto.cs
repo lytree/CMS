@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using IGeekFan.FreeKit.Extras.AuditEntity;
+
 
 namespace CMS.Web.Service.Cms.Permissions;
 
-public class PermissionDto : EntityDto<long>
+public class PermissionDto
 {
 	public PermissionDto(string name, string module, string router)
 	{
@@ -12,7 +12,7 @@ public class PermissionDto : EntityDto<long>
 		Module = module;
 		Router = router;
 	}
-
+	public long Id { get; set; }
 	public string Name { get; set; }
 	public string Module { get; set; }
 	public string Router { get; set; }

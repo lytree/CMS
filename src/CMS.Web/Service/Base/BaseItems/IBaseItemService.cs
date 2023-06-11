@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace CMS.Web.Service.Base.BaseItems;
-
-public interface IBaseItemService
+namespace CMS.Web.Service.Base.BaseItems
 {
-	Task DeleteAsync(int id);
+	public interface IBaseItemService
+	{
+		Task DeleteAsync(int id);
 
-	Task<List<BaseItemDto>> GetListAsync(string typeCode);
+		Task<List<BaseItemDto>> GetListAsync(string typeCode);
 
-	Task<BaseItemDto> GetAsync(int id);
+		Task<BaseItemDto> GetAsync(int id);
 
-	Task CreateAsync(CreateUpdateBaseItemDto createBaseItem);
+		Task CreateAsync(CreateUpdateBaseItemDto createBaseItem);
 
-	Task UpdateAsync(int id, CreateUpdateBaseItemDto updateBaseItem);
+		Task UpdateAsync(int id, CreateUpdateBaseItemDto updateBaseItem);
+	}
 }

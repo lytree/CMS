@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CMS.Data.Exceptions;
+using CMS.Data.Model.Entities.User;
+using CMS.Data.Repository;
 using DotNetCore.Security;
-using IGeekFan.FreeKit.Extras.FreeSql;
-using LinCms.Entities;
-using LinCms.Exceptions;
-using LinCms.Security;
+
 
 namespace CMS.Web.Service.Cms.Users;
 
 public class UserIdentityService : ApplicationService, IUserIdentityService
 {
-	private readonly IAuditBaseRepository<LinUserIdentity> _userIdentityRepository;
+	private readonly IAuditBaseRepository<LinUserIdentity,long> _userIdentityRepository;
 	private readonly ICryptographyService _cryptographyService;
-	public UserIdentityService(IAuditBaseRepository<LinUserIdentity> userIdentityRepository, ICryptographyService cryptographyService)
+	public UserIdentityService(IAuditBaseRepository<LinUserIdentity,long> userIdentityRepository, ICryptographyService cryptographyService)
 	{
 		_userIdentityRepository = userIdentityRepository;
 		_cryptographyService = cryptographyService;
@@ -56,7 +56,6 @@ public class UserIdentityService : ApplicationService, IUserIdentityService
 		}
 	}
 
-	[Transactional]
 	public Task DeleteAsync(long userId)
 	{
 		return _userIdentityRepository.Where(r => r.CreateUserId == userId).ToDelete().ExecuteAffrowsAsync();

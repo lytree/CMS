@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LinCms.Entities.Blog;
+using CMS.Data.Model.Entities;
 
 namespace CMS.Web.Service.Blog.Comments;
 

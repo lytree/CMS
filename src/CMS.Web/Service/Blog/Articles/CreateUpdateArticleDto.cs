@@ -1,7 +1,8 @@
-﻿using System;
+﻿using CMS.Data.Model.Entities.Blog;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using LinCms.Entities.Blog;
+
 
 namespace CMS.Web.Service.Blog.Articles;
 

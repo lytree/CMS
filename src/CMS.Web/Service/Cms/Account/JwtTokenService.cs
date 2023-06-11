@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CMS.Data.Exceptions;
+using CMS.Data.Model.Entities.User;
+using CMS.Data.Model.Enums;
+using CMS.Data.Repository;
 using CMS.Web.Service.Cms.Users;
-using IGeekFan.FreeKit.Extras.Dependency;
-using IGeekFan.FreeKit.Extras.Security;
-using LinCms.Data.Enums;
-using LinCms.Domain;
-using LinCms.Entities;
-using LinCms.Exceptions;
-using LinCms.IRepositories;
 using Microsoft.Extensions.Logging;
 
 namespace CMS.Web.Service.Cms.Account;
 
-[DisableConventionalRegistration]
 public class JwtTokenService : ITokenService
 {
 	private readonly IUserRepository _userRepository;
