@@ -26,7 +26,7 @@ public class UserLikeService : ApplicationService, IUserLikeService
 
 	public async Task<bool> CreateOrCancelAsync(CreateUpdateUserLikeDto createUpdateUserLike)
 	{
-		Expression<Func<UserLike, bool>> predicate = r => r.SubjectId == createUpdateUserLike.SubjectId && r.CreateUserId == CurrentUser.FindUserId();
+		Expression<Func<UserLike, bool>> predicate = r => r.SubjectId == createUpdateUserLike.SubjectId;
 
 		bool exist = await _userLikeRepository.Select.AnyAsync(predicate);
 		int increaseLikeQuantity = 1;

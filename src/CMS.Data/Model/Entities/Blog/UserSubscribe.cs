@@ -9,7 +9,7 @@ namespace CMS.Data.Model.Entities.Blog
 	/// 用户关注用户
 	/// </summary>
 	[Table(Name = "blog_user_subscribe")]
-	public class UserSubscribe : BaseEntity<long>
+	public class UserSubscribe : BaseEntity<long>, ISoftDelete
 	{
 		/// <summary>
 		/// 被关注的用户Id
@@ -23,12 +23,23 @@ namespace CMS.Data.Model.Entities.Blog
 
 		public string CreateUserName { get; set; }
 
-		public DateTime CreateTime { get; set; }
+		/// <summary>
+		/// 删除时间
+		/// </summary>
+		[Column(Position = -2)]
+		public virtual DateTime? DeleteTime { get; set; }
+
+		/// <summary>
+		/// 是否删除
+		/// </summary>
+		[Column(Position = -1)]
+		public virtual bool IsDeleted { get; set; }
+
 
 		[Navigate("CreateUserId")]
-		public virtual LinUser LinUser { get; set; }
+		public virtual CMSUser LinUser { get; set; }
 
 		[Navigate("SubscribeUserId")]
-		public virtual LinUser SubscribeUser { get; set; }
+		public virtual CMSUser SubscribeUser { get; set; }
 	}
 }

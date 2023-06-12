@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CMS.Data.Exceptions;
+using CMS.Data.Extensions;
 using CMS.Data.Model.Entities.Blog;
 using CMS.Data.Model.Entities.User;
 using CMS.Data.Repository;
 using CMS.Web.Data;
+using CMS.Web.Extensions;
 using CMS.Web.Service.Blog.Notifications;
+using CMS.Web.Service.Cms.Users;
 using DotNetCore.CAP;
 
 
@@ -52,7 +55,7 @@ public class UserSubscribeService : ApplicationService, IUserSubscribeService
 					Avatar = r.SubscribeUser.Avatar,
 					Username = r.SubscribeUser.Username,
 				},
-				IsSubscribeed = _userSubscribeRepository.Select.Any(r => r.CreateUserId == CurrentUser.FindUserId() && r.SubscribeUserId == r.SubscribeUserId)
+				IsSubscribeed = _userSubscribeRepository.Select.Any(r => r.SubscribeUserId == r.SubscribeUserId)
 			});
 
 		userSubscribes.ForEach(r => { r.Subscribeer.Avatar = _fileRepository.GetFileUrl(r.Subscribeer.Avatar); });
@@ -80,7 +83,7 @@ public class UserSubscribeService : ApplicationService, IUserSubscribeService
 				},
 				//当前登录的用户是否关注了这个粉丝
 				IsSubscribeed = _userSubscribeRepository.Select.Any(
-					u => u.CreateUserId == CurrentUser.FindUserId() && u.SubscribeUserId == r.CreateUserId)
+					u => u.SubscribeUserId == r.CreateUserId)
 			});
 
 		userSubscribes.ForEach(r => { r.Subscribeer.Avatar = _fileRepository.GetFileUrl(r.Subscribeer.Avatar); });
@@ -90,12 +93,9 @@ public class UserSubscribeService : ApplicationService, IUserSubscribeService
 
 	public async Task CreateAsync(long subscribeUserId)
 	{
-		if (subscribeUserId == CurrentUser.FindUserId())
-		{
-			throw new CMSException("您无法关注自己");
-		}
 
-		LinUser linUser = _userRepository.Select.Where(r => r.Id == subscribeUserId).ToOne();
+
+		CMSUser linUser = _userRepository.Select.Where(r => r.Id == subscribeUserId).ToOne();
 		if (linUser == null)
 		{
 			throw new CMSException("该用户不存在");
@@ -107,7 +107,7 @@ public class UserSubscribeService : ApplicationService, IUserSubscribeService
 		}
 
 		bool any = _userSubscribeRepository.Select.Any(r =>
-			r.CreateUserId == CurrentUser.FindUserId() && r.SubscribeUserId == subscribeUserId);
+			 r.SubscribeUserId == subscribeUserId);
 		if (any)
 		{
 			throw new CMSException("您已关注该用户");
@@ -122,7 +122,6 @@ public class UserSubscribeService : ApplicationService, IUserSubscribeService
 		{
 			NotificationType = NotificationType.UserLikeUser,
 			NotificationRespUserId = subscribeUserId,
-			UserInfoId = CurrentUser.FindUserId() ?? 0,
 			CreateTime = DateTime.Now,
 		});
 
@@ -132,7 +131,7 @@ public class UserSubscribeService : ApplicationService, IUserSubscribeService
 	public async Task DeleteAsync(long subscribeUserId)
 	{
 		bool any = await _userSubscribeRepository.Select.AnyAsync(r =>
-			r.CreateUserId == CurrentUser.FindUserId() && r.SubscribeUserId == subscribeUserId);
+			 r.SubscribeUserId == subscribeUserId);
 		if (!any)
 		{
 			throw new CMSException("已取消关注");
@@ -141,13 +140,12 @@ public class UserSubscribeService : ApplicationService, IUserSubscribeService
 
 		using ICapTransaction capTransaction = UnitOfWorkManager.Current.BeginTransaction(_capBus, false);
 
-		await _userSubscribeRepository.DeleteAsync(r => r.SubscribeUserId == subscribeUserId && r.CreateUserId == CurrentUser.FindUserId());
+		await _userSubscribeRepository.DeleteAsync(r => r.SubscribeUserId == subscribeUserId);
 
 		await _capBus.PublishAsync(CreateNotificationDto.CreateOrCancelAsync, new CreateNotificationDto()
 		{
 			NotificationType = NotificationType.UserLikeUser,
 			NotificationRespUserId = subscribeUserId,
-			UserInfoId = CurrentUser.FindUserId() ?? 0,
 			CreateTime = DateTime.Now,
 			IsCancel = true
 		});

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CMS.Data.Exceptions;
+using CMS.Data.Extensions;
 using CMS.Data.Model.Entities;
 using CMS.Data.Repository;
 using CMS.Web.Data;
@@ -22,7 +23,7 @@ public class SettingService : ApplicationService, ISettingService
 
 	public async Task Delete(string name, string providerName, string providerKey)
 	{
-		LinSetting setting = await _settingRepository.FindAsync(name, providerName, providerKey);
+		CMSSetting setting = await _settingRepository.FindAsync(name, providerName, providerKey);
 		;
 		if (setting != null)
 		{
@@ -39,17 +40,17 @@ public class SettingService : ApplicationService, ISettingService
 
 	public async Task<string> GetOrNullAsync(string name, string providerName, string providerKey)
 	{
-		LinSetting settings = await _settingRepository.FindAsync(name, providerName, providerKey);
+		CMSSetting settings = await _settingRepository.FindAsync(name, providerName, providerKey);
 		return settings?.Value;
 	}
 
 	public async Task SetAsync(CreateUpdateSettingDto createSetting)
 	{
-		LinSetting setting = await _settingRepository.FindAsync(createSetting.Name, createSetting.ProviderName, createSetting.ProviderKey);
+		CMSSetting setting = await _settingRepository.FindAsync(createSetting.Name, createSetting.ProviderName, createSetting.ProviderKey);
 
 		if (setting == null)
 		{
-			await _settingRepository.InsertAsync(Mapper.Map<LinSetting>(createSetting));
+			await _settingRepository.InsertAsync(Mapper.Map<CMSSetting>(createSetting));
 		}
 		else
 		{
@@ -73,7 +74,7 @@ public class SettingService : ApplicationService, ISettingService
 
 	public async Task CreateAsync(CreateUpdateSettingDto createSettingDto)
 	{
-		LinSetting setting = await _settingRepository.FindAsync(createSettingDto.Name,
+		CMSSetting setting = await _settingRepository.FindAsync(createSettingDto.Name,
 			createSettingDto.ProviderName, createSettingDto.ProviderKey);
 		;
 		if (setting != null)
@@ -81,18 +82,18 @@ public class SettingService : ApplicationService, ISettingService
 			throw new CMSException("该配置已存在");
 		}
 
-		await _settingRepository.InsertAsync(Mapper.Map<LinSetting>(createSettingDto));
+		await _settingRepository.InsertAsync(Mapper.Map<CMSSetting>(createSettingDto));
 	}
 
 	public async Task UpdateAsync(long id, CreateUpdateSettingDto updateSettingDto)
 	{
-		LinSetting setting = await _settingRepository.Select.Where(r => r.Id == id).ToOneAsync();
+		CMSSetting setting = await _settingRepository.Select.Where(r => r.Id == id).ToOneAsync();
 		if (setting == null)
 		{
 			throw new CMSException("该数据不存在");
 		}
 
-		LinSetting settingExist = await _settingRepository.Select
+		CMSSetting settingExist = await _settingRepository.Select
 			.Where(s => s.Name == updateSettingDto.Name && s.ProviderName == updateSettingDto.ProviderName &&
 						s.ProviderKey == updateSettingDto.ProviderKey && s.Id != id)
 			.FirstAsync();

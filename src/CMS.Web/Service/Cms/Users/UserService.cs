@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CMS.Data.Exceptions;
+using CMS.Data.Extensions;
+using CMS.Data.Model.Const;
 using CMS.Data.Model.Entities;
 using CMS.Data.Model.Entities.User;
 using CMS.Data.Model.Enums;
 using CMS.Data.Repository;
+using CMS.Web.Aop.User;
 using CMS.Web.Data;
 using CMS.Web.Service.Cms.Admins;
 using CMS.Web.Service.Cms.Groups;
@@ -42,7 +45,7 @@ public class UserService : ApplicationService, IUserService
 	public async Task ChangePasswordAsync(ChangePasswordDto passwordDto)
 	{
 		long currentUserId = CurrentUser.FindUserId() ?? 0;
-		LinUser user = await _userRepository.Where(r => r.Id == currentUserId).FirstAsync();
+		CMSUser user = await _userRepository.Where(r => r.Id == currentUserId).FirstAsync();
 
 		bool valid = await _userIdentityService.VerifyUserPasswordAsync(currentUserId, passwordDto.OldPassword, user.Salt);
 		if (!valid)
@@ -53,21 +56,21 @@ public class UserService : ApplicationService, IUserService
 		await _userIdentityService.ChangePasswordAsync(user.Id, passwordDto.NewPassword, user.Salt);
 	}
 
-	public Task<LinUser> GetUserAsync(string username)
+	public Task<CMSUser> GetUserAsync(string username)
 	{
 		return _userRepository.Where(r => r.Username == username).FirstAsync();
 	}
 
 	public async Task DeleteAsync(long userId)
 	{
-		await _userRepository.DeleteAsync(new LinUser() { Id = userId });
+		await _userRepository.DeleteAsync(new CMSUser() { Id = userId });
 		await _userIdentityService.DeleteAsync(userId);
 		await _groupService.DeleteUserGroupAsync(userId);
 	}
 
 	public async Task ResetPasswordAsync(long id, ResetPasswordDto resetPasswordDto)
 	{
-		LinUser user = await _userRepository.Where(r => r.Id == id).FirstAsync();
+		CMSUser user = await _userRepository.Where(r => r.Id == id).FirstAsync();
 
 		if (user == null)
 		{
@@ -95,7 +98,7 @@ public class UserService : ApplicationService, IUserService
 	}
 
 
-	public async Task CreateAsync(LinUser user, List<long> groupIds, string password)
+	public async Task CreateAsync(CMSUser user, List<long> groupIds, string password)
 	{
 		if (!string.IsNullOrEmpty(user.Username))
 		{
@@ -117,17 +120,17 @@ public class UserService : ApplicationService, IUserService
 		}
 		user.Salt = Guid.NewGuid().ToString();
 		string encryptPassword = _cryptographyService.Encrypt(password, user.Salt);
-		user.LinUserGroups = new List<LinUserGroup>();
+		user.LinUserGroups = new List<CMSUserGroup>();
 		groupIds?.ForEach(groupId =>
 		{
-			user.LinUserGroups.Add(new LinUserGroup()
+			user.LinUserGroups.Add(new CMSUserGroup()
 			{
 				GroupId = groupId
 			});
 		});
-		user.LinUserIdentitys = new List<LinUserIdentity>()
+		user.LinUserIdentitys = new List<CMSUserIdentity>()
 		{
-			new(LinUserIdentity.Password,user.Username,encryptPassword,DateTime.Now)
+			new(CMSUserIdentity.Password,user.Username,encryptPassword,DateTime.Now)
 		};
 		await _userRepository.InsertAsync(user);
 	}
@@ -141,7 +144,7 @@ public class UserService : ApplicationService, IUserService
 
 	public async Task UpdateAync(long id, UpdateUserDto updateUserDto)
 	{
-		LinUser linUser = await _userRepository.Where(r => r.Id == id).ToOneAsync();
+		CMSUser linUser = await _userRepository.Where(r => r.Id == id).ToOneAsync();
 		if (linUser == null)
 		{
 			throw new CMSException("用户不存在", ErrorCode.NotFound);
@@ -182,7 +185,7 @@ public class UserService : ApplicationService, IUserService
 
 	public async Task ChangeStatusAsync(long id, UserStatus userStatus)
 	{
-		LinUser user = await _userRepository.Select.Where(r => r.Id == id).ToOneAsync();
+		CMSUser user = await _userRepository.Select.Where(r => r.Id == id).ToOneAsync();
 
 		if (user == null)
 		{
@@ -204,7 +207,7 @@ public class UserService : ApplicationService, IUserService
 			.ExecuteUpdatedAsync();
 	}
 
-	public Task<LinUser> GetCurrentUserAsync()
+	public Task<CMSUser> GetCurrentUserAsync()
 	{
 		if (CurrentUser.FindUserId() != null)
 		{
@@ -215,13 +218,13 @@ public class UserService : ApplicationService, IUserService
 
 	public async Task<UserInformation> GetInformationAsync(long userId)
 	{
-		LinUser linUser = await _userRepository.GetUserAsync(r => r.Id == userId);
+		CMSUser linUser = await _userRepository.GetUserAsync(r => r.Id == userId);
 		if (linUser == null) return null;
 		linUser.Avatar = _fileRepository.GetFileUrl(linUser.Avatar);
 
 		UserInformation userInformation = Mapper.Map<UserInformation>(linUser);
 		userInformation.Groups = linUser.LinGroups.Select(r => Mapper.Map<GroupDto>(r)).ToList();
-		userInformation.Admin = CurrentUser.IsInGroup(LinConsts.Group.Admin);
+		userInformation.Admin = CurrentUser.IsInGroup(CMSConsts.Group.Admin);
 
 		return userInformation;
 	}
@@ -239,7 +242,7 @@ public class UserService : ApplicationService, IUserService
 	/// <returns></returns>
 	public async Task<List<LinPermission>> GetUserPermissionsAsync(long userId)
 	{
-		LinUser linUser = await _userRepository.GetUserAsync(r => r.Id == userId);
+		CMSUser linUser = await _userRepository.GetUserAsync(r => r.Id == userId);
 		List<long> groupIds = linUser.LinGroups.Select(r => r.Id).ToList();
 		if (linUser.LinGroups == null || linUser.LinGroups.Count == 0)
 		{

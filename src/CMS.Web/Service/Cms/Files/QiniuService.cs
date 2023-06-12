@@ -6,9 +6,12 @@ using CMS.Data.Exceptions;
 using CMS.Data.Model.Entities;
 using CMS.Data.Options;
 using CMS.Data.Repository;
+using CMS.Data.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-
+using Qiniu.Http;
+using Qiniu.Storage;
+using Qiniu.Util;
 
 namespace CMS.Web.Service.Cms.Files;
 
@@ -49,7 +52,7 @@ public class QiniuService : IFileService
 			UseHttps = _fileStorageOption.Qiniu.UseHttps
 		});
 
-		string path = _fileStorageOption.Qiniu.PrefixPath + "/" + DateTime.Now.ToString("yyyyMM") + "/" + long.Newlong() + Path.GetExtension(file.FileName);
+		string path = _fileStorageOption.Qiniu.PrefixPath + "/" + DateTime.Now.ToString("yyyyMM") + "/" + Guid.NewGuid() + Path.GetExtension(file.FileName);
 		using Stream stream = file.OpenReadStream();
 		HttpResult result = upload.UploadStream(stream, path, GetAccessToken(), null);
 		if (result.Code != (int)HttpCode.OK) throw new CMSException("上传失败");
@@ -64,7 +67,7 @@ public class QiniuService : IFileService
 	/// <returns></returns>
 	public async Task<FileDto> UploadAsync(IFormFile file, int key = 0)
 	{
-		string md5 = LinCmsUtils.GetHash<MD5>(file.OpenReadStream());
+		string md5 = CMSUtils.GetHash<MD5>(file.OpenReadStream());
 
 		LinFile linFile = await _fileRepository.Where(r => r.Md5 == md5 && r.Type == 2).FirstAsync();
 

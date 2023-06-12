@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CMS.Data.Exceptions;
+using CMS.Data.Extensions;
 using CMS.Data.Model.Entities;
 using CMS.Data.Model.Entities.Blog;
+using CMS.Data.Model.Enums;
 using CMS.Data.Repository;
 using CMS.Web.Data;
 using CMS.Web.Service.Blog.UserSubscribes;
@@ -81,7 +83,7 @@ public class TagService : ApplicationService, ITagService
 			searchDto.Sort = "create_time desc";
 		}
 
-		List<TagListDto> tags = (await _tagRepository.Select.IncludeMany(r => r.UserTags, r => r.Where(u => u.CreateUserId == CurrentUser.FindUserId()))
+		List<TagListDto> tags = (await _tagRepository.Select.IncludeMany(r => r.UserTags)
 				.WhereIf(searchDto.TagIds.IsNotNullOrEmpty(), r => searchDto.TagIds.Contains(r.Id))
 				.WhereIf(searchDto.TagName.IsNotNullOrEmpty(), r => r.TagName.Contains(searchDto.TagName))
 				.WhereIf(searchDto.Status != null, r => r.Status == searchDto.Status)
@@ -100,14 +102,14 @@ public class TagService : ApplicationService, ITagService
 
 	public async Task<bool> IsSubscribeAsync(long tagId)
 	{
-		if (CurrentUser.FindUserId() == null) return false;
-		return await _userTagRepository.Select.AnyAsync(r => r.TagId == tagId && r.CreateUserId == CurrentUser.FindUserId());
+		//if (CurrentUser.FindUserId() == null) return false;
+		return await _userTagRepository.Select.AnyAsync(r => r.TagId == tagId);
 	}
 
 	public PagedResultDto<TagListDto> GetSubscribeTags(UserSubscribeSearchDto userSubscribeDto)
 	{
 		List<long> userTagIds = _userTagRepository.Select
-			.Where(u => u.CreateUserId == CurrentUser.FindUserId())
+			//.Where(u => u.CreateUserId == CurrentUser.FindUserId())
 			.ToList(r => r.TagId);
 
 		List<TagListDto> tagListDtos = _userTagRepository.Select.Include(r => r.Tag)

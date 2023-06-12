@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CMS.Web.Aop.Filter;
 using CMS.Web.Data;
-using CMS.Web.Service.Blog.Classifys;
+using CMS.Web.Service.Blog.Classifies;
 
 
 using Microsoft.AspNetCore.Mvc;

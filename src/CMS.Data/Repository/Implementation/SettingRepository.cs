@@ -6,19 +6,19 @@ using FreeSql;
 
 namespace CMS.Data.Repository.Implementation;
 
-public class SettingRepository : AuditBaseRepository<LinSetting, long>, ISettingRepository
+public class SettingRepository : AuditBaseRepository<CMSSetting, long>, ISettingRepository
 {
 	public SettingRepository(UnitOfWorkManager unitOfWorkManager) : base(unitOfWorkManager?.Orm, unitOfWorkManager)
 	{
 	}
 
-	public async Task<LinSetting> FindAsync(string name, string providerName, string providerKey)
+	public async Task<CMSSetting> FindAsync(string name, string providerName, string providerKey)
 	{
 		return await Select.Where(s => s.Name == name && s.ProviderName == providerName && s.ProviderKey == providerKey)
 			.FirstAsync();
 	}
 
-	public async Task<List<LinSetting>> GetListAsync(string providerName, string providerKey)
+	public async Task<List<CMSSetting>> GetListAsync(string providerName, string providerKey)
 	{
 		return await Select
 			.Where(

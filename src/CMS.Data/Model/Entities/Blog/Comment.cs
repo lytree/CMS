@@ -12,7 +12,7 @@ namespace CMS.Data.Model.Entities
 	/// 用户评论信息
 	/// </summary>
 	[Table(Name = "blog_comment")]
-	public class Comment : BaseEntity<long>
+	public class Comment : BaseEntity<long>, ISoftDelete
 	{
 		/// <summary>
 		/// 回复评论Id
@@ -54,16 +54,28 @@ namespace CMS.Data.Model.Entities
 		/// </summary>
 		public int SubjectType { get; set; } = 1;
 
+
+		/// <summary>
+		/// 删除时间
+		/// </summary>
+		[Column(Position = -2)]
+		public virtual DateTime? DeleteTime { get; set; }
+
+		/// <summary>
+		/// 是否删除
+		/// </summary>
+		[Column(Position = -1)]
+		public virtual bool IsDeleted { get; set; }
 		/// <summary>
 		/// 评论的用户-OneToOne
 		/// </summary>
 		[Navigate("CreateUserId")]
-		public virtual LinUser UserInfo { get; set; }
+		public virtual CMSUser UserInfo { get; set; }
 		/// <summary>
 		/// 被回复的用户-OneToOne
 		/// </summary>
 		[Navigate("RespUserId")]
-		public virtual LinUser RespUserInfo { get; set; }
+		public virtual CMSUser RespUserInfo { get; set; }
 
 
 		[Navigate("RootCommentId")]

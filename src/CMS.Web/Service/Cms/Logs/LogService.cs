@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CMS.Data.Extensions;
 using CMS.Data.Model.Entities;
 using CMS.Data.Repository;
 using CMS.Web.Data;
@@ -21,11 +22,11 @@ public class LogService : ApplicationService, ILogService
 
 	public async Task CreateAsync(LinLog linlog)
 	{
-		linlog.CreateTime = DateTime.Now;
-		linlog.Username = CurrentUser.UserName;
-		linlog.UserId = CurrentUser.FindUserId() ?? 0;
+		//linlog.CreateTime = DateTime.Now;
+		//linlog.Username = CurrentUser.UserName;
+		//linlog.UserId = CurrentUser.FindUserId() ?? 0;
 
-		await _linLogRepository.InsertAsync(linlog);
+		//await _linLogRepository.InsertAsync(linlog);
 	}
 
 	public PagedResultDto<LinLog> GetUserLogs(LogSearchDto searchDto)

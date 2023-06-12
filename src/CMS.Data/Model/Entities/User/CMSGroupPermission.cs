@@ -7,20 +7,20 @@ namespace CMS.Data.Model.Entities.User
 	/// <summary>
 	/// 分组权限中间表
 	/// </summary>
-	[Table(Name = "lin_group_permission")]
-	public class LinGroupPermission : Entity
+	[Table(Name = "cms_group_permission")]
+	public class CMSGroupPermission : Entity<long>
 	{
-		public LinGroupPermission()
+		public CMSGroupPermission()
 		{
 		}
 
-		public LinGroupPermission(long groupId, long permissionId)
+		public CMSGroupPermission(long groupId, long permissionId)
 		{
 			GroupId = groupId;
 			PermissionId = permissionId;
 		}
 
-		public LinGroupPermission(long permissionId)
+		public CMSGroupPermission(long permissionId)
 		{
 			PermissionId = permissionId;
 		}

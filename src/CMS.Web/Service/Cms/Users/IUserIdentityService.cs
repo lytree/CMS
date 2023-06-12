@@ -27,7 +27,7 @@ public interface IUserIdentityService
 	/// <param name="newpassword"></param>
 	/// <param name="salt"></param>
 	/// <returns></returns>
-	Task ChangePasswordAsync(LinUserIdentity linUserIdentity, string newpassword, string salt);
+	Task ChangePasswordAsync(CMSUserIdentity linUserIdentity, string newpassword, string salt);
 
 	/// <summary>
 	/// 根据用户ID，修改用户的密码
@@ -49,7 +49,7 @@ public interface IUserIdentityService
 	/// </summary>
 	/// <param name="userId"></param>
 	/// <returns></returns>
-	Task<LinUserIdentity> GetFirstByUserIdAsync(long userId);
+	Task<CMSUserIdentity> GetFirstByUserIdAsync(long userId);
 
 	/// <summary>
 	/// 根据用户Id获取第三方绑定信息

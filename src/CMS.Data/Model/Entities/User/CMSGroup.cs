@@ -9,14 +9,14 @@ namespace CMS.Data.Model.Entities.User
 	/// <summary>
 	///  分组
 	/// </summary>
-	[Table(Name = "lin_group")]
-	public class LinGroup : BaseEntity<long>
+	[Table(Name = "cms_group")]
+	public class CMSGroup : BaseEntity<long>
 	{
-		public LinGroup()
+		public CMSGroup()
 		{
 		}
 
-		public LinGroup(string name, string info, bool isStatic)
+		public CMSGroup(string name, string info, bool isStatic)
 		{
 			Name = name ?? throw new ArgumentNullException(nameof(name));
 			Info = info ?? throw new ArgumentNullException(nameof(info));
@@ -45,8 +45,8 @@ namespace CMS.Data.Model.Entities.User
 		/// </summary>
 		public int SortCode { get; set; }
 
-		[Navigate(ManyToMany = typeof(LinUserGroup))]
-		public virtual ICollection<LinUser> LinUsers { get; set; }
+		[Navigate(ManyToMany = typeof(CMSUserGroup))]
+		public virtual ICollection<CMSUser> LinUsers { get; set; }
 
 		/// <summary>
 		/// 超级管理员

@@ -27,7 +27,7 @@ namespace CMS.Data.Model.Entities.Blog
         public DateTime CreateTime { get; set; }
 
         [Navigate("CreateUserId")]
-        public virtual LinUser LinUser { get; set; }
+        public virtual CMSUser LinUser { get; set; }
 
         [Navigate("SubjectId")]
         public virtual Comment Comment { get; set; }

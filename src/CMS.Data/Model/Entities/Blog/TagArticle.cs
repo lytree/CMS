@@ -9,7 +9,7 @@ namespace CMS.Data.Model.Entities.Blog
     /// 随笔标签
     /// </summary>
     [Table(Name = "blog_tag_article")]
-    public class TagArticle : Entity
+    public class TagArticle : Entity<long>
     {
         public long TagId { get; set; }
 

@@ -7,7 +7,7 @@ using FreeSql;
 
 namespace CMS.Data.Repository.Implementation;
 
-public class UserRepository : AuditBaseRepository<LinUser, long>, IUserRepository
+public class UserRepository : AuditBaseRepository<CMSUser, long>, IUserRepository
 {
 	public UserRepository(UnitOfWorkManager unitOfWorkManager) : base(unitOfWorkManager?.Orm, unitOfWorkManager)
 	{
@@ -18,7 +18,7 @@ public class UserRepository : AuditBaseRepository<LinUser, long>, IUserRepositor
 	/// </summary>
 	/// <param name="expression"></param>
 	/// <returns></returns>
-	public Task<LinUser> GetUserAsync(Expression<Func<LinUser, bool>> expression)
+	public Task<CMSUser> GetUserAsync(Expression<Func<CMSUser, bool>> expression)
 	{
 		return Select.Where(expression).IncludeMany(r => r.LinGroups).ToOneAsync();
 	}
@@ -30,7 +30,7 @@ public class UserRepository : AuditBaseRepository<LinUser, long>, IUserRepositor
 	/// <returns></returns>
 	public Task UpdateLastLoginTimeAsync(long userId)
 	{
-		return UpdateDiy.Set(r => new LinUser()
+		return UpdateDiy.Set(r => new CMSUser()
 		{
 			LastLoginTime = DateTime.Now
 		}).Where(r => r.Id == userId).ExecuteAffrowsAsync();

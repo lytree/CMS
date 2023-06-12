@@ -12,9 +12,9 @@ namespace CMS.Web.Service.Cms.Users;
 
 public class UserIdentityService : ApplicationService, IUserIdentityService
 {
-	private readonly IAuditBaseRepository<LinUserIdentity,long> _userIdentityRepository;
+	private readonly IAuditBaseRepository<CMSUserIdentity,long> _userIdentityRepository;
 	private readonly ICryptographyService _cryptographyService;
-	public UserIdentityService(IAuditBaseRepository<LinUserIdentity,long> userIdentityRepository, ICryptographyService cryptographyService)
+	public UserIdentityService(IAuditBaseRepository<CMSUserIdentity,long> userIdentityRepository, ICryptographyService cryptographyService)
 	{
 		_userIdentityRepository = userIdentityRepository;
 		_cryptographyService = cryptographyService;
@@ -22,7 +22,7 @@ public class UserIdentityService : ApplicationService, IUserIdentityService
 
 	public async Task<bool> VerifyUserPasswordAsync(long userId, string password, string salt)
 	{
-		LinUserIdentity userIdentity = await GetFirstByUserIdAsync(userId);
+		CMSUserIdentity userIdentity = await GetFirstByUserIdAsync(userId);
 		//快速登录时，用户实际未设置密码
 		if (userIdentity == null)
 		{
@@ -41,12 +41,12 @@ public class UserIdentityService : ApplicationService, IUserIdentityService
 	}
 
 
-	public Task ChangePasswordAsync(LinUserIdentity linUserIdentity, string newpassword, string salt)
+	public Task ChangePasswordAsync(CMSUserIdentity linUserIdentity, string newpassword, string salt)
 	{
 		string encryptPassword = _cryptographyService.Encrypt(newpassword, salt);
 		if (linUserIdentity == null)
 		{
-			linUserIdentity = new LinUserIdentity(LinUserIdentity.Password, "", encryptPassword, DateTime.Now);
+			linUserIdentity = new CMSUserIdentity(CMSUserIdentity.Password, "", encryptPassword, DateTime.Now);
 			return _userIdentityRepository.InsertAsync(linUserIdentity);
 		}
 		else
@@ -61,16 +61,16 @@ public class UserIdentityService : ApplicationService, IUserIdentityService
 		return _userIdentityRepository.Where(r => r.CreateUserId == userId).ToDelete().ExecuteAffrowsAsync();
 	}
 
-	public Task<LinUserIdentity> GetFirstByUserIdAsync(long userId)
+	public Task<CMSUserIdentity> GetFirstByUserIdAsync(long userId)
 	{
 		return _userIdentityRepository
-			.Where(r => r.CreateUserId == userId && r.IdentityType == LinUserIdentity.Password)
+			.Where(r => r.CreateUserId == userId && r.IdentityType == CMSUserIdentity.Password)
 			.FirstAsync();
 	}
 
 	public async Task<List<UserIdentityDto>> GetListAsync(long userId)
 	{
-		List<LinUserIdentity> userIdentities = await _userIdentityRepository
+		List<CMSUserIdentity> userIdentities = await _userIdentityRepository
 			.Where(r => r.CreateUserId == userId)
 			.ToListAsync();
 
@@ -79,15 +79,15 @@ public class UserIdentityService : ApplicationService, IUserIdentityService
 
 	public async Task UnBind(long id)
 	{
-		LinUserIdentity userIdentity = await _userIdentityRepository.GetAsync(id);
+		CMSUserIdentity userIdentity = await _userIdentityRepository.GetAsync(id);
 		if (userIdentity == null || userIdentity.CreateUserId != CurrentUser.FindUserId())
 		{
 			throw new CMSException("你无权解绑此账号");
 		}
 
-		List<LinUserIdentity> userIdentities = await _userIdentityRepository.Select.Where(r => r.CreateUserId == CurrentUser.FindUserId()).ToListAsync();
+		List<CMSUserIdentity> userIdentities = await _userIdentityRepository.Select.Where(r => r.CreateUserId == CurrentUser.FindUserId()).ToListAsync();
 
-		bool hasPwd = userIdentities.Any(r => r.IdentityType == LinUserIdentity.Password);
+		bool hasPwd = userIdentities.Any(r => r.IdentityType == CMSUserIdentity.Password);
 
 		if (!hasPwd && userIdentities.Count == 1)
 		{

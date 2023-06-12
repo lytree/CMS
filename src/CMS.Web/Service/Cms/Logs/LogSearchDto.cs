@@ -1,5 +1,6 @@
 ﻿using System;
-using LinCms.Data;
+using CMS.Web.Data;
+
 
 namespace CMS.Web.Service.Cms.Logs;
 

@@ -12,8 +12,8 @@ namespace CMS.Data.Model.Entities.User
 	/// <summary>
 	/// 用户
 	/// </summary>
-	[Table(Name = "lin_user")]
-	public class LinUser : BaseEntity<long>
+	[Table(Name = "cms_user")]
+	public class CMSUser : BaseEntity<long>, ISoftDelete
 	{
 		/// <summary>
 		/// 用户名
@@ -101,15 +101,25 @@ namespace CMS.Data.Model.Entities.User
 		/// </summary>
 		[Column(StringLength = 100)]
 		public string Salt { get; set; }
+		/// <summary>
+		/// 删除时间
+		/// </summary>
+		[Column(Position = -2)]
+		public virtual DateTime? DeleteTime { get; set; }
 
-		[Navigate(ManyToMany = typeof(LinUserGroup))]
-		public virtual ICollection<LinGroup> LinGroups { get; set; }
+		/// <summary>
+		/// 是否删除
+		/// </summary>
+		[Column(Position = -1)]
+		public virtual bool IsDeleted { get; set; }
+		[Navigate(ManyToMany = typeof(CMSUserGroup))]
+		public virtual ICollection<CMSGroup> LinGroups { get; set; }
 
 		[Navigate("UserId")]
-		public virtual ICollection<LinUserGroup> LinUserGroups { get; set; }
+		public virtual ICollection<CMSUserGroup> LinUserGroups { get; set; }
 
 		[Navigate("CreateUserId")]
-		public virtual ICollection<LinUserIdentity> LinUserIdentitys { get; set; }
+		public virtual ICollection<CMSUserIdentity> LinUserIdentitys { get; set; }
 
 
 		public void SetNewPasswordResetCode()

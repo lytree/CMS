@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CMS.Data.Exceptions;
+using CMS.Data.Extensions;
 using CMS.Data.Model.Entities;
 using CMS.Data.Model.Entities.Blog;
+using CMS.Data.Model.Enums;
 using CMS.Data.Repository;
 using CMS.Web.Data;
 using CMS.Web.Service;
-using CMS.Web.Service.Blog.Classifys;
+using CMS.Web.Service.Blog.Classifies;
 using CMS.Web.Service.Blog.UserSubscribes;
+using FreeSql;
 
 namespace CMS.Web.Service.Blog.Articles;
 
@@ -55,15 +58,13 @@ public class ArticleService : ApplicationService, IArticleService
 		DateTime weeklyDays = DateTime.Now.AddDays(-7);
 		DateTime threeDays = DateTime.Now.AddDays(-3);
 
-		long? userId = CurrentUser.FindUserId();
 		List<Article> articles = await _articleRepository
 			.Select
-			.Include(r => r.UserInfo)
 			.IncludeMany(r => r.Tags, r => r.Where(u => u.Status == true))
-			.IncludeMany(r => r.UserLikes, r => r.Where(u => u.CreateUserId == userId))
+			//.IncludeMany(r => r.UserLikes, r => r.Where(u => u.CreateUserId == userId))
 			.Where(r => r.IsAudit)
 			.WhereCascade(r => r.IsDeleted == false)
-			.WhereIf(searchDto.UserId != null, r => r.CreateUserId == searchDto.UserId)
+			//.WhereIf(searchDto.UserId != null, r => r.CreateUserId == searchDto.UserId)
 			.WhereIf(searchDto.TagId.HasValue, r => r.Tags.AsSelect().Any(u => u.Id == searchDto.TagId))
 			.WhereIf(searchDto.ClassifyId.HasValue, r => r.ClassifyId == searchDto.ClassifyId)
 			.WhereIf(searchDto.ChannelId.HasValue, r => r.ChannelId == searchDto.ChannelId)
@@ -83,7 +84,7 @@ public class ArticleService : ApplicationService, IArticleService
 			{
 				ArticleListDto articleDto = Mapper.Map<ArticleListDto>(a);
 
-				articleDto.IsLiked = userId != null && a.UserLikes.Any();
+				//articleDto.IsLiked = userId != null && a.UserLikes.Any();
 				articleDto.ThumbnailDisplay = _fileRepository.GetFileUrl(articleDto.Thumbnail);
 
 				return articleDto;
@@ -112,7 +113,7 @@ public class ArticleService : ApplicationService, IArticleService
 	public async Task<ArticleDto> GetAsync(long id)
 	{
 		Article article = await _articleRepository.Select
-			.Include(r => r.Classify).IncludeMany(r => r.Tags).Include(r => r.UserInfo).WhereCascade(r => r.IsDeleted == false).Where(a => a.Id == id).ToOneAsync();
+			.Include(r => r.Classify).IncludeMany(r => r.Tags).WhereCascade(r => r.IsDeleted == false).Where(a => a.Id == id).ToOneAsync();
 
 		if (article.IsNull())
 		{
@@ -132,16 +133,15 @@ public class ArticleService : ApplicationService, IArticleService
 		}
 
 		articleDto.IsLiked =
-			await _userLikeRepository.Select.AnyAsync(r => r.SubjectId == id && r.CreateUserId == CurrentUser.FindUserId());
+			await _userLikeRepository.Select.AnyAsync(r => r.SubjectId == id);
 		articleDto.IsComment =
 			await _commentRepository.Select.AnyAsync(
-				r => r.SubjectId == id && r.CreateUserId == CurrentUser.FindUserId());
+				r => r.SubjectId == id);
 		articleDto.ThumbnailDisplay = _fileRepository.GetFileUrl(article.Thumbnail);
 
 		return articleDto;
 	}
 
-	[Transactional]
 	public async Task<long> CreateAsync(CreateUpdateArticleDto createArticle)
 	{
 		Article article = Mapper.Map<Article>(createArticle);
@@ -169,44 +169,52 @@ public class ArticleService : ApplicationService, IArticleService
 		return article.Id;
 	}
 
-	[Transactional]
 	public async Task UpdateAsync(long id, CreateUpdateArticleDto updateArticleDto)
 	{
-		Article article = _articleRepository.Select.Where(r => r.Id == id).ToOne();
-
-
-		if (article.CreateUserId != CurrentUser.FindUserId())
+		using var unitOfWork = UnitOfWorkManager.Begin(Propagation.Required, System.Data.IsolationLevel.ReadCommitted);
+		try
 		{
-			throw new CMSException("您无权修改他人的随笔");
-		}
+			Article article = _articleRepository.Select.Where(r => r.Id == id).ToOne();
 
-		if (article == null)
-		{
-			throw new CMSException("没有找到相关随笔");
-		}
 
-		if (article.ClassifyId != updateArticleDto.ClassifyId)
-		{
-			await _classifyService.UpdateArticleCountAsync(article.ClassifyId, -1);
-			await _classifyService.UpdateArticleCountAsync(updateArticleDto.ClassifyId, 1);
-		}
+			//if (article.CreateUserId != CurrentUser.FindUserId())
+			//{
+			//	throw new CMSException("您无权修改他人的随笔");
+			//}
 
-		Mapper.Map(updateArticleDto, article);
-		article.WordNumber = article.Content.Length;
-		article.ReadingTime = article.Content.Length / 800;
-		await _articleRepository.UpdateAsync(article);
+			if (article == null)
+			{
+				throw new CMSException("没有找到相关随笔");
+			}
 
-		ArticleDraft articleDraft = Mapper.Map<ArticleDraft>(article);
-		bool exist = await _articleDraftRepository.Select.AnyAsync(r => r.Id == article.Id);
-		if (exist)
-		{
-			await _articleDraftRepository.UpdateAsync(articleDraft);
+			if (article.ClassifyId != updateArticleDto.ClassifyId)
+			{
+				await _classifyService.UpdateArticleCountAsync(article.ClassifyId, -1);
+				await _classifyService.UpdateArticleCountAsync(updateArticleDto.ClassifyId, 1);
+			}
+
+			Mapper.Map(updateArticleDto, article);
+			article.WordNumber = article.Content.Length;
+			article.ReadingTime = article.Content.Length / 800;
+			await _articleRepository.UpdateAsync(article);
+
+			ArticleDraft articleDraft = Mapper.Map<ArticleDraft>(article);
+			bool exist = await _articleDraftRepository.Select.AnyAsync(r => r.Id == article.Id);
+			if (exist)
+			{
+				await _articleDraftRepository.UpdateAsync(articleDraft);
+			}
+			else
+			{
+				await _articleDraftRepository.InsertAsync(articleDraft);
+			}
+			await UpdateTagAsync(id, updateArticleDto);
 		}
-		else
+		catch (Exception ex)
 		{
-			await _articleDraftRepository.InsertAsync(articleDraft);
+			unitOfWork.Rollback();
 		}
-		await UpdateTagAsync(id, updateArticleDto);
+		unitOfWork.Commit();
 	}
 
 	/// <summary>
@@ -261,34 +269,33 @@ public class ArticleService : ApplicationService, IArticleService
 		await _tagRepository.UpdateAsync(tag);
 	}
 
-	public async Task<PagedResultDto<ArticleListDto>> GetSubscribeArticleAsync(PageDto pageDto)
-	{
-		long userId = CurrentUser.FindUserId() ?? 0;
-		List<long> subscribeUserIds = await _userSubscribeService.GetSubscribeUserIdAsync(userId);
+	//public async Task<PagedResultDto<ArticleListDto>> GetSubscribeArticleAsync(PageDto pageDto)
+	//{
+	//	List<long> subscribeUserIds = await _userSubscribeService.GetSubscribeUserIdAsync(userId);
 
-		var articles = await _articleRepository
-			.Select
-			.Include(r => r.Classify)
-			.Include(r => r.UserInfo)
-			.IncludeMany(r => r.Tags, r => r.Where(u => u.Status))
-			.IncludeMany(r => r.UserLikes)//, r => r.Where(u => u.CreateUserId == userId))
-			.Where(r => r.IsAudit)
-			.WhereIf(subscribeUserIds.Count > 0, r => subscribeUserIds.Contains(r.CreateUserId.Value))
-			.WhereIf(subscribeUserIds.Count == 0, r => false)
-			.OrderByDescending(r => r.CreateTime).ToPagerListAsync(pageDto, out long totalCount);
+	//	var articles = await _articleRepository
+	//		.Select
+	//		.Include(r => r.Classify)
+	//		//.Include(r => r.UserInfo)
+	//		.IncludeMany(r => r.Tags, r => r.Where(u => u.Status))
+	//		//.IncludeMany(r => r.UserLikes)//, r => r.Where(u => u.CreateUserId == userId))
+	//		.Where(r => r.IsAudit)
+	//		//.WhereIf(subscribeUserIds.Count > 0, r => subscribeUserIds.Contains(r.CreateUserId.Value))
+	//		.WhereIf(subscribeUserIds.Count == 0, r => false)
+	//		.OrderByDescending(r => r.CreateTime).ToPagerListAsync(pageDto, out long totalCount);
 
-		List<ArticleListDto> articleDtos = articles
-			.Select(r =>
-			{
-				ArticleListDto articleDto = Mapper.Map<ArticleListDto>(r);
-				articleDto.IsLiked = r.UserLikes.Any();
-				articleDto.ThumbnailDisplay = _fileRepository.GetFileUrl(articleDto.Thumbnail);
-				return articleDto;
-			})
-			.ToList();
+	//	List<ArticleListDto> articleDtos = articles
+	//		.Select(r =>
+	//		{
+	//			ArticleListDto articleDto = Mapper.Map<ArticleListDto>(r);
+	//			//articleDto.IsLiked = r.UserLikes.Any();
+	//			articleDto.ThumbnailDisplay = _fileRepository.GetFileUrl(articleDto.Thumbnail);
+	//			return articleDto;
+	//		})
+	//		.ToList();
 
-		return new PagedResultDto<ArticleListDto>(articleDtos, totalCount);
-	}
+	//	return new PagedResultDto<ArticleListDto>(articleDtos, totalCount);
+	//}
 
 	public async Task UpdateLikeQuantityAysnc(long subjectId, int likesQuantity)
 	{
@@ -304,10 +311,10 @@ public class ArticleService : ApplicationService, IArticleService
 		{
 			throw new CMSException("没有找到相关随笔", ErrorCode.NotFound);
 		}
-		if (article.CreateUserId != CurrentUser.FindUserId())
-		{
-			throw new CMSException("不是自己的随笔", ErrorCode.NoPermission);
-		}
+		//if (article.CreateUserId != CurrentUser.FindUserId())
+		//{
+		//	throw new CMSException("不是自己的随笔", ErrorCode.NoPermission);
+		//}
 		article.Commentable = commentable;
 		await _articleRepository.UpdateAsync(article);
 	}

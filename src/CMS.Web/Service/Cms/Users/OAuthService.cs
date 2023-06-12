@@ -10,20 +10,20 @@ namespace CMS.Web.Service.Cms.Users;
 
 public abstract class OAuthService : IOAuth2Service
 {
-	private readonly IAuditBaseRepository<LinUserIdentity,long> _userIdentityRepository;
+	private readonly IAuditBaseRepository<CMSUserIdentity,long> _userIdentityRepository;
 
-	public OAuthService(IAuditBaseRepository<LinUserIdentity,long> userIdentityRepository)
+	public OAuthService(IAuditBaseRepository<CMSUserIdentity,long> userIdentityRepository)
 	{
 		_userIdentityRepository = userIdentityRepository;
 	}
 	private async Task<UnifyResponseDto> BindAsync(string identityType, string name, string openId, long userId)
 	{
-		LinUserIdentity linUserIdentity = await _userIdentityRepository.Where(r => r.IdentityType == identityType && r.Credential == openId).FirstAsync();
+		CMSUserIdentity linUserIdentity = await _userIdentityRepository.Where(r => r.IdentityType == identityType && r.Credential == openId).FirstAsync();
 		if (linUserIdentity == null)
 		{
-			var userIdentity = new LinUserIdentity(identityType, name, openId, DateTime.Now)
+			var userIdentity = new CMSUserIdentity(identityType, name, openId, DateTime.Now)
 			{
-				CreateUserId = userId
+				//CreateUserId = userId
 			};
 			await _userIdentityRepository.InsertAsync(userIdentity);
 			return UnifyResponseDto.Success("绑定成功");

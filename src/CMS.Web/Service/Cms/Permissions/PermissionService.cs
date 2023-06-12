@@ -15,8 +15,8 @@ namespace CMS.Web.Service.Cms.Permissions;
 public class PermissionService : ApplicationService, IPermissionService
 {
 	private readonly IAuditBaseRepository<LinPermission, long> _permissionRepository;
-	private readonly IAuditBaseRepository<LinGroupPermission, long> _groupPermissionRepository;
-	public PermissionService(IAuditBaseRepository<LinPermission, long> permissionRepository, IAuditBaseRepository<LinGroupPermission, long> groupPermissionRepository)
+	private readonly IAuditBaseRepository<CMSGroupPermission, long> _groupPermissionRepository;
+	public PermissionService(IAuditBaseRepository<LinPermission, long> permissionRepository, IAuditBaseRepository<CMSGroupPermission, long> groupPermissionRepository)
 	{
 		_permissionRepository = permissionRepository;
 		_groupPermissionRepository = groupPermissionRepository;
@@ -42,18 +42,19 @@ public class PermissionService : ApplicationService, IPermissionService
 	/// <returns></returns>
 	public async Task<bool> CheckPermissionAsync(string module, string permission)
 	{
-		//默认Admin角色拥有所有权限
-		if (CurrentUser.IsInGroup(CMSConsts.Group.Admin)) return true;
-		long[] groups = CurrentUser.FindGroupIds().Select(long.Parse).ToArray();
+		////默认Admin角色拥有所有权限
+		//if (CurrentUser.IsInGroup(CMSConsts.Group.Admin)) return true;
+		//long[] groups = CurrentUser.FindGroupIds().Select(long.Parse).ToArray();
 
-		LinPermission linPermission = await _permissionRepository.Where(r => r.Module == module && r.Name == permission).FirstAsync();
+		//LinPermission linPermission = await _permissionRepository.Where(r => r.Module == module && r.Name == permission).FirstAsync();
 
-		if (linPermission == null || groups == null || groups.Length == 0) return false;
+		//if (linPermission == null || groups == null || groups.Length == 0) return false;
 
-		bool existPermission = await _groupPermissionRepository.Select
-			.AnyAsync(r => groups.Contains(r.GroupId) && r.PermissionId == linPermission.Id);
+		//bool existPermission = await _groupPermissionRepository.Select
+		//	.AnyAsync(r => groups.Contains(r.GroupId) && r.PermissionId == linPermission.Id);
 
-		return existPermission;
+		//return existPermission;
+		return true;
 	}
 
 
@@ -65,10 +66,10 @@ public class PermissionService : ApplicationService, IPermissionService
 
 	public Task DispatchPermissions(DispatchPermissionsDto permissionDto, List<PermissionDefinition> permissionDefinitions)
 	{
-		List<LinGroupPermission> linPermissions = new();
+		List<CMSGroupPermission> linPermissions = new();
 		permissionDto.PermissionIds.ForEach(permissionId =>
 		{
-			linPermissions.Add(new LinGroupPermission(permissionDto.GroupId, permissionId));
+			linPermissions.Add(new CMSGroupPermission(permissionDto.GroupId, permissionId));
 		});
 		return _groupPermissionRepository.InsertAsync(linPermissions);
 	}

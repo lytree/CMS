@@ -1,7 +1,7 @@
 ﻿namespace CMS.Web.Utils;
 
 
-public class MultipartRequestHelper
+public static class MultipartRequestHelper
 {
 	public static bool IsMultipartContentType(string? contentType)
 	{

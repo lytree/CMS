@@ -10,12 +10,12 @@ public class UserProfile : Profile
 {
 	public UserProfile()
 	{
-		CreateMap<CreateUserDto, LinUser>();
-		CreateMap<UpdateUserDto, LinUser>();
-		CreateMap<LinUser, UserInformation>();
-		CreateMap<LinUser, UserDto>();
-		CreateMap<LinUser, OpenUserDto>();
-		CreateMap<LinUser, UserNoviceDto>();
-		CreateMap<RegisterDto, LinUser>();
+		CreateMap<CreateUserDto, CMSUser>();
+		CreateMap<UpdateUserDto, CMSUser>();
+		CreateMap<CMSUser, UserInformation>();
+		CreateMap<CMSUser, UserDto>();
+		CreateMap<CMSUser, OpenUserDto>();
+		CreateMap<CMSUser, UserNoviceDto>();
+		CreateMap<RegisterDto, CMSUser>();
 	}
 }

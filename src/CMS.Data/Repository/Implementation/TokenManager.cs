@@ -21,7 +21,7 @@ public class TokenManager : ITokenManager
         _userRepository = userRepository;
     }
 
-    public async Task<Tokens> CreateTokenAsync(LinUser user)
+    public async Task<Tokens> CreateTokenAsync(CMSUser user)
     {
         List<Claim> claims = new()
         {

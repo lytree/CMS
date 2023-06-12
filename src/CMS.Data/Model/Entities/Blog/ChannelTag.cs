@@ -9,7 +9,7 @@ namespace CMS.Data.Model.Entities.Blog
     ///  频道标签
     /// </summary>
     [Table(Name = "blog_channel_tag")]
-    public class ChannelTag : BaseEntity<long>
+    public class ChannelTag : Entity<long>
     {
 
         public ChannelTag()

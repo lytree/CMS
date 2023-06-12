@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CMS.Data.Exceptions;
+using CMS.Data.Extensions;
 using CMS.Data.Model.Entities;
 using CMS.Data.Model.Entities.Blog;
 using CMS.Data.Repository;
 using CMS.Web.Data;
+using CMS.Web.Extensions;
 using CMS.Web.Service.Blog.Notifications;
 using CMS.Web.Service.Cms.Users;
 using DotNetCore.CAP;
@@ -32,7 +34,6 @@ public class CommentService : ApplicationService, ICommentService
 
 	public async Task<PagedResultDto<CommentDto>> GetListByArticleAsync([FromQuery] CommentSearchDto commentSearchDto)
 	{
-		long? userId = CurrentUser.FindUserId();
 		List<CommentDto> comments = (await _commentRepository
 				.Select
 				.Include(r => r.UserInfo)
@@ -63,7 +64,7 @@ public class CommentService : ApplicationService, ICommentService
 					commentDto.UserInfo.Avatar = _fileRepository.GetFileUrl(commentDto.UserInfo.Avatar);
 				}
 
-				commentDto.IsLiked = userId != null && r.UserLikes.Where(u => u.CreateUserId == userId).IsNotEmpty();
+				//commentDto.IsLiked = userId != null && r.UserLikes.Where(u => u.CreateUserId == userId).IsNotEmpty();
 				commentDto.TopComment = r.Childs.ToList().Select(u =>
 				{
 					CommentDto childrenDto = Mapper.Map<CommentDto>(u);
@@ -77,8 +78,8 @@ public class CommentService : ApplicationService, ICommentService
 						childrenDto.Text = "[该评论因违规被拉黑]";
 					}
 
-					childrenDto.IsLiked =
-						userId != null && u.UserLikes.Where(z => z.CreateUserId == userId).IsNotEmpty();
+					//childrenDto.IsLiked =
+						//userId != null && u.UserLikes.Where(z => z.CreateUserId == userId).IsNotEmpty();
 					return childrenDto;
 				}).ToList();
 
@@ -150,20 +151,20 @@ public class CommentService : ApplicationService, ICommentService
 				break;
 		}
 
-		if (CurrentUser.FindUserId() != createCommentDto.RespUserId)
-		{
-			using ICapTransaction capTransaction = UnitOfWorkManager.Current.BeginTransaction(_capBus, false);
-			await _capBus.PublishAsync(CreateNotificationDto.CreateOrCancelAsync, new CreateNotificationDto()
-			{
-				NotificationType = NotificationType.UserCommentOnArticle,
-				ArticleId = createCommentDto.SubjectId,
-				NotificationRespUserId = createCommentDto.RespUserId,
-				UserInfoId = CurrentUser.FindUserId() ?? 0,
-				CreateTime = comment.CreateTime,
-				CommentId = comment.Id
-			});
-			capTransaction.Commit(UnitOfWorkManager.Current);
-		}
+		//if (CurrentUser.FindUserId() != createCommentDto.RespUserId)
+		//{
+		//	using ICapTransaction capTransaction = UnitOfWorkManager.Current.BeginTransaction(_capBus, false);
+		//	await _capBus.PublishAsync(CreateNotificationDto.CreateOrCancelAsync, new CreateNotificationDto()
+		//	{
+		//		NotificationType = NotificationType.UserCommentOnArticle,
+		//		ArticleId = createCommentDto.SubjectId,
+		//		NotificationRespUserId = createCommentDto.RespUserId,
+		//		UserInfoId = CurrentUser.FindUserId() ?? 0,
+		//		CreateTime = comment.CreateTime,
+		//		CommentId = comment.Id
+		//	});
+		//	capTransaction.Commit(UnitOfWorkManager.Current);
+		//}
 	}
 
 	public async Task DeleteAsync(long id)
@@ -211,12 +212,12 @@ public class CommentService : ApplicationService, ICommentService
 			throw new CMSException("该评论已删除");
 		}
 
-		if (comment.CreateUserId != CurrentUser.FindUserId())
-		{
-			throw new CMSException("无权限删除他人的评论");
-		}
+		//if (comment.CreateUserId != CurrentUser.FindUserId())
+		//{
+		//	throw new CMSException("无权限删除他人的评论");
+		//}
 
-		using ICapTransaction capTransaction = UnitOfWorkManager.Current.GetOrBeginTransaction(_capBus, false);
+		using ICapTransaction capTransaction = UnitOfWorkManager.Current.BeginTransaction(_capBus, false);
 
 		await DeleteAsync(comment);
 
@@ -224,7 +225,7 @@ public class CommentService : ApplicationService, ICommentService
 		{
 			NotificationType = NotificationType.UserCommentOnArticle,
 			ArticleId = comment.SubjectId,
-			UserInfoId = (long)CurrentUser.FindUserId(),
+			//UserInfoId = (long)CurrentUser.FindUserId(),
 			CommentId = comment.Id,
 			IsCancel = true
 		});

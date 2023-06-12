@@ -9,18 +9,20 @@ namespace CMS.Data.Model.Entities.Blog
 	/// 用户关注的标签
 	/// </summary>
 	[Table(Name = "blog_user_tag")]
-    public class UserTag : BaseEntity<long>
+    public class UserTag : Entity<long>
     {
         public long TagId { get; set; }
 
         public long? CreateUserId { get; set; }
+
+
         public string CreateUserName { get; set; }
 
 
         public DateTime CreateTime { get; set; }
 
         [Navigate("CreateUserId")]
-        public virtual LinUser LinUser { get; set; }
+        public virtual CMSUser LinUser { get; set; }
 
         [Navigate("TagId")]
         public virtual Tag Tag { get; set; }

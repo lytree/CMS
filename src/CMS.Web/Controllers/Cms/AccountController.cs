@@ -4,12 +4,11 @@ using CMS.Data.Exceptions;
 using CMS.Data.Model.Entities;
 using CMS.Data.Model.Entities.User;
 using CMS.Data.Model.Enums;
+using CMS.Data.Options;
 using CMS.Data.Repository;
 using CMS.Data.Repository.Implementation;
 using CMS.Data.Utils;
-using CMS.Web.Aop.Attributes;
 using CMS.Web.Data;
-using CMS.Web.Data.Options;
 using CMS.Web.Middleware;
 using CMS.Web.Service.Cms.Account;
 using CMS.Web.Service.Cms.Users;
@@ -34,14 +33,14 @@ public class AccountController : ApiControllerBase
 {
 	private readonly ITokenService _tokenService;
 	private readonly IAccountService _accountService;
-	private readonly IAuditBaseRepository<BlackRecord,long> _blackRecordRepository;
+	private readonly IAuditBaseRepository<BlackRecord, long> _blackRecordRepository;
 	private readonly IUserService _userService;
 	private readonly LoginCaptchaOption _loginCaptchaOption;
 	private readonly ICaptchaManager _captchaManager;
-	public AccountController(IComponentContext componentContext, IConfiguration configuration, IAccountService accountService, IAuditBaseRepository<BlackRecord,long> blackRecordRepository, IUserService userService, IOptionsMonitor<LoginCaptchaOption> loginCaptchaOption, ICaptchaManager captchaManager)
+	public AccountController(IComponentContext componentContext, IConfiguration configuration, IAccountService accountService, IAuditBaseRepository<BlackRecord, long> blackRecordRepository, IUserService userService, IOptionsMonitor<LoginCaptchaOption> loginCaptchaOption, ICaptchaManager captchaManager)
 	{
 		bool isIdentityServer4 = configuration.GetSection("Service:IdentityServer4").Value?.ToBoolean() ?? false;
-		_tokenService = componentContext.ResolveNamed<ITokenService>(isIdentityServer4 ? nameof(IdentityServer4Service) : nameof(JwtTokenService));
+		_tokenService = componentContext.ResolveNamed<ITokenService>(nameof(JwtTokenService));
 		_accountService = accountService;
 		_blackRecordRepository = blackRecordRepository;
 		_userService = userService;
@@ -171,7 +170,7 @@ public class AccountController : ApiControllerBase
 		//    return UnifyResponseDto.Error("验证码不正确");
 		//}
 		//暂时设置直接激活，因前台未同步改造成功
-		LinUser user = mapper.Map<LinUser>(registerDto);
+		CMSUser user = mapper.Map<CMSUser>(registerDto);
 		user.IsEmailConfirmed = true;
 		await userSevice.CreateAsync(user, new List<long>(), registerDto.Password);
 		return UnifyResponseDto.Success("注册成功");

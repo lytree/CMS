@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CMS.Data.Extensions;
 using CMS.Data.Model.Entities;
 using CMS.Web.Data;
 using FreeSql;

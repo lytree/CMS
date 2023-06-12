@@ -9,7 +9,7 @@ namespace CMS.Data.Model.Entities
 	/// 日志表
 	/// </summary>
 	[Table(Name = "lin_log")]
-	public class LinLog : Entity
+	public class LinLog : Entity<long>
 	{
 		/// <summary>
 		/// 访问哪个权限

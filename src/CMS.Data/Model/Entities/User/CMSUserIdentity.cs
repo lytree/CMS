@@ -9,8 +9,8 @@ namespace CMS.Data.Model.Entities.User
 	/// <summary>
 	/// 用户身份认证登录表
 	/// </summary>
-	[Table(Name = "lin_user_identity")]
-	public class LinUserIdentity : BaseEntity<long>
+	[Table(Name = "cms_user_identity")]
+	public class CMSUserIdentity : BaseEntity<long>
 	{
 		public const string GitHub = "GitHub";
 		public const string Password = "Password";
@@ -18,11 +18,11 @@ namespace CMS.Data.Model.Entities.User
 		public const string Gitee = "Gitee";
 		public const string Weixin = "Weixin";
 
-		public LinUserIdentity()
+		public CMSUserIdentity()
 		{
 		}
 
-		public LinUserIdentity(string identityType, string identifier, string credential, DateTime createTime)
+		public CMSUserIdentity(string identityType, string identifier, string credential, DateTime createTime)
 		{
 			IdentityType = identityType ?? throw new ArgumentNullException(nameof(identityType));
 			Identifier = identifier;

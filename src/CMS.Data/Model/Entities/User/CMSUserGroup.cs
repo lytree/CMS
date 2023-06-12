@@ -7,13 +7,13 @@ namespace CMS.Data.Model.Entities.User
 	/// <summary>
 	/// 用户分组中间表
 	/// </summary>
-	[Table(Name = "lin_user_group")]
-	public class LinUserGroup : Entity
+	[Table(Name = "cms_user_group")]
+	public class CMSUserGroup : Entity<long>
 	{
-		public LinUserGroup()
+		public CMSUserGroup()
 		{
 		}
-		public LinUserGroup(long userId, long groupId)
+		public CMSUserGroup(long userId, long groupId)
 		{
 			UserId = userId;
 			GroupId = groupId;
@@ -24,9 +24,9 @@ namespace CMS.Data.Model.Entities.User
 		public long GroupId { get; set; }
 
 		[Navigate("UserId")]
-		public LinUser LinUser { get; set; }
+		public CMSUser LinUser { get; set; }
 
 		[Navigate("GroupId")]
-		public LinGroup LinGroup { get; set; }
+		public CMSGroup LinGroup { get; set; }
 	}
 }

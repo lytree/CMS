@@ -32,7 +32,7 @@ public class JwtTokenService : ITokenService
 	{
 		_logger.LogInformation("JwtLogin");
 
-		LinUser user = await _userRepository.GetUserAsync(r => r.Username == loginInputDto.Username || r.Email == loginInputDto.Username);
+		CMSUser user = await _userRepository.GetUserAsync(r => r.Username == loginInputDto.Username || r.Email == loginInputDto.Username);
 
 		if (user == null)
 		{
@@ -60,7 +60,7 @@ public class JwtTokenService : ITokenService
 
 	public async Task<Tokens> GetRefreshTokenAsync(string refreshToken)
 	{
-		LinUser user = await _userRepository.GetUserAsync(r => r.RefreshToken == refreshToken);
+		CMSUser user = await _userRepository.GetUserAsync(r => r.RefreshToken == refreshToken);
 
 		if (user.IsNull())
 		{

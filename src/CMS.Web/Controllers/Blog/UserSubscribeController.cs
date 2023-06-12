@@ -19,13 +19,13 @@ namespace CMS.Web.Controllers.Blog;
 [Authorize]
 public class UserSubscribeController : ControllerBase
 {
-	private readonly IAuditBaseRepository<UserSubscribe,long> _userSubscribeRepository;
+	private readonly IAuditBaseRepository<UserSubscribe, long> _userSubscribeRepository;
 	private readonly IUserSubscribeService _userSubscribeService;
-	private readonly IAuditBaseRepository<UserTag,long> _userTagRepository;
+	private readonly IAuditBaseRepository<UserTag, long> _userTagRepository;
 
-	public UserSubscribeController(IAuditBaseRepository<UserSubscribe,long> userSubscribeRepository,
+	public UserSubscribeController(IAuditBaseRepository<UserSubscribe, long> userSubscribeRepository,
 		IUserSubscribeService userSubscribeService,
-		IAuditBaseRepository<UserTag,long> userTagRepository)
+		IAuditBaseRepository<UserTag, long> userTagRepository)
 	{
 		_userSubscribeRepository = userSubscribeRepository;
 		_userSubscribeService = userSubscribeService;
@@ -41,9 +41,10 @@ public class UserSubscribeController : ControllerBase
 	[AllowAnonymous]
 	public bool Get(long subscribeUserId)
 	{
-		//todo 用户信息
-		if (_currentUser.FindUserId() == null) return false;
-		return _userSubscribeRepository.Select.Any(r => r.SubscribeUserId == subscribeUserId && r.CreateUserId == _currentUser.FindUserId());
+		////todo 用户信息
+		//if (_currentUser.FindUserId() == null) return false;
+		//return _userSubscribeRepository.Select.Any(r => r.SubscribeUserId == subscribeUserId && r.CreateUserId == _currentUser.FindUserId());
+		return false;
 	}
 
 	/// <summary>

@@ -42,7 +42,7 @@ public interface IUserService
 	/// <param name="user">用户</param>
 	/// <param name="groupIds">分组Id集合</param>
 	/// <param name="password">密码</param>
-	Task CreateAsync(LinUser user, List<long> groupIds, string password);
+	Task CreateAsync(CMSUser user, List<long> groupIds, string password);
 
 	Task UpdateAync(long id, UpdateUserDto updateUserDto);
 
@@ -59,7 +59,7 @@ public interface IUserService
 	/// 得到当前用户上下文
 	/// </summary>
 	/// <returns></returns>
-	Task<LinUser> GetCurrentUserAsync();
+	Task<CMSUser> GetCurrentUserAsync();
 
 	/// <summary>
 	/// 根据用户Id获取用户信息

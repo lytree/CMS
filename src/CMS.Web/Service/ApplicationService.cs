@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CMS.Web.Aop.User;
 using FreeSql;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -28,9 +29,11 @@ namespace CMS.Web.Service
 					}
 				}
 			}
-
 			return reference;
 		}
+		private CurrentUser _currentUser;
+		public CurrentUser CurrentUser => LazyGetRequiredService(ref _currentUser);
+
 
 		private IMapper _mapper;
 		public IMapper Mapper => LazyGetRequiredService(ref _mapper);

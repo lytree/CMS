@@ -1,4 +1,5 @@
-﻿using CMS.Data.Model.Entities.Blog;
+﻿using CMS.Data.Extensions;
+using CMS.Data.Model.Entities.Blog;
 using CMS.Data.Repository;
 using CMS.Web.Data;
 using System;
@@ -35,7 +36,7 @@ public class NotificationService : ApplicationService, INotificationService
 						 r.NotificationType == NotificationType.UserLikeArticleComment)
 				.WhereIf(pageDto.NotificationSearchType == NotificationSearchType.UserLikeUser,
 					r => r.NotificationType == NotificationType.UserLikeUser)
-				.Where(r => r.NotificationRespUserId == CurrentUser.FindUserId())
+				//.Where(r => r.NotificationRespUserId == CurrentUser.FindUserId())
 				.OrderByDescending(r => r.CreateTime)
 				.ToPagerListAsync(pageDto, out long totalCount))
 			.Select(r =>

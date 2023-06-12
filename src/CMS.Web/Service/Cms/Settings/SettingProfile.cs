@@ -7,7 +7,7 @@ public class SettingProfile : Profile
 {
 	public SettingProfile()
 	{
-		CreateMap<CreateUpdateSettingDto, LinSetting>();
-		CreateMap<LinSetting, SettingDto>();
+		CreateMap<CreateUpdateSettingDto, CMSSetting>();
+		CreateMap<CMSSetting, SettingDto>();
 	}
 }

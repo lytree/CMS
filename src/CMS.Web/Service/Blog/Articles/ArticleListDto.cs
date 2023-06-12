@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using CMS.Data.Model.Entities.Base;
+using CMS.Data.Model.Entities.Blog;
+using CMS.Data.Utils;
 using CMS.Web.Service.Blog.Tags;
 using CMS.Web.Service.Cms.Users;
-using IGeekFan.FreeKit.Extras.AuditEntity;
-using LinCms.Common;
-using LinCms.Entities.Blog;
 
 namespace CMS.Web.Service.Blog.Articles;
 
-public class ArticleListDto : Entity<long>, ICreateAuditEntity<long>
+public class ArticleListDto
 {
+	public long Id { get; set; }
 	/// <summary>
 	/// 技术频道Id
 	/// </summary>
@@ -17,7 +18,7 @@ public class ArticleListDto : Entity<long>, ICreateAuditEntity<long>
 	/// <summary>
 	/// 几小时/秒前
 	/// </summary>
-	public string TimeSpan => LinCmsUtils.GetTimeDifferNow(CreateTime.ToDateTime());
+	public string TimeSpan => CMSUtils.GetTimeDifferNow(CreateTime.ToDateTime());
 
 	private readonly DateTime _now = DateTime.Now;
 	public bool IsNew => DateTime.Compare(_now.AddDays(-2), CreateTime.ToDateTime()) <= 0;

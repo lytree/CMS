@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CMS.Data.Model.Entities.Blog;
 using CMS.Data.Utils;
-using CMS.Web.Service.Blog.Classifys;
+using CMS.Web.Service.Blog.Classifies;
 using CMS.Web.Service.Blog.Tags;
 using CMS.Web.Service.Cms.Users;
 

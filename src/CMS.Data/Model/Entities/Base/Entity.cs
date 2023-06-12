@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace CMS.Data.Model.Entities.Base
 {
-	public class Entity
+	public class Entity<TKey> where TKey : IEquatable<TKey>
 	{
+		public TKey Id { get; set; }
 	}
 }

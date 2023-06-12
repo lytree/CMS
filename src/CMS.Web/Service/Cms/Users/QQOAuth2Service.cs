@@ -1,4 +1,6 @@
-﻿using CMS.Data.Model.Entities.User;
+﻿using AspNet.Security.OAuth.QQ;
+using CMS.Data.Model.Const;
+using CMS.Data.Model.Entities.User;
 using CMS.Data.Model.Enums;
 using CMS.Data.Repository;
 using System;
@@ -13,9 +15,9 @@ namespace CMS.Web.Service.Cms.Users;
 public class QQOAuth2Service : OAuthService, IOAuth2Service
 {
 	private readonly IUserRepository _userRepository;
-	private readonly IAuditBaseRepository<LinUserIdentity,long> _userIdentityRepository;
+	private readonly IAuditBaseRepository<CMSUserIdentity,long> _userIdentityRepository;
 
-	public QQOAuth2Service(IAuditBaseRepository<LinUserIdentity,long> userIdentityRepository, IUserRepository userRepository) : base(userIdentityRepository)
+	public QQOAuth2Service(IAuditBaseRepository<CMSUserIdentity,long> userIdentityRepository, IUserRepository userRepository) : base(userIdentityRepository)
 	{
 		_userIdentityRepository = userIdentityRepository;
 		_userRepository = userRepository;
@@ -30,7 +32,7 @@ public class QQOAuth2Service : OAuthService, IOAuth2Service
 	public override async Task<long> SaveUserAsync(ClaimsPrincipal principal, string openId)
 	{
 
-		LinUserIdentity linUserIdentity = await _userIdentityRepository.Where(r => r.IdentityType == LinUserIdentity.QQ && r.Credential == openId).FirstAsync();
+		CMSUserIdentity linUserIdentity = await _userIdentityRepository.Where(r => r.IdentityType == CMSUserIdentity.QQ && r.Credential == openId).FirstAsync();
 
 		long userId = 0;
 		if (linUserIdentity == null)
@@ -44,26 +46,26 @@ public class QQOAuth2Service : OAuthService, IOAuth2Service
 			string avatarUrl = principal.FindFirst(QQAuthenticationConstants.Claims.AvatarUrl)?.Value;
 			string avatarFullUrl = principal.FindFirst(QQAuthenticationConstants.Claims.AvatarFullUrl)?.Value;
 
-			LinUser user = new()
+			CMSUser user = new()
 			{
 				Active = UserStatus.Active,
 				Avatar = avatarFullUrl,
 				LastLoginTime = DateTime.Now,
 				Email = "",
 				Introduction = "",
-				LinUserGroups = new List<LinUserGroup>()
+				LinUserGroups = new List<CMSUserGroup>()
 				{
 					new()
 					{
-						GroupId = LinConsts.Group.User
+						GroupId = CMSConsts.Group.User
 					}
 				},
 				Nickname = nickname,
 				Username = "",
 				BlogAddress = "",
-				LinUserIdentitys = new List<LinUserIdentity>()
+				LinUserIdentitys = new List<CMSUserIdentity>()
 				{
-					new(LinUserIdentity.QQ, nickname, openId,DateTime.Now)
+					new(CMSUserIdentity.QQ, nickname, openId,DateTime.Now)
 				}
 			};
 			await _userRepository.InsertAsync(user);
@@ -71,7 +73,7 @@ public class QQOAuth2Service : OAuthService, IOAuth2Service
 		}
 		else
 		{
-			if (linUserIdentity.CreateUserId != null) userId = (long)linUserIdentity.CreateUserId;
+			//if (linUserIdentity.CreateUserId != null) userId = (long)linUserIdentity.CreateUserId;
 		}
 
 		return userId;

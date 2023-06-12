@@ -19,15 +19,15 @@ public class GroupService : ApplicationService, IGroupService
 {
 	private readonly IFreeSql _freeSql;
 	private readonly IPermissionService _permissionService;
-	private readonly IAuditBaseRepository<LinGroup, long> _groupRepository;
-	private readonly IAuditBaseRepository<LinUserGroup, long> _userGroupRepository;
-	private readonly IAuditBaseRepository<LinGroupPermission, long> _groupPermissionRepository;
+	private readonly IAuditBaseRepository<CMSGroup, long> _groupRepository;
+	private readonly IAuditBaseRepository<CMSUserGroup, long> _userGroupRepository;
+	private readonly IAuditBaseRepository<CMSGroupPermission, long> _groupPermissionRepository;
 
 	public GroupService(IFreeSql freeSql,
 		IPermissionService permissionService,
-		IAuditBaseRepository<LinGroup, long> groupRepository,
-		IAuditBaseRepository<LinUserGroup, long> userGroupRepository,
-		IAuditBaseRepository<LinGroupPermission, long> groupPermissionRepository)
+		IAuditBaseRepository<CMSGroup, long> groupRepository,
+		IAuditBaseRepository<CMSUserGroup, long> userGroupRepository,
+		IAuditBaseRepository<CMSGroupPermission, long> groupPermissionRepository)
 	{
 		_freeSql = freeSql;
 		_permissionService = permissionService;
@@ -36,9 +36,9 @@ public class GroupService : ApplicationService, IGroupService
 		_groupPermissionRepository = groupPermissionRepository;
 	}
 
-	public async Task<List<LinGroup>> GetListAsync()
+	public async Task<List<CMSGroup>> GetListAsync()
 	{
-		List<LinGroup> linGroups = await _groupRepository.Select
+		List<CMSGroup> linGroups = await _groupRepository.Select
 			.OrderBy(r => r.SortCode)
 			.ToListAsync();
 
@@ -47,7 +47,7 @@ public class GroupService : ApplicationService, IGroupService
 
 	public async Task<GroupDto> GetAsync(long id)
 	{
-		LinGroup group = await _groupRepository.Where(r => r.Id == id).FirstAsync();
+		CMSGroup group = await _groupRepository.Where(r => r.Id == id).FirstAsync();
 		GroupDto groupDto = Mapper.Map<GroupDto>(group);
 		groupDto.Permissions = await _permissionService.GetPermissionByGroupIds(new List<long>() { id });
 		return groupDto;
@@ -66,7 +66,7 @@ public class GroupService : ApplicationService, IGroupService
 			throw new CMSException($"权限组标识符{inputDto.Name}已存在，不可创建同名权限组", ErrorCode.RepeatField);
 		}
 
-		LinGroup linGroup = Mapper.Map<LinGroup>(inputDto);
+		CMSGroup linGroup = Mapper.Map<CMSGroup>(inputDto);
 
 		using Object<DbConnection> conn = _freeSql.Ado.MasterPool.Get();
 		await using DbTransaction transaction = await conn.Value.BeginTransactionAsync();
@@ -74,7 +74,7 @@ public class GroupService : ApplicationService, IGroupService
 		{
 			long groupId = await _freeSql.Insert(linGroup).WithTransaction(transaction).ExecuteIdentityAsync();
 			List<LinPermission> allPermissions = await _freeSql.Select<LinPermission>().WithTransaction(transaction).ToListAsync();
-			List<LinGroupPermission> linPermissions = new();
+			List<CMSGroupPermission> linPermissions = new();
 			inputDto.PermissionIds.ForEach(r =>
 			{
 				LinPermission pdDto = allPermissions.FirstOrDefault(u => u.Id == r);
@@ -82,10 +82,10 @@ public class GroupService : ApplicationService, IGroupService
 				{
 					throw new CMSException($"不存在此权限:{r}", ErrorCode.NotFound);
 				}
-				linPermissions.Add(new LinGroupPermission(groupId, pdDto.Id));
+				linPermissions.Add(new CMSGroupPermission(groupId, pdDto.Id));
 			});
 
-			await _freeSql.Insert<LinGroupPermission>()
+			await _freeSql.Insert<CMSGroupPermission>()
 				.WithTransaction(transaction)
 				.AppendData(linPermissions)
 				.ExecuteAffrowsAsync();
@@ -100,7 +100,7 @@ public class GroupService : ApplicationService, IGroupService
 
 	public async Task UpdateAsync(long id, UpdateGroupDto updateGroupDto)
 	{
-		LinGroup group = await _groupRepository.Where(r => r.Id == id).FirstAsync();
+		CMSGroup group = await _groupRepository.Where(r => r.Id == id).FirstAsync();
 
 		if (group.IsStatic)
 		{
@@ -127,7 +127,7 @@ public class GroupService : ApplicationService, IGroupService
 	/// <returns></returns>
 	public async Task DeleteAsync(long id)
 	{
-		LinGroup linGroup = await _groupRepository.Where(r => r.Id == id).FirstAsync();
+		CMSGroup linGroup = await _groupRepository.Where(r => r.Id == id).FirstAsync();
 
 		if (linGroup.IsNull())
 		{
@@ -150,8 +150,8 @@ public class GroupService : ApplicationService, IGroupService
 
 		//_freeSql.Transaction(() =>
 		//{
-		//    _freeSql.Delete<LinGroupPermission>(new LinGroupPermission { GroupId = id }).ExecuteAffrows();
-		//    _freeSql.Delete<LinGroup>(id).ExecuteAffrows();
+		//    _freeSql.Delete<CMSGroupPermission>(new CMSGroupPermission { GroupId = id }).ExecuteAffrows();
+		//    _freeSql.Delete<CMSGroup>(id).ExecuteAffrows();
 		//});
 
 	}
@@ -190,8 +190,8 @@ public class GroupService : ApplicationService, IGroupService
 		{
 			throw new CMSException("cant't add user to non-existent group");
 		}
-		List<LinUserGroup> userGroups = new();
-		addGroupIds.ForEach(groupId => { userGroups.Add(new LinUserGroup(userId, groupId)); });
+		List<CMSUserGroup> userGroups = new();
+		addGroupIds.ForEach(groupId => { userGroups.Add(new CMSUserGroup(userId, groupId)); });
 		await _userGroupRepository.InsertAsync(userGroups);
 	}
 

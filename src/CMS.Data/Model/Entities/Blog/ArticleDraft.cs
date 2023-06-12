@@ -37,6 +37,9 @@ namespace CMS.Data.Model.Entities.Blog
         /// </summary>
         public int Editor { get; set; } = 1;
 
+
+
+
         public virtual Article Article { get; set; }
 
     }

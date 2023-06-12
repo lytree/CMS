@@ -11,7 +11,7 @@ namespace CMS.Data.Model.Entities
 	/// 标签
 	/// </summary>
 	[Table(Name = "blog_tag")]
-	public class Tag : BaseEntity<long>
+	public class Tag : BaseEntity<long>, ISoftDelete
 	{
 		/// <summary>
 		/// 别名
@@ -55,6 +55,17 @@ namespace CMS.Data.Model.Entities
 		/// 关注数量
 		/// </summary>
 		public int SubscribersCount { get; set; } = 0;
+		/// <summary>
+		/// 删除时间
+		/// </summary>
+		[Column(Position = -2)]
+		public virtual DateTime? DeleteTime { get; set; }
+
+		/// <summary>
+		/// 是否删除
+		/// </summary>
+		[Column(Position = -1)]
+		public virtual bool IsDeleted { get; set; }
 
 		public virtual ICollection<Article> Articles { get; set; }
 
@@ -65,7 +76,7 @@ namespace CMS.Data.Model.Entities
 		public virtual ICollection<ChannelTag> ChannelTags { get; set; }
 
 		[Navigate("CreateUserId")]
-		public virtual LinUser LinUser { get; set; }
+		public virtual CMSUser LinUser { get; set; }
 
 
 		public Tag UpdateSubscribersCount(int inCreaseCount)

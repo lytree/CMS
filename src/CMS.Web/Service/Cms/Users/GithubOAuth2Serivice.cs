@@ -1,4 +1,5 @@
-﻿using CMS.Data.Model.Const;
+﻿using AspNet.Security.OAuth.GitHub;
+using CMS.Data.Model.Const;
 using CMS.Data.Model.Entities.User;
 using CMS.Data.Model.Enums;
 using CMS.Data.Repository;
@@ -13,9 +14,9 @@ namespace CMS.Web.Service.Cms.Users;
 public class GithubOAuth2Serivice : OAuthService, IOAuth2Service
 {
 	private readonly IUserRepository _userRepository;
-	private readonly IAuditBaseRepository<LinUserIdentity, long> _userIdentityRepository;
+	private readonly IAuditBaseRepository<CMSUserIdentity, long> _userIdentityRepository;
 
-	public GithubOAuth2Serivice(IAuditBaseRepository<LinUserIdentity, long> userIdentityRepository, IUserRepository userRepository) : base(userIdentityRepository)
+	public GithubOAuth2Serivice(IAuditBaseRepository<CMSUserIdentity, long> userIdentityRepository, IUserRepository userRepository) : base(userIdentityRepository)
 	{
 		_userIdentityRepository = userIdentityRepository;
 		_userRepository = userRepository;
@@ -30,7 +31,7 @@ public class GithubOAuth2Serivice : OAuthService, IOAuth2Service
 	/// <returns></returns>
 	public override async Task<long> SaveUserAsync(ClaimsPrincipal principal, string openId)
 	{
-		LinUserIdentity linUserIdentity = await _userIdentityRepository.Where(r => r.IdentityType == LinUserIdentity.GitHub && r.Credential == openId).FirstAsync();
+		CMSUserIdentity linUserIdentity = await _userIdentityRepository.Where(r => r.IdentityType == CMSUserIdentity.GitHub && r.Credential == openId).FirstAsync();
 
 		long userId = 0;
 		if (linUserIdentity == null)
@@ -44,7 +45,7 @@ public class GithubOAuth2Serivice : OAuthService, IOAuth2Service
 			string bio = principal.FindFirst(CMSConsts.Claims.Bio)?.Value;
 			string blogAddress = principal.FindFirst(CMSConsts.Claims.BlogAddress)?.Value;
 
-			LinUser user = new()
+			CMSUser user = new()
 			{
 				Active = UserStatus.Active,
 				Avatar = avatarUrl,
@@ -52,7 +53,7 @@ public class GithubOAuth2Serivice : OAuthService, IOAuth2Service
 				LastLoginTime = DateTime.Now,
 				Email = email,
 				Introduction = bio + HtmlUrl,
-				LinUserGroups = new List<LinUserGroup>()
+				LinUserGroups = new List<CMSUserGroup>()
 				{
 					new()
 					{
@@ -62,9 +63,9 @@ public class GithubOAuth2Serivice : OAuthService, IOAuth2Service
 				Nickname = gitHubName,
 				Username = "",
 				BlogAddress = blogAddress,
-				LinUserIdentitys = new List<LinUserIdentity>()
+				LinUserIdentitys = new List<CMSUserIdentity>()
 				{
-					new(LinUserIdentity.GitHub,name,openId,DateTime.Now)
+					new(CMSUserIdentity.GitHub,name,openId,DateTime.Now)
 				}
 			};
 			await _userRepository.InsertAsync(user);
@@ -72,7 +73,7 @@ public class GithubOAuth2Serivice : OAuthService, IOAuth2Service
 		}
 		else
 		{
-			if (linUserIdentity.CreateUserId != null) userId = linUserIdentity.CreateUserId.Value;
+			//if (linUserIdentity.CreateUserId != null) userId = linUserIdentity.CreateUserId.Value;
 		}
 
 		return userId;

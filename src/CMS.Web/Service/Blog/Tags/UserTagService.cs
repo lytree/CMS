@@ -11,11 +11,11 @@ namespace CMS.Web.Service.Blog.Tags;
 
 public class UserTagService : ApplicationService, IUserTagService
 {
-	private readonly IAuditBaseRepository<Tag,long> _tagRepository;
-	private readonly IAuditBaseRepository<UserTag,long> _userTagRepository;
+	private readonly IAuditBaseRepository<Tag, long> _tagRepository;
+	private readonly IAuditBaseRepository<UserTag, long> _userTagRepository;
 	private readonly ITagService _tagService;
 
-	public UserTagService(ITagService tagService, IAuditBaseRepository<Tag,long> tagRepository, IAuditBaseRepository<UserTag,long> userTagRepository)
+	public UserTagService(ITagService tagService, IAuditBaseRepository<Tag, long> tagRepository, IAuditBaseRepository<UserTag, long> userTagRepository)
 	{
 		_tagService = tagService;
 		_tagRepository = tagRepository;
@@ -35,7 +35,7 @@ public class UserTagService : ApplicationService, IUserTagService
 			throw new CMSException("该标签已被拉黑");
 		}
 
-		bool any = await _userTagRepository.Select.AnyAsync(r => r.CreateUserId == CurrentUser.FindUserId() && r.TagId == tagId);
+		bool any = await _userTagRepository.Select.AnyAsync(r => r.TagId == tagId);
 		if (any)
 		{
 			throw new CMSException("您已关注该标签");
@@ -48,12 +48,12 @@ public class UserTagService : ApplicationService, IUserTagService
 
 	public async Task DeleteUserTagAsync(long tagId)
 	{
-		bool any = await _userTagRepository.Select.AnyAsync(r => r.CreateUserId == CurrentUser.FindUserId() && r.TagId == tagId);
+		bool any = await _userTagRepository.Select.AnyAsync(r => r.TagId == tagId);
 		if (!any)
 		{
 			throw new CMSException("已取消关注");
 		}
-		await _userTagRepository.DeleteAsync(r => r.TagId == tagId && r.CreateUserId == CurrentUser.FindUserId());
+		await _userTagRepository.DeleteAsync(r => r.TagId == tagId);
 		await _tagService.UpdateSubscribersCountAsync(tagId, -1);
 	}
 }

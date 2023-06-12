@@ -5,7 +5,7 @@ using CMS.Web.Service.Blog.Tags;
 
 namespace CMS.Web.Service.Blog.Channels;
 
-public class ChannelDto : Entity
+public class ChannelDto : Entity<long>
 {
 	/// <summary>
 	/// 封面图

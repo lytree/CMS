@@ -7,8 +7,8 @@ public class GroupProfile : Profile
 {
 	public GroupProfile()
 	{
-		CreateMap<CreateGroupDto, LinGroup>();
-		CreateMap<UpdateGroupDto, LinGroup>();
-		CreateMap<LinGroup, GroupDto>();
+		CreateMap<CreateGroupDto, CMSGroup>();
+		CreateMap<UpdateGroupDto, CMSGroup>();
+		CreateMap<CMSGroup, GroupDto>();
 	}
 }

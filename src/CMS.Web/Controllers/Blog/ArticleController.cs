@@ -11,6 +11,7 @@ using CMS.Data.Repository;
 using CMS.Web.Data;
 using CMS.Data.Exceptions;
 using CMS.Web.Aop.Filter;
+using CMS.Data.Extensions;
 
 namespace CMS.Web.Controllers.Blog;
 
@@ -78,14 +79,13 @@ public class ArticleController : ControllerBase
 		List<ArticleListDto> articles = _articleRepository
 			.Select
 			.IncludeMany(r => r.Tags, r => r.Where(u => u.Status == true))
-			.Where(r => r.CreateUserId == _currentUser.FindUserId())
 			.WhereIf(searchDto.Title.IsNotNullOrEmpty(), r => r.Title.Contains(searchDto.Title))
 			.WhereIf(searchDto.ClassifyId.HasValue, r => r.ClassifyId == searchDto.ClassifyId)
 			.OrderByDescending(r => r.IsStickie)
 			.OrderByDescending(r => r.Id)
 			.ToPagerList(searchDto, out long totalCount)
-			.Select(a => _mapper.Map<ArticleListDto>(a))
-			.ToList();
+			.ConvertAll(a => _mapper.Map<ArticleListDto>(a))
+;
 
 		return new PagedResultDto<ArticleListDto>(articles, totalCount);
 	}
@@ -97,7 +97,6 @@ public class ArticleController : ControllerBase
 	/// <returns></returns>
 	[HttpGet("query")]
 	[AllowAnonymous]
-	[Cacheable]
 	public Task<PagedResultDto<ArticleListDto>> GetArticleAsync([FromQuery] ArticleSearchDto searchDto)
 	{
 		return _articleService.GetArticleAsync(searchDto);
@@ -123,12 +122,12 @@ public class ArticleController : ControllerBase
 	{
 		var articles = _articleRepository
 			.Select
-			.WhereCascade(r => r.IsDeleted == false)
+			.WhereCascade(exp: r => r.IsDeleted == false)
 			.WhereIf(searchDto.Title.IsNotNullOrEmpty(), r => r.Title.Contains(searchDto.Title))
 			.OrderByDescending(r => r.CreateTime)
 			.ToPagerList(searchDto, out long totalCount)
-			.Select(a => _mapper.Map<ArticleListDto>(a))
-			.ToList();
+			.ConvertAll(a => _mapper.Map<ArticleListDto>(a))
+;
 
 		return new PagedResultDto<ArticleListDto>(articles, totalCount);
 	}
@@ -152,11 +151,10 @@ public class ArticleController : ControllerBase
 		long id = await _articleService.CreateAsync(createArticle);
 		return id;
 	}
-
-	[Transactional]
 	[HttpPut("{id}")]
 	public async Task<UnifyResponseDto> UpdateAsync(long id, [FromBody] CreateUpdateArticleDto updateArticleDto)
 	{
+
 		await _articleService.UpdateAsync(id, updateArticleDto);
 		return UnifyResponseDto.Success("更新随笔成功");
 	}
@@ -182,16 +180,16 @@ public class ArticleController : ControllerBase
 		return UnifyResponseDto.Success();
 	}
 
-	/// <summary>
-	/// 得到我关注的人 发布的随笔
-	/// </summary>
-	/// <param name="pageDto"></param>
-	/// <returns></returns>
-	[HttpGet("subscribe")]
-	public Task<PagedResultDto<ArticleListDto>> GetSubscribeArticleAsync([FromQuery] PageDto pageDto)
-	{
-		return _articleService.GetSubscribeArticleAsync(pageDto);
-	}
+	///// <summary>
+	///// 得到我关注的人 发布的随笔
+	///// </summary>
+	///// <param name="pageDto"></param>
+	///// <returns></returns>
+	//[HttpGet("subscribe")]
+	//public Task<PagedResultDto<ArticleListDto>> GetSubscribeArticleAsync([FromQuery] PageDto pageDto)
+	//{
+	//	return _articleService.GetSubscribeArticleAsync(pageDto);
+	//}
 
 	/// <summary>
 	/// 修改随笔 是否允许其他人评论

@@ -8,5 +8,5 @@ namespace CMS.Data.Repository;
 /// </summary>
 public interface ITokenManager
 {
-    Task<Tokens> CreateTokenAsync(LinUser user);
+    Task<Tokens> CreateTokenAsync(CMSUser user);
 }

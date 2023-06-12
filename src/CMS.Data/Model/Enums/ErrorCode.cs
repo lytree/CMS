@@ -9,19 +9,21 @@ namespace CMS.Data.Model.Enums
 		/// </summary>
 		Success = 0,
 		/// <summary>
-		/// 未知错误
-		/// </summary>
-		UnknownError = 1007,
-		/// <summary>
 		/// 服务器未知错误
 		/// </summary>
 		ServerUnknownError = 999,
-
 		/// <summary>
 		/// 失败
 		/// </summary>
 		Error = 1000,
-
+		/// <summary>
+		/// 未知错误
+		/// </summary>
+		UnknownError = 1007,
+		/// <summary>
+		/// 失败
+		/// </summary>
+		Fail = 9999,
 		/// <summary>
 		/// 认证失败
 		/// </summary>
@@ -30,14 +32,6 @@ namespace CMS.Data.Model.Enums
 		/// 无权限
 		/// </summary>
 		NoPermission = 10001,
-		/// <summary>
-		/// 失败
-		/// </summary>
-		Fail = 9999,
-		/// <summary>
-		/// refreshToken异常
-		/// </summary>
-		RefreshTokenError = 10100,
 		/// <summary>
 		/// 资源不存在
 		/// </summary>
@@ -64,6 +58,10 @@ namespace CMS.Data.Model.Enums
 		/// 禁止操作
 		/// </summary>
 		Inoperable = 10070,
+		/// <summary>
+		/// refreshToken异常
+		/// </summary>
+		RefreshTokenError = 10100,
 		//10080 请求方法不允许
 
 		//10110 文件体积过大

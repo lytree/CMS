@@ -7,14 +7,14 @@ using FreeSql;
 
 namespace CMS.Data.Repository
 {
-	public interface IUserRepository : IAuditBaseRepository<LinUser, long>
+	public interface IUserRepository : IAuditBaseRepository<CMSUser, long>
 	{
 		/// <summary>
 		/// 根据条件得到用户信息
 		/// </summary>
 		/// <param name="expression"></param>
 		/// <returns></returns>
-		Task<LinUser> GetUserAsync(Expression<Func<LinUser, bool>> expression);
+		Task<CMSUser> GetUserAsync(Expression<Func<CMSUser, bool>> expression);
 
 		/// <summary>
 		/// 根据用户Id更新用户的最后登录时间

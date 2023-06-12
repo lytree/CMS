@@ -19,12 +19,12 @@ public interface IArticleService
 	Task<ArticleDto> GetAsync(long id);
 	#endregion
 
-	/// <summary>
-	/// 得到我关注的人发布的随笔
-	/// </summary>
-	/// <param name="pageDto"></param>
-	/// <returns></returns>
-	Task<PagedResultDto<ArticleListDto>> GetSubscribeArticleAsync(PageDto pageDto);
+	///// <summary>
+	///// 得到我关注的人发布的随笔
+	///// </summary>
+	///// <param name="pageDto"></param>
+	///// <returns></returns>
+	//Task<PagedResultDto<ArticleListDto>> GetSubscribeArticleAsync(PageDto pageDto);
 
 	/// <summary>
 	/// 更新随笔点赞量

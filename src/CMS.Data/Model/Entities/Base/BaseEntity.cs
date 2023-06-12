@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace CMS.Data.Model.Entities.Base
 {
 	[Serializable]
-	public abstract class BaseEntity<T> where T : IEquatable<T>
+	public abstract class BaseEntity<TKey> where TKey : IEquatable<TKey>
 	{
-		public T Id { get; set; }
+		public TKey Id { get; set; }
 		/// <summary>
 		/// 创建时间
 		/// </summary>

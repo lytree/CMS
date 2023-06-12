@@ -8,7 +8,7 @@ public class UserIdentityProfile : Profile
 {
 	public UserIdentityProfile()
 	{
-		CreateMap<LinUserIdentity, UserIdentityDto>();
+		CreateMap<CMSUserIdentity, UserIdentityDto>();
 
 	}
 }

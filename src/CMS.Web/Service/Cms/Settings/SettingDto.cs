@@ -1,9 +1,10 @@
 ﻿using System;
-using IGeekFan.FreeKit.Extras.AuditEntity;
+using CMS.Data.Model.Entities.Base;
+
 
 namespace CMS.Web.Service.Cms.Settings;
 
-public class SettingDto : EntityDto<long>
+public class SettingDto : Entity<long>
 {
 	/// <summary>
 	/// 键

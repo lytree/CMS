@@ -7,8 +7,8 @@ namespace CMS.Data.Model.Entities
     /// <summary>
     /// 配置项
     /// </summary>
-    [Table(Name = "lin_settings")]
-    public class LinSetting : BaseEntity<long>
+    [Table(Name = "cms_settings")]
+    public class CMSSetting : BaseEntity<long>
     {
         /// <summary>
         /// 键

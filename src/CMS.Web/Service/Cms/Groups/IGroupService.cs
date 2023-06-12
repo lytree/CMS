@@ -7,7 +7,7 @@ namespace CMS.Web.Service.Cms.Groups;
 
 public interface IGroupService
 {
-	Task<List<LinGroup>> GetListAsync();
+	Task<List<CMSGroup>> GetListAsync();
 
 	Task<GroupDto> GetAsync(long id);
 

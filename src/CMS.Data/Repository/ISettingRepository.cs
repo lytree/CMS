@@ -7,11 +7,11 @@ using FreeSql;
 
 namespace CMS.Data.Repository
 {
-	public interface ISettingRepository : IAuditBaseRepository<LinSetting,long>
+	public interface ISettingRepository : IAuditBaseRepository<CMSSetting,long>
 	{
 
-		Task<LinSetting> FindAsync(string name, string providerName, string providerKey);
+		Task<CMSSetting> FindAsync(string name, string providerName, string providerKey);
 
-		Task<List<LinSetting>> GetListAsync(string providerName, string providerKey);
+		Task<List<CMSSetting>> GetListAsync(string providerName, string providerKey);
 	}
 }
