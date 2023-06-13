@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using CMS.Data.Exceptions;
 using CMS.Data.Extensions;
-using CMS.Data.Model.Entities;
 using CMS.Data.Model.Entities.Blog;
 using CMS.Data.Repository;
 using CMS.Web.Data;
@@ -49,7 +48,7 @@ public class ChannelService : ApplicationService, IChannelService
 	{
 		List<NavChannelListDto> channel = (await _channelRepository.Select
 				.Where(r => r.Status == true)
-				.IncludeMany(r => r.Tags.Select(u => new Tag { TagName = u.TagName, Id = u.Id }), r => r.Where(u => u.Status == true))
+				.IncludeMany(r => r.Tags.Select(u => new TagEntity { TagName = u.TagName, Id = u.Id }), r => r.Where(u => u.Status == true))
 				.OrderByDescending(r => r.SortCode)
 				.OrderBy(r => r.CreateTime)
 				.ToPagerListAsync(pageDto, out long totalCount))
@@ -79,10 +78,10 @@ public class ChannelService : ApplicationService, IChannelService
 
 		Channel channel = Mapper.Map<Channel>(createChannel);
 
-		channel.Tags = new List<Tag>();
+		channel.Tags = new List<TagEntity>();
 		createChannel.TagIds?.ForEach(r =>
 		{
-			channel.Tags.Add(new Tag()
+			channel.Tags.Add(new TagEntity()
 			{
 				Id = r
 			});

@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using CMS.Web.Service.Blog;
 using CMS.Data.Repository;
 using CMS.Data.Model.Entities.Blog;
-using CMS.Data.Model.Entities;
 using CMS.Web.Service.Blog.Tags;
 using CMS.Web.Data;
 using CMS.Web.Aop.Filter;
@@ -24,9 +23,9 @@ namespace CMS.Web.Controllers.Blog;
 [ApiController]
 public class TagController : ControllerBase
 {
-	private readonly IAuditBaseRepository<Tag,long> _tagRepository;
+	private readonly IAuditBaseRepository<TagEntity,long> _tagRepository;
 	private readonly ITagService _tagService;
-	public TagController(IAuditBaseRepository<Tag,long> tagRepository, ITagService tagService)
+	public TagController(IAuditBaseRepository<TagEntity,long> tagRepository, ITagService tagService)
 	{
 		_tagRepository = tagRepository;
 		_tagService = tagService;
@@ -36,7 +35,7 @@ public class TagController : ControllerBase
 	[CMSAuthorize("删除标签", "标签管理")]
 	public async Task<UnifyResponseDto> DeleteAsync(long id)
 	{
-		await _tagRepository.DeleteAsync(new Tag { Id = id });
+		await _tagRepository.DeleteAsync(new TagEntity { Id = id });
 		return UnifyResponseDto.Success();
 	}
 

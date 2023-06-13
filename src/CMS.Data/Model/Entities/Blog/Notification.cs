@@ -2,11 +2,12 @@
 using CMS.Data.Model.Entities.Base;
 using FreeSql.DataAnnotations;
 using CMS.Data.Model.Entities.User;
+using CMS.Data.Model.Core;
 
 namespace CMS.Data.Model.Entities.Blog
 {
 	[Table(Name = "blog_notification")]
-	public class Notification : BaseEntity<long>
+	public class Notification : EntityBase
 	{
 		/// <summary>
 		/// 消息通知
@@ -34,7 +35,7 @@ namespace CMS.Data.Model.Entities.Blog
 		/// 创建消息者 关联用户Id
 		/// </summary>
 		[Navigate("UserInfoId")]
-		public CMSUser UserInfo { get; set; }
+		public UserEntity UserInfo { get; set; }
 
 		/// <summary>
 		/// 评论消息
@@ -46,7 +47,7 @@ namespace CMS.Data.Model.Entities.Blog
 		/// 随笔内容
 		/// </summary>
 		[Navigate("ArticleId")]
-		public Article ArticleEntry { get; set; }
+		public ArticleEntity ArticleEntry { get; set; }
 	}
 
 	public enum NotificationType

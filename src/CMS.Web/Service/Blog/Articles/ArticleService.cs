@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using CMS.Data.Exceptions;
 using CMS.Data.Extensions;
-using CMS.Data.Model.Entities;
 using CMS.Data.Model.Entities.Blog;
 using CMS.Data.Model.Enums;
 using CMS.Data.Repository;
@@ -18,24 +17,24 @@ namespace CMS.Web.Service.Blog.Articles;
 
 public class ArticleService : ApplicationService, IArticleService
 {
-	private readonly IAuditBaseRepository<Article, long> _articleRepository;
-	private readonly IAuditBaseRepository<ArticleDraft, long> _articleDraftRepository;
+	private readonly IAuditBaseRepository<ArticleEntity, long> _articleRepository;
+	private readonly IAuditBaseRepository<ArticleDraftEntity, long> _articleDraftRepository;
 	private readonly IAuditBaseRepository<UserLike, long> _userLikeRepository;
 	private readonly IAuditBaseRepository<Comment, long> _commentRepository;
-	private readonly IAuditBaseRepository<TagArticle, long> _tagArticleRepository;
+	private readonly IAuditBaseRepository<TagArticleEntity, long> _tagArticleRepository;
 	private readonly IClassifyService _classifyService;
-	private readonly IAuditBaseRepository<Tag, long> _tagRepository;
+	private readonly IAuditBaseRepository<TagEntity, long> _tagRepository;
 	private readonly IUserSubscribeService _userSubscribeService;
 	private readonly IFileRepository _fileRepository;
 	public ArticleService(
-		IAuditBaseRepository<Article, long> articleRepository,
-		IAuditBaseRepository<TagArticle, long> tagArticleRepository,
+		IAuditBaseRepository<ArticleEntity, long> articleRepository,
+		IAuditBaseRepository<TagArticleEntity, long> tagArticleRepository,
 		IAuditBaseRepository<UserLike, long> userLikeRepository,
 		IAuditBaseRepository<Comment, long> commentRepository,
 		IClassifyService classifyService,
-		IAuditBaseRepository<Tag, long> tagRepository,
+		IAuditBaseRepository<TagEntity, long> tagRepository,
 		IUserSubscribeService userSubscribeService,
-		IAuditBaseRepository<ArticleDraft, long> articleDraftRepository,
+		IAuditBaseRepository<ArticleDraftEntity, long> articleDraftRepository,
 		IFileRepository fileRepository
 	)
 	{
@@ -58,7 +57,7 @@ public class ArticleService : ApplicationService, IArticleService
 		DateTime weeklyDays = DateTime.Now.AddDays(-7);
 		DateTime threeDays = DateTime.Now.AddDays(-3);
 
-		List<Article> articles = await _articleRepository
+		List<ArticleEntity> articles = await _articleRepository
 			.Select
 			.IncludeMany(r => r.Tags, r => r.Where(u => u.Status == true))
 			//.IncludeMany(r => r.UserLikes, r => r.Where(u => u.CreateUserId == userId))
@@ -96,7 +95,7 @@ public class ArticleService : ApplicationService, IArticleService
 
 	public async Task DeleteAsync(long id)
 	{
-		Article article = _articleRepository.Select.Where(r => r.Id == id).IncludeMany(r => r.Tags).ToOne();
+		ArticleEntity article = _articleRepository.Select.Where(r => r.Id == id).IncludeMany(r => r.Tags).ToOne();
 		if (article.IsNotNull())
 		{
 			await _classifyService.UpdateArticleCountAsync(article.ClassifyId, 1);
@@ -104,7 +103,7 @@ public class ArticleService : ApplicationService, IArticleService
 				.ForEach(async (u) => { await UpdateArticleCountAsync(u.Id, -1); });
 		}
 
-		await _articleRepository.DeleteAsync(new Article { Id = id });
+		await _articleRepository.DeleteAsync(new ArticleEntity { Id = id });
 		await _tagArticleRepository.DeleteAsync(r => r.ArticleId == id);
 		await _commentRepository.DeleteAsync(r => r.SubjectId == id);
 		await _userLikeRepository.DeleteAsync(r => r.SubjectId == id);
@@ -112,7 +111,7 @@ public class ArticleService : ApplicationService, IArticleService
 
 	public async Task<ArticleDto> GetAsync(long id)
 	{
-		Article article = await _articleRepository.Select
+		ArticleEntity article = await _articleRepository.Select
 			.Include(r => r.Classify).IncludeMany(r => r.Tags).WhereCascade(r => r.IsDeleted == false).Where(a => a.Id == id).ToOneAsync();
 
 		if (article.IsNull())
@@ -144,15 +143,15 @@ public class ArticleService : ApplicationService, IArticleService
 
 	public async Task<long> CreateAsync(CreateUpdateArticleDto createArticle)
 	{
-		Article article = Mapper.Map<Article>(createArticle);
+		ArticleEntity article = Mapper.Map<ArticleEntity>(createArticle);
 		article.Archive = DateTime.Now.ToString("yyy年MM月");
 		article.WordNumber = createArticle.Content.Length;
 		article.ReadingTime = createArticle.Content.Length / 800;
 
-		article.Tags = new List<Tag>();
+		article.Tags = new List<TagEntity>();
 		foreach (var articleTagId in createArticle.TagIds)
 		{
-			article.Tags.Add(new Tag()
+			article.Tags.Add(new TagEntity()
 			{
 				Id = articleTagId,
 			});
@@ -160,7 +159,7 @@ public class ArticleService : ApplicationService, IArticleService
 		}
 		await _articleRepository.InsertAsync(article);
 
-		await _articleDraftRepository.InsertAsync(new ArticleDraft(article.Id, createArticle.Content, createArticle.Title, createArticle.Editor));
+		await _articleDraftRepository.InsertAsync(new ArticleDraftEntity(article.Id, createArticle.Content, createArticle.Title, createArticle.Editor));
 
 		if (createArticle.ClassifyId != null)
 		{
@@ -174,7 +173,7 @@ public class ArticleService : ApplicationService, IArticleService
 		using var unitOfWork = UnitOfWorkManager.Begin(Propagation.Required, System.Data.IsolationLevel.ReadCommitted);
 		try
 		{
-			Article article = _articleRepository.Select.Where(r => r.Id == id).ToOne();
+			ArticleEntity article = _articleRepository.Select.Where(r => r.Id == id).ToOne();
 
 
 			//if (article.CreateUserId != CurrentUser.FindUserId())
@@ -198,7 +197,7 @@ public class ArticleService : ApplicationService, IArticleService
 			article.ReadingTime = article.Content.Length / 800;
 			await _articleRepository.UpdateAsync(article);
 
-			ArticleDraft articleDraft = Mapper.Map<ArticleDraft>(article);
+			ArticleDraftEntity articleDraft = Mapper.Map<ArticleDraftEntity>(article);
 			bool exist = await _articleDraftRepository.Select.AnyAsync(r => r.Id == article.Id);
 			if (exist)
 			{
@@ -234,11 +233,11 @@ public class ArticleService : ApplicationService, IArticleService
 
 		_tagArticleRepository.Delete(r => r.ArticleId == id);
 
-		List<TagArticle> tagArticles = new();
+		List<TagArticleEntity> tagArticles = new();
 
 		foreach (var tagId in updateArticleDto.TagIds)
 		{
-			tagArticles.Add(new TagArticle()
+			tagArticles.Add(new TagArticleEntity()
 			{
 				ArticleId = id,
 				TagId = tagId
@@ -254,7 +253,7 @@ public class ArticleService : ApplicationService, IArticleService
 		{
 			return;
 		}
-		Tag tag = await _tagRepository.Select.Where(r => r.Id == id).ToOneAsync();
+		TagEntity tag = await _tagRepository.Select.Where(r => r.Id == id).ToOneAsync();
 		if (tag == null) { return; }
 		//防止数量一直减，减到小于0
 		if (inCreaseCount < 0)
@@ -299,14 +298,14 @@ public class ArticleService : ApplicationService, IArticleService
 
 	public async Task UpdateLikeQuantityAysnc(long subjectId, int likesQuantity)
 	{
-		Article article = await _articleRepository.Where(r => r.Id == subjectId).ToOneAsync();
+		ArticleEntity article = await _articleRepository.Where(r => r.Id == subjectId).ToOneAsync();
 		article.UpdateLikeQuantity(likesQuantity);
 		await _articleRepository.UpdateAsync(article);
 	}
 
 	public async Task UpdateCommentable(long id, bool commentable)
 	{
-		Article article = await _articleRepository.Select.Where(a => a.Id == id).ToOneAsync();
+		ArticleEntity article = await _articleRepository.Select.Where(a => a.Id == id).ToOneAsync();
 		if (article == null)
 		{
 			throw new CMSException("没有找到相关随笔", ErrorCode.NotFound);

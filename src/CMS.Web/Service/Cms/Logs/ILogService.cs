@@ -1,4 +1,4 @@
-﻿using CMS.Data.Model.Entities;
+﻿using CMS.Data.Model.Entities.Other;
 using CMS.Web.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;

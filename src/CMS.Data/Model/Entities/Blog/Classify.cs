@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CMS.Data.Model.Core;
 using CMS.Data.Model.Entities.Base;
 using FreeSql.DataAnnotations;
 
@@ -11,7 +12,7 @@ namespace CMS.Data.Model.Entities.Blog
     /// 随笔专栏，由普通用户创建
     /// </summary>
     [Table(Name = "blog_classify")]
-    public class Classify : BaseEntity<long>
+    public class Classify : EntityBase
     {
         /// <summary>
         /// 封面图
@@ -36,7 +37,7 @@ namespace CMS.Data.Model.Entities.Blog
         /// <summary>
         /// 关联随笔
         /// </summary>
-        public virtual List<Article> Articles { get; set; }
+        public virtual List<ArticleEntity> Articles { get; set; }
 
         /// <summary>
         /// 专栏下随笔数量减少1

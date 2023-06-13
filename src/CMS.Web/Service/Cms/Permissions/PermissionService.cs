@@ -1,5 +1,5 @@
 ﻿using CMS.Data.Model.Const;
-using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Other;
 using CMS.Data.Model.Entities.User;
 using CMS.Data.Repository;
 using CMS.Web.Data;

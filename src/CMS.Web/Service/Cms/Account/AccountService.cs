@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CMS.Data.Exceptions;
 using CMS.Data.Model.Entities.User;
 using CMS.Data.Model.Enums;
-using CMS.Data.Options;
+using CMS.Data.Model.Options;
 using CMS.Data.Repository;
 using CMS.Data.Repository.Implementation;
 using CMS.Web.Redis;

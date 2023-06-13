@@ -1,4 +1,4 @@
-﻿namespace CMS.Data.Options
+﻿namespace CMS.Data.Model.Options
 {
 	public class LocalFileOption
 	{

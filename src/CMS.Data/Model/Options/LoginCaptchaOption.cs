@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CMS.Data.Options
+namespace CMS.Data.Model.Options
 {
 	/// <summary>
 	/// 验证码配置

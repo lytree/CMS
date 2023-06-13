@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CMS.Data.Exceptions;
-using CMS.Data.Model.Entities;
 using CMS.Data.Model.Entities.Blog;
 using CMS.Data.Repository;
 using CMS.Web.Service;
@@ -11,11 +10,11 @@ namespace CMS.Web.Service.Blog.Tags;
 
 public class UserTagService : ApplicationService, IUserTagService
 {
-	private readonly IAuditBaseRepository<Tag, long> _tagRepository;
+	private readonly IAuditBaseRepository<TagEntity, long> _tagRepository;
 	private readonly IAuditBaseRepository<UserTag, long> _userTagRepository;
 	private readonly ITagService _tagService;
 
-	public UserTagService(ITagService tagService, IAuditBaseRepository<Tag, long> tagRepository, IAuditBaseRepository<UserTag, long> userTagRepository)
+	public UserTagService(ITagService tagService, IAuditBaseRepository<TagEntity, long> tagRepository, IAuditBaseRepository<UserTag, long> userTagRepository)
 	{
 		_tagService = tagService;
 		_tagRepository = tagRepository;
@@ -24,7 +23,7 @@ public class UserTagService : ApplicationService, IUserTagService
 
 	public async Task CreateUserTagAsync(long tagId)
 	{
-		Tag tag = await _tagRepository.Select.Where(r => r.Id == tagId).ToOneAsync();
+		TagEntity tag = await _tagRepository.Select.Where(r => r.Id == tagId).ToOneAsync();
 		if (tag == null)
 		{
 			throw new CMSException("该标签不存在");

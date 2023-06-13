@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Blog;
 
 namespace CMS.Web.Service.Blog.Comments;
 

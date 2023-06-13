@@ -4,15 +4,15 @@ using CMS.Data.Model.Entities.Base;
 using FreeSql.DataAnnotations;
 using CMS.Data.Model.Entities.User;
 using CMS.Data.Exceptions;
-using CMS.Data.Model.Entities.Blog;
+using CMS.Data.Model.Core;
 
-namespace CMS.Data.Model.Entities
+namespace CMS.Data.Model.Entities.Blog
 {
 	/// <summary>
 	/// 用户评论信息
 	/// </summary>
 	[Table(Name = "blog_comment")]
-	public class Comment : BaseEntity<long>, ISoftDelete
+	public class Comment : EntityBase
 	{
 		/// <summary>
 		/// 回复评论Id
@@ -70,41 +70,22 @@ namespace CMS.Data.Model.Entities
 		/// 评论的用户-OneToOne
 		/// </summary>
 		[Navigate("CreateUserId")]
-		public virtual CMSUser UserInfo { get; set; }
+		public virtual UserEntity UserInfo { get; set; }
 		/// <summary>
 		/// 被回复的用户-OneToOne
 		/// </summary>
 		[Navigate("RespUserId")]
-		public virtual CMSUser RespUserInfo { get; set; }
+		public virtual UserEntity RespUserInfo { get; set; }
 
 
 		[Navigate("RootCommentId")]
 		public virtual ICollection<Comment> Childs { get; set; }
 
-		[Navigate(nameof(UserLike.SubjectId))]
-		public virtual ICollection<UserLike> UserLikes { get; set; }
-
 
 		[Navigate("RespId")]
 		public virtual Comment Parent { get; set; }
 
-		public void UpdateLikeQuantity(int likesQuantity)
-		{
-			if (IsAudit == false)
-			{
-				throw new CMSException("该评论因违规被拉黑");
-			}
 
-			if (likesQuantity < 0)
-			{
-				if (LikesQuantity < -likesQuantity)
-				{
-					return;
-				}
-			}
-
-			LikesQuantity += likesQuantity;
-		}
 	}
 
 }

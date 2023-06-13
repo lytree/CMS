@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CMS.Data.Model.Core;
 using CMS.Data.Model.Entities.Base;
 using FreeSql.DataAnnotations;
 
@@ -10,7 +11,7 @@ namespace CMS.Data.Model.Entities.Blog
 	/// 技术频道，官方分类。标签的分类。
 	/// </summary>
 	[Table(Name = "blog_channel")]
-	public class Channel : BaseEntity<long>, ISoftDelete
+	public class Channel : EntityBase
 	{
 		/// <summary>
 		/// 封面图
@@ -58,8 +59,8 @@ namespace CMS.Data.Model.Entities.Blog
 		[Column(Position = -1)]
 		public virtual bool IsDeleted { get; set; }
 
-		public virtual ICollection<Tag> Tags { get; set; }
-		public virtual List<Article> Articles { get; set; }
+		public virtual ICollection<TagEntity> Tags { get; set; }
+		public virtual List<ArticleEntity> Articles { get; set; }
 
 	}
 }

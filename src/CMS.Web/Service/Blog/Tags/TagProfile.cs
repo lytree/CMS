@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Blog;
 
 namespace CMS.Web.Service.Blog.Tags;
 
@@ -7,8 +7,8 @@ public class TagProfile : Profile
 {
 	public TagProfile()
 	{
-		CreateMap<Tag, TagListDto>();
-		CreateMap<Tag, TagDto>();
-		CreateMap<CreateUpdateTagDto, Tag>();
+		CreateMap<TagEntity, TagListDto>();
+		CreateMap<TagEntity, TagDto>();
+		CreateMap<CreateUpdateTagDto, TagEntity>();
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CMS.Data.Exceptions;
-using CMS.Data.Model.Entities;
 using CMS.Data.Model.Entities.Blog;
 using CMS.Data.Repository;
 using CMS.Web.Aop.Filter;
@@ -25,11 +24,11 @@ public class CommentController : ControllerBase
 {
 	private readonly IAuditBaseRepository<Comment,long> _commentRepository;
 	private readonly ICommentService _commentService;
-	private readonly IAuditBaseRepository<Article,long> _articleRepository;
+	private readonly IAuditBaseRepository<ArticleEntity,long> _articleRepository;
 
 	public CommentController(
 		IAuditBaseRepository<Comment,long> commentAuditBaseRepository,
-		ICommentService commentService, IAuditBaseRepository<Article,long> articleRepository)
+		ICommentService commentService, IAuditBaseRepository<ArticleEntity,long> articleRepository)
 	{
 		_commentRepository = commentAuditBaseRepository;
 		_commentService = commentService;

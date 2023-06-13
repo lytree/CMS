@@ -1,10 +1,10 @@
 ﻿using Autofac;
 using AutoMapper;
 using CMS.Data.Exceptions;
-using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Settings;
 using CMS.Data.Model.Entities.User;
 using CMS.Data.Model.Enums;
-using CMS.Data.Options;
+using CMS.Data.Model.Options;
 using CMS.Data.Repository;
 using CMS.Data.Repository.Implementation;
 using CMS.Data.Utils;
@@ -77,7 +77,6 @@ public class AccountController : ApiControllerBase
 	/// 登录接口
 	/// </summary>
 	/// <param name="loginInputDto">用户名/密码：admin/123qwe</param>
-	[DisableAuditing]
 	[ServiceFilter(typeof(RecaptchaVerifyActionFilter))]
 	[HttpPost("login")]
 	public Task<Tokens> Login([FromBody] LoginInputDto loginInputDto, [FromHeader] string? tag)

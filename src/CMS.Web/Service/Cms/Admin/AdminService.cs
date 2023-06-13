@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Other;
 using CMS.Data.Repository;
 using CMS.Web.Service.Cms.Admins;
 using CMS.Web.Service.Cms.Permissions;

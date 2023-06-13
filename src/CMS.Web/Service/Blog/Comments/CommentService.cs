@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using CMS.Data.Exceptions;
 using CMS.Data.Extensions;
-using CMS.Data.Model.Entities;
 using CMS.Data.Model.Entities.Blog;
 using CMS.Data.Repository;
 using CMS.Web.Data;
@@ -19,11 +18,11 @@ namespace CMS.Web.Service.Blog.Comments;
 public class CommentService : ApplicationService, ICommentService
 {
 	private readonly IAuditBaseRepository<Comment,long> _commentRepository;
-	private readonly IAuditBaseRepository<Article,long> _articleRepository;
+	private readonly IAuditBaseRepository<ArticleEntity,long> _articleRepository;
 	private readonly IFileRepository _fileRepository;
 	private readonly ICapPublisher _capBus;
 
-	public CommentService(IAuditBaseRepository<Comment,long> commentRepository, IAuditBaseRepository<Article,long> articleRepository,
+	public CommentService(IAuditBaseRepository<Comment,long> commentRepository, IAuditBaseRepository<ArticleEntity,long> articleRepository,
 		IFileRepository fileRepository, ICapPublisher capBus)
 	{
 		_commentRepository = commentRepository;

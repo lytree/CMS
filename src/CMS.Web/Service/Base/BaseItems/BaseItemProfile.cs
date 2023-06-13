@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Base;
 
 namespace CMS.Web.Service.Base.BaseItems;
 

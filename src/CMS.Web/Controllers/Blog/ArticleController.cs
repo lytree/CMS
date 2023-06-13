@@ -25,11 +25,11 @@ namespace CMS.Web.Controllers.Blog;
 [Authorize]
 public class ArticleController : ControllerBase
 {
-	private readonly IAuditBaseRepository<Article, long> _articleRepository;
+	private readonly IAuditBaseRepository<ArticleEntity, long> _articleRepository;
 	private readonly IArticleService _articleService;
 	private readonly IMapper _mapper;
 
-	public ArticleController(IAuditBaseRepository<Article, long> articleRepository, IMapper mapper, IArticleService articleService)
+	public ArticleController(IAuditBaseRepository<ArticleEntity, long> articleRepository, IMapper mapper, IArticleService articleService)
 	{
 		_articleRepository = articleRepository;
 		_mapper = mapper;
@@ -169,7 +169,7 @@ public class ArticleController : ControllerBase
 	[HttpPut("audit/{id}")]
 	public async Task<UnifyResponseDto> AuditAsync(long id, bool isAudit)
 	{
-		Article article = await _articleRepository.Select.Where(r => r.Id == id).ToOneAsync();
+		ArticleEntity article = await _articleRepository.Select.Where(r => r.Id == id).ToOneAsync();
 		if (article == null)
 		{
 			throw new CMSException("没有找到相关随笔");

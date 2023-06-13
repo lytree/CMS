@@ -1,15 +1,16 @@
 ﻿using System;
+using CMS.Data.Model.Core;
 using CMS.Data.Model.Entities.Base;
 using FreeSql.DataAnnotations;
 
 
 namespace CMS.Data.Model.Entities.Blog
 {
-    /// <summary>
-    ///  频道标签
-    /// </summary>
-    [Table(Name = "blog_channel_tag")]
-    public class ChannelTag : Entity<long>
+	/// <summary>
+	///  频道标签
+	/// </summary>
+	[Table(Name = "blog_channel_tag")]
+    public class ChannelTag : EntityAdd
     {
 
         public ChannelTag()
@@ -40,6 +41,6 @@ namespace CMS.Data.Model.Entities.Blog
         [Navigate("ChannelId")]
         public virtual Channel Channel { get; set; }
         [Navigate("TagId")]
-        public virtual Tag Tag { get; set; }
+        public virtual TagEntity Tag { get; set; }
     }
 }

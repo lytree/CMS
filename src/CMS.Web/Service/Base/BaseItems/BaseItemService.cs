@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using CMS.Data.Exceptions;
-using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Base;
 using CMS.Data.Repository;
 
 namespace CMS.Web.Service.Base.BaseItems;

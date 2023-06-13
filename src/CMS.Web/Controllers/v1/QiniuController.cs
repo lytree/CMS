@@ -4,8 +4,8 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Autofac;
-using CMS.Data.Model.Entities;
-using CMS.Data.Options;
+using CMS.Data.Model.Entities.Blog;
+using CMS.Data.Model.Options;
 using CMS.Data.Repository;
 using CMS.Web.Data;
 using CMS.Web.Service.Blog.Tags;
@@ -30,8 +30,8 @@ public class QiniuController : ControllerBase
 	private readonly IFileService _fileService;
 	private readonly IWebHostEnvironment _hostingEnv;
 	private readonly ITagService _tagService;
-	private readonly IAuditBaseRepository<Tag,long> _tagAuditBaseRepository;
-	public QiniuController(IWebHostEnvironment hostingEnv, IOptionsSnapshot<FileStorageOption> optionsSnapshot, IComponentContext componentContext, ITagService tagService, IAuditBaseRepository<Tag, long> tagAuditBaseRepository)
+	private readonly IAuditBaseRepository<TagEntity,long> _tagAuditBaseRepository;
+	public QiniuController(IWebHostEnvironment hostingEnv, IOptionsSnapshot<FileStorageOption> optionsSnapshot, IComponentContext componentContext, ITagService tagService, IAuditBaseRepository<TagEntity, long> tagAuditBaseRepository)
 	{
 		var _fileStorageOption = optionsSnapshot.Value;
 		_hostingEnv = hostingEnv;

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Other;
 using CMS.Web.Data;
 
 

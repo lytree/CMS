@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Blog;
 using CMS.Web.Data;
 using Microsoft.AspNetCore.Mvc;
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CMS.Data.Exceptions;
 using CMS.Data.Extensions;
-using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Settings;
 using CMS.Data.Repository;
 using CMS.Web.Data;
 using CMS.Web.Service;

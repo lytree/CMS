@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using CMS.Data.Exceptions;
 using CMS.Data.Extensions;
-using CMS.Data.Model.Entities;
 using CMS.Data.Model.Entities.Blog;
 using CMS.Data.Model.Enums;
 using CMS.Data.Repository;
@@ -17,10 +16,10 @@ namespace CMS.Web.Service.Blog.Tags;
 public class TagService : ApplicationService, ITagService
 {
 	private readonly IAuditBaseRepository<UserTag,long> _userTagRepository;
-	private readonly IAuditBaseRepository<Tag,long> _tagRepository;
-	private readonly IAuditBaseRepository<TagArticle, long> _tagArticleRepository;
+	private readonly IAuditBaseRepository<TagEntity,long> _tagRepository;
+	private readonly IAuditBaseRepository<TagArticleEntity, long> _tagArticleRepository;
 	private readonly IFileRepository _fileRepository;
-	public TagService(IAuditBaseRepository<Tag,long> tagRepository, IAuditBaseRepository<UserTag,long> userTagRepository, IAuditBaseRepository<TagArticle,long> tagArticleRepository, IFileRepository fileRepository)
+	public TagService(IAuditBaseRepository<TagEntity,long> tagRepository, IAuditBaseRepository<UserTag,long> userTagRepository, IAuditBaseRepository<TagArticleEntity,long> tagArticleRepository, IFileRepository fileRepository)
 	{
 		_tagRepository = tagRepository;
 		_userTagRepository = userTagRepository;
@@ -36,13 +35,13 @@ public class TagService : ApplicationService, ITagService
 			throw new CMSException($"标签[{createTag.TagName}]已存在");
 		}
 
-		Tag tag = Mapper.Map<Tag>(createTag);
+		TagEntity tag = Mapper.Map<TagEntity>(createTag);
 		await _tagRepository.InsertAsync(tag);
 	}
 
 	public async Task UpdateAsync(long id, CreateUpdateTagDto updateTag)
 	{
-		Tag tag = await _tagRepository.Select.Where(r => r.Id == id).ToOneAsync();
+		TagEntity tag = await _tagRepository.Select.Where(r => r.Id == id).ToOneAsync();
 		if (tag == null)
 		{
 			throw new CMSException("该数据不存在");
@@ -60,7 +59,7 @@ public class TagService : ApplicationService, ITagService
 
 	public async Task<TagListDto> GetAsync(long id)
 	{
-		Tag tag = await _tagRepository.Select.Where(a => a.Id == id).ToOneAsync();
+		TagEntity tag = await _tagRepository.Select.Where(a => a.Id == id).ToOneAsync();
 		if (tag == null)
 		{
 			throw new CMSException("不存在此标签");
@@ -145,7 +144,7 @@ public class TagService : ApplicationService, ITagService
 		{
 			return;
 		}
-		Tag tag = await _tagRepository.Select.Where(r => r.Id == id).ToOneAsync();
+		TagEntity tag = await _tagRepository.Select.Where(r => r.Id == id).ToOneAsync();
 		//防止数量一直减，减到小于0
 		if (inCreaseCount < 0)
 		{
@@ -167,7 +166,7 @@ public class TagService : ApplicationService, ITagService
 			return;
 		}
 
-		Tag tag = await _tagRepository.Select.Where(r => r.Id == id).ToOneAsync();
+		TagEntity tag = await _tagRepository.Select.Where(r => r.Id == id).ToOneAsync();
 		if (tag == null)
 		{
 			throw new CMSException("标签不存在", ErrorCode.NotFound);

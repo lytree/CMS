@@ -1,5 +1,5 @@
 ﻿using CMS.Data.Exceptions;
-using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Base;
 using CMS.Data.Repository;
 using System.Collections.Generic;
 using System.Linq;

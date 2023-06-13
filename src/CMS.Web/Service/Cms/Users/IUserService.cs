@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CMS.Data.Model.Entities;
+using CMS.Data.Model.Entities.Other;
 using CMS.Data.Model.Entities.User;
 using CMS.Data.Model.Enums;
 using CMS.Web.Data;
