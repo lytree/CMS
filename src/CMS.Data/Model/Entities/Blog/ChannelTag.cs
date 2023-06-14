@@ -39,7 +39,7 @@ namespace CMS.Data.Model.Entities.Blog
         public long TagId { get; set; }
 
         [Navigate("ChannelId")]
-        public virtual Channel Channel { get; set; }
+        public virtual ChannelEntity Channel { get; set; }
         [Navigate("TagId")]
         public virtual TagEntity Tag { get; set; }
     }

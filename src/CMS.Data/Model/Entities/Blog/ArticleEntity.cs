@@ -128,9 +128,9 @@ namespace CMS.Data.Model.Entities.Blog
 		/// </summary>
 		public bool Commentable { get; set; } = true;
 
-		public virtual Classify Classify { get; set; }
+		public virtual ClassifyEntity Classify { get; set; }
 
-		public virtual Channel Channel { get; set; }
+		public virtual ChannelEntity Channel { get; set; }
 
 
 		public virtual ICollection<TagEntity> Tags { get; set; }
@@ -146,7 +146,7 @@ namespace CMS.Data.Model.Entities.Blog
 		{
 			if (IsAudit == false)
 			{
-				throw new CMSException("该随笔因违规被拉黑");
+				throw new AppException("该随笔因违规被拉黑");
 			}
 
 			if (likesQuantity < 0)

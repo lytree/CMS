@@ -1,5 +1,4 @@
-﻿
-namespace ZhonTai.Admin.Services.File.Dto;
+﻿namespace CMS.Web.Service.Base.File.Dto;
 
 public class FileGetOutput
 {

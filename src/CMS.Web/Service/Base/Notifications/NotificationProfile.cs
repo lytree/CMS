@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using CMS.Data.Model.Entities.Blog;
 
-namespace CMS.Web.Service.Blog.Notifications;
+namespace CMS.Web.Service.Base.Notifications;
 
 public class NotificationProfile : Profile
 {
 	public NotificationProfile()
 	{
-		CreateMap<Notification, NotificationDto>();
+		CreateMap<NotificationEntity, NotificationDto>();
 		CreateMap<ArticleEntity, ArticleEntry>();
-		CreateMap<Comment, CommentEntry>();
-		CreateMap<CreateNotificationDto, Notification>();
+		CreateMap<CommentEntity, CommentEntry>();
+		CreateMap<CreateNotificationDto, NotificationEntity>();
 	}
 }

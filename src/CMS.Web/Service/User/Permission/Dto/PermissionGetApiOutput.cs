@@ -1,4 +1,4 @@
-﻿namespace ZhonTai.Admin.Services.Permission.Dto;
+﻿namespace CMS.Web.Service.User.Permission.Dto;
 
 public class PermissionGetApiOutput : PermissionUpdateApiInput
 {

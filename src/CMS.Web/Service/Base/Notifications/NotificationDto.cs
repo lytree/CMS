@@ -3,7 +3,7 @@ using CMS.Data.Model.Entities.Blog;
 using CMS.Web.Service.Cms.Users;
 
 
-namespace CMS.Web.Service.Blog.Notifications;
+namespace CMS.Web.Service.Base.Notifications;
 
 public class NotificationDto
 {

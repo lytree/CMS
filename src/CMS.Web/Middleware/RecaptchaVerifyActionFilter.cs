@@ -2,7 +2,7 @@
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using CMS.Data.Exceptions;
-using CMS.Web.Model.Options;
+using CMS.Web.Config;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -16,12 +16,12 @@ namespace CMS.Web.Middleware;
 /// </summary>
 public class RecaptchaVerifyActionFilter : ActionFilterAttribute
 {
-	private readonly GooglereCAPTCHAOptions _options;
+	private readonly GooglereCAPTCHAConfig _options;
 	private readonly IreCAPTCHASiteVerifyV3 _siteVerify;
 	private readonly ILogger<RecaptchaVerifyActionFilter> _logger;
 	public RecaptchaVerifyActionFilter(ILogger<RecaptchaVerifyActionFilter> logger,
 		IServiceProvider serviceProvider,
-		IOptionsMonitor<GooglereCAPTCHAOptions> options,
+		IOptionsMonitor<GooglereCAPTCHAConfig> options,
 		IreCAPTCHASiteVerifyV3 siteVerify
 	)
 	{
@@ -44,7 +44,7 @@ public class RecaptchaVerifyActionFilter : ActionFilterAttribute
 
 			if (googleRecaptchaToken.IsNullOrEmpty())
 			{
-				throw new CMSException("验证参数不存在，人机验证失败！");
+				throw new AppException("验证参数不存在，人机验证失败！");
 			}
 
 			try
@@ -57,7 +57,7 @@ public class RecaptchaVerifyActionFilter : ActionFilterAttribute
 
 				if (!response.Success || response.Score != 0 && response.Score < _options.MinimumScore)
 				{
-					throw new CMSException("人机验证失败！");
+					throw new AppException("人机验证失败！");
 				}
 			}
 			catch (NetworkInformationException ex)
@@ -69,6 +69,6 @@ public class RecaptchaVerifyActionFilter : ActionFilterAttribute
 			return;
 		}
 
-		throw new CMSException("人机验证失败，请检查参数！");
+		throw new AppException("人机验证失败，请检查参数！");
 	}
 }

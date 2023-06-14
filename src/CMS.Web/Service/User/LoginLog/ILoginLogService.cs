@@ -1,16 +1,16 @@
-﻿using ZhonTai.Admin.Core.Dto;
-using System.Threading.Tasks;
-using ZhonTai.Admin.Services.LoginLog.Dto;
+﻿using System.Threading.Tasks;
 using ZhonTai.Admin.Domain;
+using CMS.Web.Service.User.LoginLog.Dto;
+using CMS.Web.Model.Dto;
 
-namespace ZhonTai.Admin.Services.LoginLog;
+namespace CMS.Web.Service.User.LoginLog;
 
 /// <summary>
 /// 登录日志接口
 /// </summary>
 public interface ILoginLogService
 {
-    Task<PageOutput<LoginLogListOutput>> GetPageAsync(PageInput<LogGetPageDto> input);
+	Task<PageOutput<LoginLogListOutput>> GetPageAsync(PageInput<LogGetPageDto> input);
 
-    Task<long> AddAsync(LoginLogAddInput input);
+	Task<long> AddAsync(LoginLogAddInput input);
 }

@@ -1,13 +1,12 @@
-﻿
-namespace ZhonTai.Admin.Domain.User;
+﻿namespace CMS.Web.Service.User.User.Dto;
 
 /// <summary>
 /// 修改
 /// </summary>
-public class StaffUpdateInput: StaffAddInput
+public class StaffUpdateInput : StaffAddInput
 {
-    /// <summary>
-    /// 编号
-    /// </summary>
-    public long Id { get; set; }
+	/// <summary>
+	/// 编号
+	/// </summary>
+	public long Id { get; set; }
 }

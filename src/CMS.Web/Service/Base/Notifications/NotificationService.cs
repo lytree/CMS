@@ -9,14 +9,14 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 
-namespace CMS.Web.Service.Blog.Notifications;
+namespace CMS.Web.Service.Base.Notifications;
 
 public class NotificationService : ApplicationService, INotificationService
 {
-	private readonly IAuditBaseRepository<Notification,long> _notificationRepository;
+	private readonly IAuditBaseRepository<NotificationEntity, long> _notificationRepository;
 	private readonly IFileRepository _fileRepository;
 
-	public NotificationService(IAuditBaseRepository<Notification,long> notificationRepository, IFileRepository fileRepository)
+	public NotificationService(IAuditBaseRepository<NotificationEntity, long> notificationRepository, IFileRepository fileRepository)
 	{
 		_notificationRepository = notificationRepository;
 		_fileRepository = fileRepository;
@@ -57,12 +57,12 @@ public class NotificationService : ApplicationService, INotificationService
 	{
 		if (notificationDto.IsCancel == false)
 		{
-			Notification linNotification = Mapper.Map<Notification>(notificationDto);
+			NotificationEntity linNotification = Mapper.Map<NotificationEntity>(notificationDto);
 			await _notificationRepository.InsertAsync(linNotification);
 		}
 		else
 		{
-			Expression<Func<Notification, bool>> exprssion = r =>
+			Expression<Func<NotificationEntity, bool>> exprssion = r =>
 				r.NotificationType == notificationDto.NotificationType &&
 				r.UserInfoId == notificationDto.UserInfoId;
 			switch (notificationDto.NotificationType)

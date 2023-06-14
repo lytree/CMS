@@ -1,6 +1,6 @@
 ﻿using CMS.Web.Data;
 
-namespace CMS.Web.Service.Blog.Notifications;
+namespace CMS.Web.Service.Base.Notifications;
 
 public class NotificationSearchDto : PageDto
 {

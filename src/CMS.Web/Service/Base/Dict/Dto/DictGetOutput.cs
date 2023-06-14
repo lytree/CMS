@@ -1,4 +1,4 @@
-﻿namespace ZhonTai.Admin.Services.Dict.Dto;
+﻿namespace CMS.Web.Service.Base.Dict.Dto;
 
 public class DictGetOutput : DictUpdateInput
 {

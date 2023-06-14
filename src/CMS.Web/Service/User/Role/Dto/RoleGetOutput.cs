@@ -1,5 +1,4 @@
-﻿
-namespace ZhonTai.Admin.Services.Role.Dto;
+﻿namespace CMS.Web.Service.User.Role.Dto;
 
 public class RoleGetOutput : RoleUpdateInput
 {

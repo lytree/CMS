@@ -1,9 +1,9 @@
 ﻿using System;
 
 
-namespace CMS.Web.Service.Blog.Notifications;
+namespace CMS.Web.Service.Base.Notifications;
 
-public class CommentEntry 
+public class CommentEntry
 {
 	public long Id { get; set; }
 	public long? RespId { get; set; }

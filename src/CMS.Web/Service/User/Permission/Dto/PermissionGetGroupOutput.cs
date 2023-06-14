@@ -1,6 +1,4 @@
-﻿using ZhonTai.Admin.Services.Permission.Dto;
-
-namespace ZhonTai.Admin.Services.Permission.Dto;
+﻿namespace CMS.Web.Service.User.Permission.Dto;
 
 public class PermissionGetGroupOutput : PermissionUpdateGroupInput
 {

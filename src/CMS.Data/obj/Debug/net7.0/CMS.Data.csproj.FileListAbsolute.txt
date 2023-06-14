@@ -10,3 +10,6 @@ D:\Code\VS\CMS\src\CMS.Data\obj\Debug\net7.0\CMS.Data.dll
 D:\Code\VS\CMS\src\CMS.Data\obj\Debug\net7.0\refint\CMS.Data.dll
 D:\Code\VS\CMS\src\CMS.Data\obj\Debug\net7.0\CMS.Data.pdb
 D:\Code\VS\CMS\src\CMS.Data\obj\Debug\net7.0\ref\CMS.Data.dll
+D:\Code\VS\CMS\src\CMS.Data\bin\Debug\net7.0\CMS.Common.dll
+D:\Code\VS\CMS\src\CMS.Data\bin\Debug\net7.0\CMS.Common.pdb
+D:\Code\VS\CMS\src\CMS.Data\obj\Debug\net7.0\CMS.Data.csproj.CopyComplete

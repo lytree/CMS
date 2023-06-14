@@ -1,4 +1,4 @@
-﻿namespace CMS.Web.Service.Blog.Notifications;
+﻿namespace CMS.Web.Service.Base.Notifications;
 
 public class EventService
 {

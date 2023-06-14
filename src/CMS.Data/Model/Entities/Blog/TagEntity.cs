@@ -58,7 +58,7 @@ namespace CMS.Data.Model.Entities.Blog
 
 		public virtual ICollection<ArticleEntity> Articles { get; set; }
 
-		public virtual ICollection<Channel> Channels { get; set; }
+		public virtual ICollection<ChannelEntity> Channels { get; set; }
 
 		public virtual ICollection<ChannelTag> ChannelTags { get; set; }
 

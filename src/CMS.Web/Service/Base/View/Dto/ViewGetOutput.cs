@@ -1,5 +1,4 @@
-﻿
-namespace ZhonTai.Admin.Services.View.Dto;
+﻿namespace CMS.Web.Service.Base.View.Dto;
 
 public class ViewGetOutput : ViewUpdateInput
 {

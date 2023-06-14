@@ -1,16 +1,16 @@
 ﻿using System.Threading.Tasks;
-using ZhonTai.Admin.Core.Dto;
-using ZhonTai.Admin.Services.OprationLog.Dto;
 using ZhonTai.Admin.Domain;
+using CMS.Web.Service.Base.OprationLog.Dto;
+using CMS.Web.Model.Dto;
 
-namespace ZhonTai.Admin.Services.OprationLog;
+namespace CMS.Web.Service.Base.OprationLog;
 
 /// <summary>
 /// 操作日志接口
 /// </summary>
 public interface IOprationLogService
 {
-    Task<PageOutput<OprationLogListOutput>> GetPageAsync(PageInput<LogGetPageDto> input);
+	Task<PageOutput<OprationLogListOutput>> GetPageAsync(PageInput<LogGetPageDto> input);
 
-    Task<long> AddAsync(OprationLogAddInput input);
+	Task<long> AddAsync(OprationLogAddInput input);
 }
