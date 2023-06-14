@@ -24,11 +24,11 @@ public class CommentController : ControllerBase
 {
 	private readonly IAuditBaseRepository<Comment,long> _commentRepository;
 	private readonly ICommentService _commentService;
-	private readonly IAuditBaseRepository<ArticleEntity,long> _articleRepository;
+	private readonly IAuditBaseRepository<Article,long> _articleRepository;
 
 	public CommentController(
 		IAuditBaseRepository<Comment,long> commentAuditBaseRepository,
-		ICommentService commentService, IAuditBaseRepository<ArticleEntity,long> articleRepository)
+		ICommentService commentService, IAuditBaseRepository<Article,long> articleRepository)
 	{
 		_commentRepository = commentAuditBaseRepository;
 		_commentService = commentService;

@@ -1,5 +1,6 @@
 ﻿using CMS.Data.Attributes;
 using CMS.Data.Model.Core;
+using CMS.Data.Model.Entities.Base;
 using FreeSql.DataAnnotations;
 using System;
 using System.Collections.Generic;

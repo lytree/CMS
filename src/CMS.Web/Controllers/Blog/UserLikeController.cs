@@ -23,13 +23,13 @@ namespace CMS.Web.Controllers.Blog;
 [Authorize]
 public class UserLikeController : ApiControllerBase
 {
-	private readonly IAuditBaseRepository<ArticleEntity, long> _articleRepository;
+	private readonly IAuditBaseRepository<Article, long> _articleRepository;
 	private readonly IAuditBaseRepository<Comment, long> _commentRepository;
 	private readonly ICapPublisher _capBus;
 	private readonly IUserLikeService _userLikeService;
 	private readonly UnitOfWorkManager _unitOfWorkManager;
 	public UserLikeController(
-		IAuditBaseRepository<ArticleEntity, long> articleRepository,
+		IAuditBaseRepository<Article, long> articleRepository,
 		IAuditBaseRepository<Comment, long> commentRepository,
 		ICapPublisher capBus,
 		UnitOfWorkManager unitOfWorkManager,
@@ -84,7 +84,7 @@ public class UserLikeController : ApiControllerBase
 		{
 			case UserLikeSubjectType.UserLikeArticle:
 
-				ArticleEntity subjectArticle = await _articleRepository.Where(r => r.Id == createUpdateUserLike.SubjectId).ToOneAsync();
+				Article subjectArticle = await _articleRepository.Where(r => r.Id == createUpdateUserLike.SubjectId).ToOneAsync();
 
 				createNotificationDto.NotificationRespUserId = subjectArticle.CreateUserId.Value;
 				createNotificationDto.NotificationType = NotificationType.UserLikeArticle;

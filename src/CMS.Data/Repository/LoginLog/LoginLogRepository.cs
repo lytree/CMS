@@ -1,4 +1,4 @@
-﻿using CMS.Data.Model.Entities.Base;
+﻿using CMS.Data.Model.Entities.User;
 using CMS.Data.Repository.Core;
 using FreeSql;
 
