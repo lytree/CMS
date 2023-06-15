@@ -1,21 +1,20 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using ZhonTai.Admin.Domain.Role;
-using ZhonTai.Admin.Domain.RolePermission;
-using ZhonTai.Admin.Domain.Role.Dto;
-using ZhonTai.DynamicApi;
-using ZhonTai.DynamicApi.Attributes;
 using Microsoft.AspNetCore.Mvc;
-using ZhonTai.Admin.Core.Consts;
-using ZhonTai.Admin.Core.Attributes;
-using ZhonTai.Admin.Domain.UserRole;
-using ZhonTai.Admin.Domain.User;
-using ZhonTai.Admin.Domain;
-using ZhonTai.Admin.Domain.Org;
-using ZhonTai.Admin.Domain.RoleOrg;
+
 using System.Collections.Generic;
 using CMS.Web.Service.User.Role.Dto;
 using CMS.Web.Model.Dto;
+using CMS.DynamicApi;
+using CMS.Web.Model.Consts;
+using CMS.Data.Repository.Role;
+using CMS.DynamicApi.Attributes;
+using CMS.Data.Repository.User;
+using CMS.Data.Repository.UserRole;
+using CMS.Data.Repository.RolePermission;
+using CMS.Common.Extensions;
+using CMS.Data.Model.Entities.User;
+using CMS.Data.Attributes;
 
 namespace CMS.Web.Service.User.Role;
 
@@ -30,30 +29,12 @@ public class RoleService : BaseService, IRoleService, IDynamicApi
 	private IUserRepository _userRepository => LazyGetRequiredService<IUserRepository>();
 	private IUserRoleRepository _userRoleRepository => LazyGetRequiredService<IUserRoleRepository>();
 	private IRolePermissionRepository _rolePermissionRepository => LazyGetRequiredService<IRolePermissionRepository>();
-	private IRoleOrgRepository _roleOrgRepository => LazyGetRequiredService<IRoleOrgRepository>();
 
 	public RoleService()
 	{
 	}
 
-	/// <summary>
-	/// 添加角色部门
-	/// </summary>
-	/// <param name="roleId"></param>
-	/// <param name="orgIds"></param>
-	/// <returns></returns>
-	private async Task AddRoleOrgAsync(long roleId, long[] orgIds)
-	{
-		if (orgIds != null && orgIds.Any())
-		{
-			var roleOrgs = orgIds.Select(orgId => new RoleOrgEntity
-			{
-				RoleId = roleId,
-				OrgId = orgId
-			}).ToList();
-			await _roleOrgRepository.InsertAsync(roleOrgs);
-		}
-	}
+	
 
 	/// <summary>
 	/// 查询

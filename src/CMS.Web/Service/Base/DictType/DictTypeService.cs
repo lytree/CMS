@@ -1,16 +1,17 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using ZhonTai.Admin.Core.Attributes;
-using ZhonTai.Admin.Domain.DictType;
-using ZhonTai.Admin.Domain.Dict;
-using ZhonTai.Admin.Domain.DictType.Dto;
-using ZhonTai.DynamicApi;
-using ZhonTai.DynamicApi.Attributes;
-using Microsoft.AspNetCore.Mvc;
-using ZhonTai.Admin.Core.Consts;
+
 using CMS.Web.Service.Base.DictType.Dto;
 using CMS.Web.Model.Dto;
-
+using CMS.DynamicApi;
+using CMS.DynamicApi.Attributes;
+using CMS.Web.Model.Consts;
+using CMS.Data.Repository.DictionaryType;
+using CMS.Data.Repository.Dictionary;
+using Microsoft.AspNetCore.Mvc;
+using CMS.Data.Model.Entities.Base;
+using CMS.Data.Attributes;
+using CMS.Common.Extensions;
 namespace CMS.Web.Service.Base.DictType;
 
 /// <summary>

@@ -1,10 +1,9 @@
-﻿using CMS.Web.Model.Dto;
+﻿using CMS.Data.Model.Entities.Base;
+using CMS.Web.Model.Dto;
 using CMS.Web.Service.Base.File.Dto;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-using ZhonTai.Admin.Domain.File;
 
 namespace CMS.Web.Service.Base.File;
 

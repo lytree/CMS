@@ -1,4 +1,6 @@
 ﻿using CMS.Data.Attributes;
+using CMS.Web.Config;
+using CMS.Common.Extensions;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;

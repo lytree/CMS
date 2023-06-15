@@ -12,7 +12,7 @@ using SixLabors.ImageSharp.PixelFormats;
 using CMS.Web.Tools.Captcha.Dto;
 using CMS.Web.Tools.Cache;
 using CMS.Data.Attributes;
-
+using CMS.Common.Extensions;
 namespace CMS.Web.Tools.Captcha;
 
 /// <summary>

@@ -1,7 +1,7 @@
 ﻿using CMS.Common.Extensions;
 using System.Text.RegularExpressions;
 
-namespace ZhonTai.Common.Helpers;
+namespace CMS.Common.Helpers;
 
 /// <summary>
 /// 数据脱敏

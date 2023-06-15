@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using ZhonTai.Admin.Domain.DictType.Dto;
 using CMS.Web.Service.Base.DictType.Dto;
 using CMS.Web.Model.Dto;
 

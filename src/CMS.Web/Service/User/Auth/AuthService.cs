@@ -9,35 +9,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.IdentityModel.JsonWebTokens;
-using ZhonTai.Admin.Core.Auth;
-using ZhonTai.Admin.Core.Attributes;
-using ZhonTai.Admin.Core.Configs;
-using ZhonTai.Admin.Core.Consts;
-using ZhonTai.Admin.Domain.Permission;
-using ZhonTai.Admin.Domain.User;
-using ZhonTai.Admin.Domain.Tenant;
-using ZhonTai.Admin.Domain.RolePermission;
-using ZhonTai.Admin.Domain.UserRole;
-using ZhonTai.Admin.Services.LoginLog.Dto;
-using ZhonTai.Common.Extensions;
-using ZhonTai.Common.Helpers;
-using ZhonTai.DynamicApi;
-using ZhonTai.DynamicApi.Attributes;
-using FreeSql;
-using ZhonTai.Admin.Domain.TenantPermission;
-using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
-using ZhonTai.Admin.Core.Captcha;
-using Newtonsoft.Json;
-using Lazy.SlideCaptcha.Core.Validator;
-using static Lazy.SlideCaptcha.Core.ValidateResult;
-using ZhonTai.Admin.Domain.PkgPermission;
-using ZhonTai.Admin.Domain.TenantPkg;
+
 using CMS.Web.Service.User.Auth.Dto;
 using CMS.Web.Service.User.User;
 using CMS.Web.Service.User.LoginLog;
 using CMS.Web.Model.Dto;
-
+using CMS.DynamicApi;
+using CMS.Web.Model.Consts;
+using CMS.DynamicApi.Attributes;
+using CMS.Web.Config;
+using CMS.Data.Repository.Permission;
+using CMS.Data.Repository.User;
+using CMS.Data.Model.Entities.User;
+using Microsoft.AspNetCore.Identity;
+using CMS.Data.Auth;
+using CMS.Data.Attributes;
+using CMS.Common.Helpers;
+using CMS.Common.Extensions;
 namespace CMS.Web.Service.User.Auth;
 
 /// <summary>
@@ -50,7 +38,6 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 	private readonly JwtConfig _jwtConfig;
 	private readonly IPermissionRepository _permissionRepository;
 	private readonly IUserRepository _userRepository;
-	private readonly ITenantRepository _tenantRepository;
 	private IPasswordHasher<UserEntity> _passwordHasher => LazyGetRequiredService<IPasswordHasher<UserEntity>>();
 	private ISlideCaptcha _captcha => LazyGetRequiredService<ISlideCaptcha>();
 
@@ -58,15 +45,13 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 		AppConfig appConfig,
 		JwtConfig jwtConfig,
 		IUserRepository userRepository,
-		IPermissionRepository permissionRepository,
-		ITenantRepository tenantRepository
+		IPermissionRepository permissionRepository
 	)
 	{
 		_appConfig = appConfig;
 		_jwtConfig = jwtConfig;
 		_userRepository = userRepository;
 		_permissionRepository = permissionRepository;
-		_tenantRepository = tenantRepository;
 	}
 
 	/// <summary>
@@ -90,15 +75,6 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 			new Claim(ClaimAttributes.UserType, user.Type.ToInt().ToString(), ClaimValueTypes.Integer32),
 		};
 
-		if (_appConfig.Tenant)
-		{
-			claims.AddRange(new[]
-			{
-				new Claim(ClaimAttributes.TenantId, user.TenantId.ToString(), ClaimValueTypes.Integer64),
-				new Claim(ClaimAttributes.TenantType, user.Tenant?.TenantType.ToInt().ToString(), ClaimValueTypes.Integer32),
-				new Claim(ClaimAttributes.DbKey, user.Tenant?.DbKey ?? "")
-			});
-		}
 
 		var token = LazyGetRequiredService<IUserToken>().Create(claims.ToArray());
 
@@ -161,27 +137,14 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 			if (!User.PlatformAdmin)
 			{
 				var db = _permissionRepository.Orm;
-				if (User.TenantAdmin)
-				{
-					menuSelect = menuSelect.Where(a =>
-					   db.Select<TenantPermissionEntity>()
-					   .Where(b => b.PermissionId == a.Id && b.TenantId == User.TenantId)
-					   .Any()
-					   ||
-					   db.Select<TenantPkgEntity, PkgPermissionEntity>()
-					   .Where((b, c) => b.PkgId == c.PkgId && b.TenantId == User.TenantId && c.PermissionId == a.Id)
-					   .Any()
-				   );
-				}
-				else
-				{
-					menuSelect = menuSelect.Where(a =>
-					   db.Select<RolePermissionEntity>()
-					   .InnerJoin<UserRoleEntity>((b, c) => b.RoleId == c.RoleId && c.UserId == User.Id)
-					   .Where(b => b.PermissionId == a.Id)
-					   .Any()
-				   );
-				}
+
+				menuSelect = menuSelect.Where(a =>
+				   db.Select<RolePermissionEntity>()
+				   .InnerJoin<UserRoleEntity>((b, c) => b.RoleId == c.RoleId && c.UserId == User.Id)
+				   .Where(b => b.PermissionId == a.Id)
+				   .Any()
+			   );
+
 
 				menuSelect = menuSelect.AsTreeCte(up: true);
 			}
@@ -220,27 +183,14 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 			if (!User.PlatformAdmin)
 			{
 				var db = _permissionRepository.Orm;
-				if (User.TenantAdmin)
-				{
-					dotSelect = dotSelect.Where(a =>
-					   db.Select<TenantPermissionEntity>()
-					   .Where(b => b.PermissionId == a.Id && b.TenantId == User.TenantId)
-					   .Any()
-					   ||
-					   db.Select<TenantPkgEntity, PkgPermissionEntity>()
-					   .Where((b, c) => b.PkgId == c.PkgId && b.TenantId == User.TenantId && c.PermissionId == a.Id)
-					   .Any()
-					);
-				}
-				else
-				{
-					dotSelect = dotSelect.Where(a =>
-						db.Select<RolePermissionEntity>()
-						.InnerJoin<UserRoleEntity>((b, c) => b.RoleId == c.RoleId && c.UserId == User.Id)
-						.Where(b => b.PermissionId == a.Id)
-						.Any()
-					);
-				}
+
+				dotSelect = dotSelect.Where(a =>
+					db.Select<RolePermissionEntity>()
+					.InnerJoin<UserRoleEntity>((b, c) => b.RoleId == c.RoleId && c.UserId == User.Id)
+					.Where(b => b.PermissionId == a.Id)
+					.Any()
+				);
+
 			}
 
 			//用户权限点
@@ -276,44 +226,21 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 			if (!User.PlatformAdmin)
 			{
 				var db = _permissionRepository.Orm;
-				if (User.TenantAdmin)
-				{
-					menuSelect = menuSelect.Where(a =>
-					   db.Select<TenantPermissionEntity>()
-					   .Where(b => b.PermissionId == a.Id && b.TenantId == User.TenantId)
-					   .Any()
-					   ||
-					   db.Select<TenantPkgEntity, PkgPermissionEntity>()
-					   .Where((b, c) => b.PkgId == c.PkgId && b.TenantId == User.TenantId && c.PermissionId == a.Id)
-					   .Any()
-				   );
 
-					dotSelect = dotSelect.Where(a =>
-					   db.Select<TenantPermissionEntity>()
-					   .Where(b => b.PermissionId == a.Id && b.TenantId == User.TenantId)
-					   .Any()
-					   ||
-					   db.Select<TenantPkgEntity, PkgPermissionEntity>()
-					   .Where((b, c) => b.PkgId == c.PkgId && b.TenantId == User.TenantId && c.PermissionId == a.Id)
-					   .Any()
-					);
-				}
-				else
-				{
-					menuSelect = menuSelect.Where(a =>
-					   db.Select<RolePermissionEntity>()
-					   .InnerJoin<UserRoleEntity>((b, c) => b.RoleId == c.RoleId && c.UserId == User.Id)
-					   .Where(b => b.PermissionId == a.Id)
-					   .Any()
-				   );
+				menuSelect = menuSelect.Where(a =>
+				   db.Select<RolePermissionEntity>()
+				   .InnerJoin<UserRoleEntity>((b, c) => b.RoleId == c.RoleId && c.UserId == User.Id)
+				   .Where(b => b.PermissionId == a.Id)
+				   .Any()
+			   );
 
-					dotSelect = dotSelect.Where(a =>
-						db.Select<RolePermissionEntity>()
-						.InnerJoin<UserRoleEntity>((b, c) => b.RoleId == c.RoleId && c.UserId == User.Id)
-						.Where(b => b.PermissionId == a.Id)
-						.Any()
-					);
-				}
+				dotSelect = dotSelect.Where(a =>
+					db.Select<RolePermissionEntity>()
+					.InnerJoin<UserRoleEntity>((b, c) => b.RoleId == c.RoleId && c.UserId == User.Id)
+					.Where(b => b.PermissionId == a.Id)
+					.Any()
+				);
+
 
 				menuSelect = menuSelect.AsTreeCte(up: true);
 			}

@@ -3,33 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using ZhonTai.Admin.Core.Attributes;
-using ZhonTai.Admin.Core.Configs;
-using ZhonTai.Common.Helpers;
-using ZhonTai.Admin.Domain.Api;
-using ZhonTai.Admin.Domain.PermissionApi;
-using ZhonTai.Admin.Domain.Role;
-using ZhonTai.Admin.Domain.RolePermission;
-using ZhonTai.Admin.Domain.Tenant;
-using ZhonTai.Admin.Domain.User;
-using ZhonTai.Admin.Domain.UserRole;
-using ZhonTai.DynamicApi;
-using ZhonTai.DynamicApi.Attributes;
-using ZhonTai.Admin.Core.Consts;
-using ZhonTai.Admin.Domain.UserStaff;
-using ZhonTai.Admin.Domain.Org;
+
 using System.Data;
-using ZhonTai.Admin.Domain.TenantPermission;
-using FreeSql;
-using ZhonTai.Admin.Domain.User.Dto;
-using ZhonTai.Admin.Domain.RoleOrg;
-using ZhonTai.Admin.Domain.UserOrg;
 using Microsoft.AspNetCore.Identity;
 using System.Linq.Expressions;
 using System;
-using ZhonTai.Admin.Domain.PkgPermission;
-using ZhonTai.Admin.Domain.TenantPkg;
-using ZhonTai.Admin.Core;
+
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using CMS.Web.Service.User.User.Dto;
@@ -37,6 +16,15 @@ using CMS.Web.Service.User.Auth.Dto;
 using CMS.Web.Service.User.Auth;
 using CMS.Web.Service.Base.File;
 using CMS.Web.Model.Dto;
+using CMS.DynamicApi;
+using CMS.Web.Model.Consts;
+using CMS.Web.Config;
+using CMS.Data.Repository.User;
+using CMS.Data.Repository.Api;
+using CMS.Data.Repository.UserRole;
+using CMS.Data.Model.Entities.User;
+using CMS.Data.Attributes;
+using ZhonTai.Common.Helpers;
 
 namespace CMS.Web.Service.User.User;
 
@@ -49,13 +37,9 @@ public partial class UserService : BaseService, IUserService, IDynamicApi
 {
 	private AppConfig _appConfig => LazyGetRequiredService<AppConfig>();
 	private IUserRepository _userRepository => LazyGetRequiredService<IUserRepository>();
-	private IOrgRepository _orgRepository => LazyGetRequiredService<IOrgRepository>();
-	private ITenantRepository _tenantRepository => LazyGetRequiredService<ITenantRepository>();
 	private IApiRepository _apiRepository => LazyGetRequiredService<IApiRepository>();
 	private IUserStaffRepository _staffRepository => LazyGetRequiredService<IUserStaffRepository>();
 	private IUserRoleRepository _userRoleRepository => LazyGetRequiredService<IUserRoleRepository>();
-	private IRoleOrgRepository _roleOrgRepository => LazyGetRequiredService<IRoleOrgRepository>();
-	private IUserOrgRepository _userOrgRepository => LazyGetRequiredService<IUserOrgRepository>();
 	private IPasswordHasher<UserEntity> _passwordHasher => LazyGetRequiredService<IPasswordHasher<UserEntity>>();
 	private IFileService _fileService => LazyGetRequiredService<IFileService>();
 
@@ -73,7 +57,6 @@ public partial class UserService : BaseService, IUserService, IDynamicApi
 		var userEntity = await _userRepository.Select
 		.WhereDynamic(id)
 		.IncludeMany(a => a.Roles.Select(b => new RoleEntity { Id = b.Id, Name = b.Name }))
-		.IncludeMany(a => a.Orgs.Select(b => new OrgEntity { Id = b.Id, Name = b.Name }))
 		.ToOneAsync(a => new
 		{
 			a.Id,
@@ -82,8 +65,6 @@ public partial class UserService : BaseService, IUserService, IDynamicApi
 			a.Mobile,
 			a.Email,
 			a.Roles,
-			a.Orgs,
-			a.OrgId,
 			a.ManagerUserId,
 			ManagerUserName = a.ManagerUser.Name,
 			Staff = new
@@ -157,13 +138,6 @@ public partial class UserService : BaseService, IUserService, IDynamicApi
 	{
 		var output = await _userRepository.Select.DisableGlobalFilter(FilterNames.Tenant)
 			.WhereDynamic(id).ToOneAsync<AuthLoginOutput>();
-
-		if (_appConfig.Tenant && output?.TenantId.Value > 0)
-		{
-			var tenant = await _tenantRepository.Select.DisableGlobalFilter(FilterNames.Tenant)
-				.WhereDynamic(output.TenantId).ToOneAsync<AuthLoginTenantDto>();
-			output.Tenant = tenant;
-		}
 		return output;
 	}
 

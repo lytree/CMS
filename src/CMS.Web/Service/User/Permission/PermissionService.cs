@@ -3,24 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using ZhonTai.Admin.Core.Attributes;
-using ZhonTai.Admin.Core.Configs;
-using ZhonTai.Admin.Domain.Permission;
-using ZhonTai.Admin.Domain.RolePermission;
-using ZhonTai.Admin.Domain.TenantPermission;
-using ZhonTai.Admin.Domain.UserRole;
-using ZhonTai.Admin.Domain.PermissionApi;
-using ZhonTai.Admin.Domain.Role;
-using ZhonTai.Admin.Domain.User;
-using ZhonTai.DynamicApi;
-using ZhonTai.DynamicApi.Attributes;
-using ZhonTai.Admin.Core.Consts;
-using FreeSql;
-using ZhonTai.Admin.Domain.Tenant;
-using ZhonTai.Admin.Domain.PkgPermission;
-using ZhonTai.Admin.Domain.TenantPkg;
 using CMS.Web.Service.User.Permission.Dto;
 using CMS.Web.Model.Dto;
+using CMS.DynamicApi;
+using CMS.Web.Model.Consts;
+using CMS.DynamicApi.Attributes;
+using CMS.Web.Config;
+using CMS.Data.Repository.Permission;
+using CMS.Data.Repository.User;
+using CMS.Data.Repository.Role;
+using CMS.Data.Repository.RolePermission;
+using CMS.Data.Repository.UserRole;
+using CMS.Data.Repository.PermissionApi;
+using CMS.Data.Model.Entities.User;
+using CMS.Common.Extensions;
+using CMS.Data.Attributes;
 
 namespace CMS.Web.Service.User.Permission;
 
@@ -36,7 +33,6 @@ public class PermissionService : BaseService, IPermissionService, IDynamicApi
 	private IRoleRepository _roleRepository => LazyGetRequiredService<IRoleRepository>();
 	private IUserRepository _userRepository => LazyGetRequiredService<IUserRepository>();
 	private IRolePermissionRepository _rolePermissionRepository => LazyGetRequiredService<IRolePermissionRepository>();
-	private ITenantPermissionRepository _tenantPermissionRepository => LazyGetRequiredService<ITenantPermissionRepository>();
 	private IUserRoleRepository _userRoleRepository => LazyGetRequiredService<IUserRoleRepository>();
 	private IPermissionApiRepository _permissionApiRepository => LazyGetRequiredService<IPermissionApiRepository>();
 
@@ -186,20 +182,7 @@ public class PermissionService : BaseService, IPermissionService, IDynamicApi
 		return permissionIds;
 	}
 
-	/// <summary>
-	/// 查询租户权限列表
-	/// </summary>
-	/// <param name="tenantId"></param>
-	/// <returns></returns>
-	[Obsolete("请使用查询套餐权限列表PkgService.GetPkgPermissionListAsync")]
-	public async Task<List<long>> GetTenantPermissionListAsync(long tenantId)
-	{
-		var permissionIds = await _tenantPermissionRepository
-			.Select.Where(d => d.TenantId == tenantId)
-			.ToListAsync(a => a.PermissionId);
-
-		return permissionIds;
-	}
+	
 
 	/// <summary>
 	/// 新增分组
@@ -459,55 +442,6 @@ public class PermissionService : BaseService, IPermissionService, IDynamicApi
 		foreach (var userId in userIds)
 		{
 			await Cache.DelAsync(CacheKeys.UserPermissions + userId);
-		}
-	}
-
-	/// <summary>
-	/// 保存租户权限
-	/// </summary>
-	/// <param name="input"></param>
-	/// <returns></returns>
-	[AdminTransaction]
-	[Obsolete("请使用设置套餐权限PkgService.SetPkgPermissionsAsync")]
-	public virtual async Task SaveTenantPermissionsAsync(PermissionSaveTenantPermissionsInput input)
-	{
-		//查询租户权限
-		var permissionIds = await _tenantPermissionRepository.Select.Where(d => d.TenantId == input.TenantId).ToListAsync(m => m.PermissionId);
-
-		//批量删除租户权限
-		var deleteIds = permissionIds.Where(d => !input.PermissionIds.Contains(d));
-		if (deleteIds.Any())
-		{
-			await _tenantPermissionRepository.DeleteAsync(m => m.TenantId == input.TenantId && deleteIds.Contains(m.PermissionId));
-			//删除租户下关联的角色权限
-			await _rolePermissionRepository.DeleteAsync(a => deleteIds.Contains(a.PermissionId));
-		}
-
-		//批量插入租户权限
-		var tenatPermissions = new List<TenantPermissionEntity>();
-		var insertPermissionIds = input.PermissionIds.Where(d => !permissionIds.Contains(d));
-		if (insertPermissionIds.Any())
-		{
-			foreach (var permissionId in insertPermissionIds)
-			{
-				tenatPermissions.Add(new TenantPermissionEntity()
-				{
-					TenantId = input.TenantId,
-					PermissionId = permissionId,
-				});
-			}
-			await _tenantPermissionRepository.InsertAsync(tenatPermissions);
-		}
-
-		//清除租户下所有用户权限缓存
-		using var _ = _userRepository.DataFilter.Disable(FilterNames.Tenant);
-		var userIds = await _userRepository.Select.Where(a => a.TenantId == input.TenantId).ToListAsync(a => a.Id);
-		if (userIds.Any())
-		{
-			foreach (var userId in userIds)
-			{
-				await Cache.DelAsync(CacheKeys.UserPermissions + userId);
-			}
 		}
 	}
 }

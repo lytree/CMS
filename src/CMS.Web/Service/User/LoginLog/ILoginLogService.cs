@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using ZhonTai.Admin.Domain;
 using CMS.Web.Service.User.LoginLog.Dto;
 using CMS.Web.Model.Dto;
+using CMS.Web.Service.Base.OprationLog.Dto;
 
 namespace CMS.Web.Service.User.LoginLog;
 

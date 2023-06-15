@@ -1,24 +1,30 @@
 ﻿using System.Threading.Tasks;
-using ZhonTai.DynamicApi;
-using ZhonTai.DynamicApi.Attributes;
-using Microsoft.AspNetCore.Mvc;
-using ZhonTai.Admin.Core.Consts;
-using ZhonTai.Admin.Domain.File;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using System;
-using ZhonTai.Admin.Core.Configs;
+
 using OnceMi.AspNetCore.OSS;
 using Microsoft.Extensions.Options;
 using System.Linq;
-using ZhonTai.Common.Files;
+
 using ZhonTai.Common.Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using ZhonTai.Admin.Core.Helpers;
+
 using Microsoft.AspNetCore.Hosting;
 using CMS.Web.Service.Base.File.Dto;
 using CMS.Web.Model.Dto;
+using CMS.DynamicApi;
+using CMS.Web.Model.Consts;
+using CMS.DynamicApi.Attributes;
+using CMS.Data.Repository.File;
+using CMS.Web.Config;
+using Microsoft.AspNetCore.Mvc;
+using CMS.Data.Model.Entities.Base;
+using CMS.Common.Files;
+using CMS.Common.Extensions;
+using CMS.Common.Helpers;
+using CMS.Web.Helper;
 
 namespace CMS.Web.Service.Base.File;
 

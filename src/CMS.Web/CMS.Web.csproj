@@ -39,6 +39,8 @@
 		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
 		<PackageReference Include="ToolGood.Words" Version="3.1.0" />
+		<PackageReference Include="UAParser" Version="3.1.47" />
+		<PackageReference Include="Lazy.SlideCaptcha.Core" Version="2.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -55,10 +57,11 @@
 	<ItemGroup>
 		<ProjectReference Include="..\CMS.Common\CMS.Common.csproj" />
 		<ProjectReference Include="..\CMS.Data\CMS.Data.csproj" />
+		<ProjectReference Include="..\CMS.DynamicApi\CMS.DynamicApi.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Service\Blog\" />
+		<Folder Include="Service\Blog\" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

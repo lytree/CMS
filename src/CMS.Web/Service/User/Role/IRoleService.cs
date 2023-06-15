@@ -2,7 +2,6 @@
 using CMS.Web.Service.User.Role.Dto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ZhonTai.Admin.Domain.Role.Dto;
 
 namespace CMS.Web.Service.User.Role;
 
