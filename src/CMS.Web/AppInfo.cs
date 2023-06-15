@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Serilog;
+using Serilog.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,7 +81,7 @@ public static class AppInfo
 	/// <summary>
 	/// 日志
 	/// </summary>
-	public static Logger Log => LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+	public static Logger Log => new LoggerConfiguration().WriteTo.Console().CreateLogger();
 
 	#region private
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CMS.Data.Attributes;
+namespace CMS.Common.Attributes;
 
 /// <summary>
 /// 不生成特性

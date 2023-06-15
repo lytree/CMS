@@ -1,7 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using CMS.Data.Model.Entities.User;
+using Newtonsoft.Json;
 using System.Collections.Generic;
-using ZhonTai.Admin.Domain.Org;
-using ZhonTai.Admin.Domain.Role;
 
 namespace CMS.Web.Service.User.Role.Dto;
 
@@ -29,23 +28,6 @@ public class RoleAddInput
 	/// 角色类型
 	/// </summary>
 	public RoleType Type { get; set; }
-
-	/// <summary>
-	/// 数据范围
-	/// </summary>
-	public DataScope DataScope { get; set; } = DataScope.All;
-
-	/// <summary>
-	/// 指定部门
-	/// </summary>
-	public long[] OrgIds { get; set; }
-
-	/// <summary>
-	/// 部门列表
-	/// </summary>
-	[JsonIgnore]
-	public ICollection<OrgEntity> Orgs { get; set; }
-
 	/// <summary>
 	/// 说明
 	/// </summary>

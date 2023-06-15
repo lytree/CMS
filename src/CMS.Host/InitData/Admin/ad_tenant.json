@@ -1,0 +1,20 @@
+[
+  {
+    "id": 161223412138053,
+    "userId": 161223411986501,
+    "orgId": 189097691009093,
+    "tenantType": 1,
+    "dbKey": "masterdb",
+    "dbType": null,
+    "connectionString": "",
+    "enabled": true,
+    "description": "",
+    "isDeleted": false,
+    "createdUserId": 161223411986501,
+    "createdUserName": "admin",
+    "createdTime": "2023-04-13T15:13:43",
+    "modifiedUserId": null,
+    "modifiedUserName": null,
+    "modifiedTime": null
+  }
+]

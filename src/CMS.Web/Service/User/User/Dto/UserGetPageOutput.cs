@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using CMS.Data.Model.Entities.User;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using ZhonTai.Admin.Domain.Role;
-using ZhonTai.Admin.Domain.User;
+
 
 namespace CMS.Web.Service.User.User.Dto;
 

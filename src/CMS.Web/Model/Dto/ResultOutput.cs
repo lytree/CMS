@@ -1,6 +1,8 @@
 ﻿
 
-using CMS.Data.Exceptions;
+using CMS.Common.Dto;
+using CMS.Common.Exceptions;
+
 
 namespace CMS.Web.Model.Dto;
 

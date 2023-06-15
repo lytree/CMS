@@ -1,10 +1,13 @@
 ﻿using CMS.Web.Tools.Cache;
+using FreeRedis;
+using Microsoft.CodeAnalysis.Differencing;
+using StackExchange.Redis;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using CMS.Common.Extensions;
 
-
-namespace ZhonTai.Admin.Tools.Cache;
+namespace CMS.Web.Tools.Cache;
 
 /// <summary>
 /// Redis缓存

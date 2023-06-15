@@ -45,8 +45,7 @@ public class RoleService : BaseService, IRoleService, IDynamicApi
 	{
 		var roleEntity = await _roleRepository.Select
 		.WhereDynamic(id)
-		.IncludeMany(a => a.Orgs.Select(b => new OrgEntity { Id = b.Id }))
-		.ToOneAsync(a => new RoleGetOutput { Orgs = a.Orgs });
+		.ToOneAsync();
 
 		var output = Mapper.Map<RoleGetOutput>(roleEntity);
 
@@ -184,10 +183,6 @@ public class RoleService : BaseService, IRoleService, IDynamicApi
 		}
 
 		await _roleRepository.InsertAsync(entity);
-		if (input.DataScope == DataScope.Custom)
-		{
-			await AddRoleOrgAsync(entity.Id, input.OrgIds);
-		}
 
 		return entity.Id;
 	}
@@ -217,12 +212,6 @@ public class RoleService : BaseService, IRoleService, IDynamicApi
 
 		Mapper.Map(input, entity);
 		await _roleRepository.UpdateAsync(entity);
-		await _roleOrgRepository.DeleteAsync(a => a.RoleId == entity.Id);
-		if (input.DataScope == DataScope.Custom)
-		{
-			await AddRoleOrgAsync(entity.Id, input.OrgIds);
-		}
-
 		var userIds = await _userRoleRepository.Select.Where(a => a.RoleId == entity.Id).ToListAsync(a => a.UserId);
 		foreach (var userId in userIds)
 		{
@@ -331,11 +320,6 @@ public class RoleService : BaseService, IRoleService, IDynamicApi
 
 		Mapper.Map(input, entity);
 		await _roleRepository.UpdateAsync(entity);
-		await _roleOrgRepository.DeleteAsync(a => a.RoleId == entity.Id);
-		if (input.DataScope == DataScope.Custom)
-		{
-			await AddRoleOrgAsync(entity.Id, input.OrgIds);
-		}
 
 		var userIds = await _userRoleRepository.Select.Where(a => a.RoleId == entity.Id).ToListAsync(a => a.UserId);
 		foreach (var userId in userIds)

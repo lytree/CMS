@@ -1,4 +1,6 @@
-﻿using ZhonTai.Admin.Core.Entities;
+﻿
+
+using CMS.Data.Model.Core;
 
 namespace CMS.Web.Service.User.User.Dto;
 

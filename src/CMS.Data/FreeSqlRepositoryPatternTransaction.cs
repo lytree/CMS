@@ -57,7 +57,7 @@ public static class UnitOfWorkExtensions
 	/// <param name="capPublisher"></param>
 	/// <param name="autoCommit"></param>
 	/// <remarks>
-	/// using var uow = LazyGetRequiredService&lt;UnitOfWorkManagerCloud&gt;().Begin(DbKeys.AppDb);<br/>
+	/// using var uow = LazyGetRequiredService&lt;UnitOfWorkManager&gt;().Begin(DbKeys.AppDb);<br/>
 	/// using var capTran = uow.BeginCapTran(LazyGetRequiredService&lt;ICapPublisher&gt;(), false);<br/>
 	/// capTran.Commit();
 	/// </remarks>

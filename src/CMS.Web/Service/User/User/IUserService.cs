@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ZhonTai.Admin.Domain.User.Dto;
 
 namespace CMS.Web.Service.User.User;
 
@@ -19,8 +18,6 @@ public interface IUserService
 	Task<PageOutput<UserGetPageOutput>> GetPageAsync(PageInput<UserGetPageDto> input);
 
 	Task<AuthLoginOutput> GetLoginUserAsync(long id);
-
-	Task<DataPermissionDto> GetDataPermissionAsync();
 
 	Task<long> AddAsync(UserAddInput input);
 
@@ -39,8 +36,6 @@ public interface IUserService
 	Task ChangePasswordAsync(UserChangePasswordInput input);
 
 	Task<string> ResetPasswordAsync(UserResetPasswordInput input);
-
-	Task SetManagerAsync(UserSetManagerInput input);
 
 	Task UpdateBasicAsync(UserUpdateBasicInput input);
 
