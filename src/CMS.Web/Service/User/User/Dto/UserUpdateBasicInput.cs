@@ -1,4 +1,4 @@
-﻿using ZhonTai.Admin.Core.Entities;
+﻿
 using System.ComponentModel.DataAnnotations;
 
 namespace CMS.Web.Service.User.User.Dto;

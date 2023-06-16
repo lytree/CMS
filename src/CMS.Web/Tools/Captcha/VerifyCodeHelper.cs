@@ -10,6 +10,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using CMS.Common.Attributes;
 
 namespace CMS.Web.Tools.Captcha;
 

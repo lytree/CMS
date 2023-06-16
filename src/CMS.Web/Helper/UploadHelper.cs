@@ -5,6 +5,7 @@ using FileInfo = CMS.Common.Files.FileInfo;
 using CMS.Common.Extensions;
 using CMS.Common.Helpers;
 using Yitter.IdGenerator;
+using CMS.Common.Attributes;
 
 namespace CMS.Web.Helper;
 

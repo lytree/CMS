@@ -7,6 +7,7 @@ using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 using CMS.Data.Auth;
 using CMS.Web.Tools.Cache;
+using CMS.Common.Extensions;
 
 namespace CMS.Web.Service;
 

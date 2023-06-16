@@ -11,8 +11,9 @@ using CMS.Common.Helpers;
 using CMS.Data.Repository.Core;
 using CMS.Common.Attributes;
 using CMS.Data.Transaction;
+using CMS.Common.Attributes.RegisterModules;
 
-namespace ZhonTai.Admin.Core.RegisterModules;
+namespace CMS.Web.RegisterModules;
 
 public class RegisterModule : Module
 {

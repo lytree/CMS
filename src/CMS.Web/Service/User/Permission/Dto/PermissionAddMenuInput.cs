@@ -1,5 +1,4 @@
-﻿using ZhonTai.Admin.Domain.Permission;
-
+﻿
 namespace CMS.Web.Service.User.Permission.Dto;
 
 public class PermissionAddMenuInput

@@ -1,4 +1,6 @@
-﻿using ZhonTai.Admin.Domain.Permission;
+﻿
+
+using CMS.Data.Model.Entities.User;
 
 namespace CMS.Web.Service.User.Permission.Dto;
 

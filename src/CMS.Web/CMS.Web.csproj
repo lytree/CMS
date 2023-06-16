@@ -16,6 +16,7 @@
 	<ItemGroup>
 		<PackageReference Include="FreeRedis" Version="1.1.2" />
 		<PackageReference Include="MailKit" Version="4.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyModel" Version="7.0.0" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 		<PackageReference Include="SixLabors.ImageSharp" Version="3.0.1" />
@@ -30,30 +31,34 @@
 		<PackageReference Include="AspNetCoreRateLimit" Version="5.0.0" />
 		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="Autofac.Extras.DynamicProxy" Version="7.0.0" />
-		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.7" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.7" />
-		<PackageReference Include="Owl.reCAPTCHA" Version="7.0.0" />
-		<PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+		<PackageReference Include="Serilog.Settings.Configuration" Version="7.0.0" />
+		<PackageReference Include="Serilog.Extensions.Hosting" Version="7.0.0" />
+		<PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 		<PackageReference Include="StackExchange.Redis" Version="2.6.116" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.5.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
 		<PackageReference Include="ToolGood.Words" Version="3.1.0" />
 		<PackageReference Include="UAParser" Version="3.1.47" />
+		<PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
 		<PackageReference Include="Lazy.SlideCaptcha.Core" Version="2.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<!-- Don't publish the SPA source files, but do show them in the project files list -->
+		<Compile Remove="Service\Blog\**" />
 		<Compile Remove="Service\新文件夹\**" />
 		<Content Remove="$(SpaRoot)**" />
+		<Content Remove="Service\Blog\**" />
 		<Content Remove="Service\新文件夹\**" />
+		<EmbeddedResource Remove="Service\Blog\**" />
 		<EmbeddedResource Remove="Service\新文件夹\**" />
 		<None Remove="$(SpaRoot)**" />
+		<None Remove="Service\Blog\**" />
 		<None Remove="Service\新文件夹\**" />
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
 	</ItemGroup>
@@ -62,10 +67,6 @@
 		<ProjectReference Include="..\CMS.Common\CMS.Common.csproj" />
 		<ProjectReference Include="..\CMS.Data\CMS.Data.csproj" />
 		<ProjectReference Include="..\CMS.DynamicApi\CMS.DynamicApi.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Service\Blog\" />
 	</ItemGroup>
 
 	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

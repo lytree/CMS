@@ -1,4 +1,5 @@
 ﻿using CMS.Web.Tools.Cache;
+using CMS.Common.Extensions;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections;
@@ -9,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 
-namespace ZhonTai.Admin.Tools.Cache;
+namespace CMS.Web.Tools.Cache;
 
 /// <summary>
 /// 内存缓存
