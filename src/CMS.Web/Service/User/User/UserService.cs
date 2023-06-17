@@ -226,10 +226,6 @@ public partial class UserService : BaseService, IUserService, IDynamicApi
 	[AdminTransaction]
 	public virtual async Task UpdateAsync(UserUpdateInput input)
 	{
-		if (input.Id == input.ManagerUserId)
-		{
-			throw ResultOutput.Exception("直属主管不能是自己");
-		}
 
 		Expression<Func<UserEntity, bool>> where = a => a.UserName == input.UserName;
 		where = where.Or(input.Mobile.NotNull(), a => a.Mobile == input.Mobile)

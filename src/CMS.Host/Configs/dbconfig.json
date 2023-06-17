@@ -3,7 +3,7 @@
   "key": "admindb",
 
   //程序集名称，自动获取实体表，为空则通过ConfigureFreeSql自定义配置
-  "assemblyNames": [ "ZhonTai.Admin" ],
+  "assemblyNames": [ "CMS.Data" ],
 
   //监听所有操作
   "monitorCommand": false,

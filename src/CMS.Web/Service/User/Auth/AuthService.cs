@@ -26,6 +26,11 @@ using CMS.Data.Auth;
 using CMS.Data.Attributes;
 using CMS.Common.Helpers;
 using CMS.Common.Extensions;
+using Newtonsoft.Json;
+using static Lazy.SlideCaptcha.Core.ValidateResult;
+using Lazy.SlideCaptcha.Core.Validator;
+using CMS.Web.Service.User.LoginLog.Dto;
+
 namespace CMS.Web.Service.User.Auth;
 
 /// <summary>
@@ -345,15 +350,6 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 
 			#region 获得token
 			var authLoginOutput = Mapper.Map<AuthLoginOutput>(user);
-			if (_appConfig.Tenant)
-			{
-				var tenant = await _tenantRepository.Select.WhereDynamic(user.TenantId).ToOneAsync<AuthLoginTenantDto>();
-				if (!(tenant != null && tenant.Enabled))
-				{
-					throw ResultOutput.Exception("企业已停用，禁止登录");
-				}
-				authLoginOutput.Tenant = tenant;
-			}
 			string token = GetToken(authLoginOutput);
 			#endregion
 
@@ -363,7 +359,6 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 
 			var loginLogAddInput = new LoginLogAddInput
 			{
-				TenantId = authLoginOutput.TenantId,
 				Name = authLoginOutput.Name,
 				ElapsedMilliseconds = sw.ElapsedMilliseconds,
 				Status = true,
@@ -428,15 +423,6 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 
 			#region 获得token
 			var authLoginOutput = Mapper.Map<AuthLoginOutput>(user);
-			if (_appConfig.Tenant)
-			{
-				var tenant = await _tenantRepository.Select.WhereDynamic(user.TenantId).ToOneAsync<AuthLoginTenantDto>();
-				if (!(tenant != null && tenant.Enabled))
-				{
-					throw ResultOutput.Exception("企业已停用，禁止登录");
-				}
-				authLoginOutput.Tenant = tenant;
-			}
 			string token = GetToken(authLoginOutput);
 			#endregion
 
@@ -446,7 +432,6 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 
 			var loginLogAddInput = new LoginLogAddInput
 			{
-				TenantId = authLoginOutput.TenantId,
 				Name = authLoginOutput.Name,
 				ElapsedMilliseconds = sw.ElapsedMilliseconds,
 				Status = true,
@@ -510,13 +495,7 @@ public class AuthService : BaseService, IAuthService, IDynamicApi
 			throw ResultOutput.Exception("账号已停用，禁止登录");
 		}
 
-		if (_appConfig.Tenant)
-		{
-			if (!(user.Tenant != null && user.Tenant.Enabled))
-			{
-				throw ResultOutput.Exception("企业已停用，禁止登录");
-			}
-		}
+	
 
 		string newToken = GetToken(user);
 		return new { token = newToken };

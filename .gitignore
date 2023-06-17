@@ -337,12 +337,6 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
-src/LinCms.Web/wwwroot/assets/
-src/LinCms.Web/wwwroot/_Illegal
-identityserver4/LinCms.IdentityServer4/Logs/
-src/LinCms.Web/Logs/
-/src/LinCms.Web/appsettings.Staging.json
-/identityserver4/LinCms.IdentityServer4/appsettings.Staging.json
 /code-scaffolding/*
 ###############
 #    folder   #
@@ -359,3 +353,12 @@ _site
 docs/api/*.yml
 docs/api/.manifest
 /identityserver4/LinCms.IdentityServer4/appsettings.Production.json
+.vs/CMS/DesignTimeBuild/.dtbcache.v2
+.vs/CMS/DesignTimeBuild/.dtbcache.v2
+.vs/CMS/DesignTimeBuild/.dtbcache.v2
+.vs/CMS/v17/.futdcache.v2
+.vs/*
+.vs/CMS/v17/fileList.bin
+.vs/CMS/v17/fileList.bin
+.vs/ProjectEvaluation/cms.metadata.v7.bin
+.vs/ProjectEvaluation/cms.projects.v7.bin

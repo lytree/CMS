@@ -32,5 +32,4 @@ public interface IRoleService
 
 	Task BatchSoftDeleteAsync(long[] ids);
 
-	Task SetDataScopeAsync(RoleSetDataScopeInput input);
 }

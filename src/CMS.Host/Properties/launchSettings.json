@@ -7,7 +7,7 @@
     }
   },
   "profiles": {
-    "ZhonTai.Host": {
+    "CMS.Host": {
       "commandName": "Project",
       "launchBrowser": true,
       "dotnetRunMessages": true,
