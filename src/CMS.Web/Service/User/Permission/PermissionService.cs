@@ -142,17 +142,6 @@ public class PermissionService : BaseService, IPermissionService, IDynamicApi
 	public async Task<IEnumerable<dynamic>> GetPermissionListAsync()
 	{
 		var permissions = await _permissionRepository.Select
-			.WhereIf(_appConfig.Tenant && User.TenantType == TenantType.Tenant, a =>
-				_tenantPermissionRepository
-				.Where(b => b.PermissionId == a.Id && b.TenantId == User.TenantId)
-				.Any()
-
-				||
-
-				_permissionRepository.Orm.Select<TenantPkgEntity, PkgPermissionEntity>()
-				.Where((b, c) => b.PkgId == c.PkgId && b.TenantId == User.TenantId && c.PermissionId == a.Id)
-				.Any()
-			)
 			.AsTreeCte(up: true)
 			.ToListAsync(a => new { a.Id, a.ParentId, a.Label, a.Type, a.Sort });
 
@@ -404,25 +393,6 @@ public class PermissionService : BaseService, IPermissionService, IDynamicApi
 		//批量插入权限
 		var insertRolePermissions = new List<RolePermissionEntity>();
 		var insertPermissionIds = input.PermissionIds.Where(d => !permissionIds.Contains(d));
-
-		//防止租户非法授权，查询主库租户权限范围
-		if (_appConfig.Tenant && User.TenantType == TenantType.Tenant)
-		{
-			var cloud = ServiceProvider.GetRequiredService<FreeSqlCloud>();
-			var mainDb = cloud.Use(DbKeys.AppDb);
-			var tenantPermissionIds = await mainDb.Select<TenantPermissionEntity>()
-				.Where(a => a.TenantId == User.TenantId).ToListAsync(a => a.PermissionId);
-
-			var pkgPermissionIds = await mainDb.Select<PkgPermissionEntity>()
-				.Where(a =>
-					mainDb.Select<TenantPkgEntity>()
-					.Where((b) => b.PkgId == a.PkgId && b.TenantId == User.TenantId)
-					.Any()
-				)
-				.ToListAsync(a => a.PermissionId);
-
-			insertPermissionIds = insertPermissionIds.Where(d => tenantPermissionIds.Contains(d) || pkgPermissionIds.Contains(d));
-		}
 
 		if (insertPermissionIds.Any())
 		{

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CMS.Data.Exceptions;
+using CMS.Common.Exceptions;
 using CMS.Data.Model.Core;
 using CMS.Data.Model.Entities.Base;
 using FreeSql.DataAnnotations;

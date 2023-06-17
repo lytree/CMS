@@ -5,8 +5,4 @@
 /// </summary>
 public class UserGetPageDto
 {
-	/// <summary>
-	/// 部门Id
-	/// </summary>
-	public long? OrgId { get; set; }
 }

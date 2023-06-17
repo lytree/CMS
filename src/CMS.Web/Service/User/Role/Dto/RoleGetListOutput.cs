@@ -1,4 +1,6 @@
-﻿using ZhonTai.Admin.Domain.Role;
+﻿
+
+using CMS.Data.Model.Entities.User;
 
 namespace CMS.Web.Service.User.Role.Dto;
 

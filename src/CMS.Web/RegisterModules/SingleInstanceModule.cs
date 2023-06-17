@@ -1,12 +1,12 @@
 ﻿using Autofac;
+using CMS.Common.Attributes;
+using CMS.Common.Helpers;
+using CMS.Web.Config;
 using System.Linq;
 using System.Reflection;
-using ZhonTai.Admin.Core.Attributes;
-using ZhonTai.Admin.Core.Configs;
-using ZhonTai.Common.Helpers;
 using Module = Autofac.Module;
 
-namespace ZhonTai.Admin.Core.RegisterModules;
+namespace CMS.Web.RegisterModules;
 
 public class SingleInstanceModule : Module
 {

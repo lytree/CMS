@@ -1,0 +1,15 @@
+F:\code\CMS\src\CMS.Data\bin\Debug\net7.0\CMS.Data.deps.json
+F:\code\CMS\src\CMS.Data\bin\Debug\net7.0\CMS.Data.dll
+F:\code\CMS\src\CMS.Data\bin\Debug\net7.0\CMS.Data.pdb
+F:\code\CMS\src\CMS.Data\bin\Debug\net7.0\CMS.Common.dll
+F:\code\CMS\src\CMS.Data\bin\Debug\net7.0\CMS.Common.pdb
+F:\code\CMS\src\CMS.Data\obj\Debug\net7.0\CMS.Data.csproj.AssemblyReference.cache
+F:\code\CMS\src\CMS.Data\obj\Debug\net7.0\CMS.Data.GeneratedMSBuildEditorConfig.editorconfig
+F:\code\CMS\src\CMS.Data\obj\Debug\net7.0\CMS.Data.AssemblyInfoInputs.cache
+F:\code\CMS\src\CMS.Data\obj\Debug\net7.0\CMS.Data.AssemblyInfo.cs
+F:\code\CMS\src\CMS.Data\obj\Debug\net7.0\CMS.Data.csproj.CoreCompileInputs.cache
+F:\code\CMS\src\CMS.Data\obj\Debug\net7.0\CMS.Data.csproj.CopyComplete
+F:\code\CMS\src\CMS.Data\obj\Debug\net7.0\CMS.Data.dll
+F:\code\CMS\src\CMS.Data\obj\Debug\net7.0\refint\CMS.Data.dll
+F:\code\CMS\src\CMS.Data\obj\Debug\net7.0\CMS.Data.pdb
+F:\code\CMS\src\CMS.Data\obj\Debug\net7.0\ref\CMS.Data.dll

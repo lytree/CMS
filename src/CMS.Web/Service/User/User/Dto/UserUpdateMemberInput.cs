@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ZhonTai.Admin.Core.Validators;
+﻿using CMS.Web.Attributes;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace CMS.Web.Service.User.User.Dto;
 

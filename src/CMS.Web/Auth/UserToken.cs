@@ -1,4 +1,5 @@
-﻿using CMS.Common.Extensions;
+﻿using CMS.Common.Attributes;
+using CMS.Common.Extensions;
 using CMS.Data.Attributes;
 using CMS.Data.Auth;
 using CMS.Web.Config;

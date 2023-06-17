@@ -1,6 +1,7 @@
 ﻿
 using CMS.Data.Attributes;
 using CMS.Data.Model.Core;
+using CMS.Data.Model.Entities.Base;
 using FreeSql.DataAnnotations;
 using System.Collections.Generic;
 
@@ -127,6 +128,10 @@ public partial class PermissionEntity : EntityBase
 	/// 启用
 	/// </summary>
 	public bool Enabled { get; set; } = true;
+
+	[NotGen]
+	[Navigate(ManyToMany = typeof(PermissionApiEntity))]
+	public ICollection<ApiEntity> Apis { get; set; }
 
 	[Navigate(nameof(ParentId))]
 	public List<PermissionEntity> Childs { get; set; }

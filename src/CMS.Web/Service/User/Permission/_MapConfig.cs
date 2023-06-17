@@ -1,7 +1,7 @@
-﻿using CMS.Web.Service.User.Permission.Dto;
+﻿using CMS.Data.Model.Entities.User;
+using CMS.Web.Service.User.Permission.Dto;
 using Mapster;
 using System.Linq;
-using ZhonTai.Admin.Domain.Permission;
 
 namespace CMS.Web.Service.User.Permission;
 

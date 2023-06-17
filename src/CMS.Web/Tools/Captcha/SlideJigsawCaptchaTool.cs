@@ -13,6 +13,8 @@ using CMS.Web.Tools.Captcha.Dto;
 using CMS.Web.Tools.Cache;
 using CMS.Data.Attributes;
 using CMS.Common.Extensions;
+using CMS.Common.Attributes;
+
 namespace CMS.Web.Tools.Captcha;
 
 /// <summary>

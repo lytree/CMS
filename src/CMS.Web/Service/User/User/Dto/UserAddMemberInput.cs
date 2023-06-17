@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ZhonTai.Admin.Domain.User;
+﻿using CMS.Data.Model.Entities.User;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace CMS.Web.Service.User.User.Dto;
 

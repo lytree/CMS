@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Module = Autofac.Module;
 
-namespace ZhonTai.Admin.Core.RegisterModules;
+namespace CMS.Web.RegisterModules;
 
 public class ControllerModule : Module
 {

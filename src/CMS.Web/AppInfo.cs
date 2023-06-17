@@ -81,7 +81,7 @@ public static class AppInfo
 	/// <summary>
 	/// 日志
 	/// </summary>
-	public static Logger Log => new LoggerConfiguration().WriteTo.Console().CreateLogger();
+	public static Logger Log => new LoggerConfiguration().ReadFrom.Configuration(Configuration).WriteTo.Console().CreateLogger();
 
 	#region private
 
