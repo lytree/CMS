@@ -40,13 +40,15 @@ namespace CMS.ApiUI
 
 			_staticFileMiddleware = CreateStaticFileMiddleware(next, hostingEnv, loggerFactory, options);
 
-			_jsonSerializerOptions = new JsonSerializerOptions();
+			_jsonSerializerOptions = new JsonSerializerOptions
+			{
 #if NET6_0
-            _jsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+			_jsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 #else
-			_jsonSerializerOptions.IgnoreNullValues = true;
+				IgnoreNullValues = true,
 #endif
-			_jsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+				PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+			};
 			_jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false));
 		}
 
