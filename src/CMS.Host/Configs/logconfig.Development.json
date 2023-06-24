@@ -1,0 +1,181 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "Serilog": {
+    //日志等级有小到大：Verbose->Debug->Information->Warning->Error->Fatal
+    "Using": [
+      "Serilog.Expressions",
+      "Serilog.Sinks.File",
+      "Serilog.Sinks.Console",
+      "Serilog.Enrichers.Environment",
+      "Serilog.Enrichers.Thread"
+
+    ],
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Information", //将Microsoft前缀的日志的最小输出级别改成Information
+        "System": "Debug", //将System前缀的日志的最小输出级别改成Information,
+        "Microsoft.AspNetCore": "Debug",
+        "Microsoft.Hosting.Lifetime": "Information",
+        "Microsoft.AspNetCore.Cors.Infrastructure.CorsService": "Error",
+        "Microsoft.AspNetCore.Mvc": "Information",
+        "Microsoft.AspNetCore.Hosting": "Error"
+      }
+    },
+    "WriteTo": [
+      {
+        "Name": "Console",
+        "Args": {
+          "theme": "Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme::Code, Serilog.Sinks.Console",
+          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{Level}] [{SourceContext}] {Message:lj}{NewLine}{Exception}"
+        }
+      },
+      {
+        "Name": "File",
+        "Args": {
+          "path": "../logs/all/all-.log", //日志保存路径
+          "rollingInterval": "Day",
+          "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{Level}] {Message:lj}{NewLine}{Exception}", //输出格式
+          "fileSizeLimitBytes": 5242880, //单个日志文件大小
+          "retainedFileCountLimit": 10, //日志保留最大数量
+          "rollOnFileSizeLimit": true,
+          //"formatter": "Serilog.Formatting.Json.JsonFormatter, Serilog", //日志格式化格式
+          "buffered": false, //是否以流的形式写文件
+          "shared": true //是否允许文件多进程共享(buffered:true时,不可共享)
+        }
+      },
+      {
+        "Name": "Logger",
+        "Args": {
+          "configureLogger": {
+            "Filter": [
+              {
+                "Name": "ByIncludingOnly",
+                "Args": {
+                  "expression": "@Level = 'Debug'"
+                }
+              }
+            ],
+            "WriteTo": [
+              {
+                "Name": "RollingFile",
+                "Args": {
+                  "pathFormat": "D:/Code/VS/CMS/logs/Debug/{Date}.log",
+                  "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss,fff} DEBUG {ClassName}:0 - [{Version}] [{HttpRequestIP}] [{AppName}] {Message:lj}{NewLine}{Exception}"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "Name": "Logger",
+        "Args": {
+          "configureLogger": {
+            "Filter": [
+              {
+                "Name": "ByIncludingOnly",
+                "Args": {
+                  "expression": "@l = 'Information'"
+                }
+              }
+            ],
+            "WriteTo": [
+              {
+                "Name": "File",
+                "Args": {
+                  "path": "../logs/Info/info-.log",
+                  "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{Level}] {ClassName}:0 - [{Version}] [{HttpRequestIP}] [{AppName}] {Message:lj}{NewLine}{Exception}",
+                  "rollingInterval": "Day",
+                  "fileSizeLimitBytes": 5242880, //单个日志文件大小
+                  "retainedFileCountLimit": 10, //日志保留最大数量
+                  "rollOnFileSizeLimit": true,
+                  //"formatter": "Serilog.Formatting.Json.JsonFormatter, Serilog", //日志格式化格式
+                  "buffered": false, //是否以流的形式写文件
+                  "shared": true //是否允许文件多进程共享(buffered:true时,不可共享)
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "Name": "Logger",
+        "Args": {
+          "configureLogger": {
+            "Filter": [
+              {
+                "Name": "ByIncludingOnly",
+                "Args": {
+                  "expression": "@l = 'Error'"
+                }
+              }
+            ],
+            "WriteTo": [
+              {
+                "Name": "File",
+                "Args": {
+                  "path": "../logs/Error/error-.log",
+                  "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{Level}] {ClassName}:0 - [{Version}] [{HttpRequestIP}] [{AppName}] {Message:lj}{NewLine}{Exception}",
+                  "rollingInterval": "Day",
+                  "fileSizeLimitBytes": 5242880, //单个日志文件大小
+                  "retainedFileCountLimit": 10, //日志保留最大数量
+                  "rollOnFileSizeLimit": true,
+                  //"formatter": "Serilog.Formatting.Json.JsonFormatter, Serilog", //日志格式化格式
+                  "buffered": false, //是否以流的形式写文件
+                  "shared": true //是否允许文件多进程共享(buffered:true时,不可共享)
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "Name": "Logger",
+        "Args": {
+          "configureLogger": {
+            "Filter": [
+              {
+                "Name": "ByIncludingOnly",
+                "Args": {
+                  "expression": "@l = 'Warning'"
+                }
+              }
+            ],
+            "WriteTo": [
+              {
+                "Name": "File",
+                "Args": {
+                  "path": "../logs/Warning/warning-.log",
+                  "rollingInterval": "Day",
+                  "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{Level}] {ClassName}:0 - [{Version}] [{HttpRequestIP}] [{AppName}] {Message:lj}{NewLine}{Exception}",
+                  "fileSizeLimitBytes": 5242880, //单个日志文件大小
+                  "retainedFileCountLimit": 10, //日志保留最大数量
+                  "rollOnFileSizeLimit": true,
+                  //"formatter": "Serilog.Formatting.Json.JsonFormatter, Serilog", //日志格式化格式
+                  "buffered": false, //是否以流的形式写文件
+                  "shared": true //是否允许文件多进程共享(buffered:true时,不可共享)
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "Enrich": [
+      "FromLogContext",
+      "WithMachineName",
+      "WithThreadId",
+      "WithThreadName"
+    ],
+    "Properties": {
+      "MachineName": "%COMPUTERNAME%"
+
+    }
+  }
+}

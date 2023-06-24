@@ -9,11 +9,11 @@
 		<DocumentationFile></DocumentationFile>
 		<NoWarn>1701;1702;1591</NoWarn>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
-	  <Content Include="Configs\createdbsql.txt">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
+		<Content Include="Configs\createdbsql.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)'=='Debug'">
@@ -23,8 +23,11 @@
 		<PackageReference Include="FreeSql.Provider.Oracle" Version="3.2.697" />
 		<PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.697" />
 		<PackageReference Include="FreeSql.Provider.MySqlConnector" Version="3.2.697" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<ProjectReference Include="..\CMS.ApiUI\CMS.ApiUI.csproj" />
 		<ProjectReference Include="..\CMS.Common\CMS.Common.csproj" />
@@ -37,6 +40,9 @@
 		<PackageReference Include="DotNetCore.CAP.Dashboard" Version="7.1.4" />
 		<PackageReference Include="DotNetCore.CAP.InMemoryStorage" Version="7.1.4" />
 		<PackageReference Include="Savorboard.CAP.InMemoryMessageQueue" Version="7.0.0" />
+		<PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
+		<PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+		<PackageReference Include="Serilog.Expressions" Version="3.4.1" />
 		<PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.3" />
 	</ItemGroup>
 
@@ -52,5 +58,9 @@
 		</Content>
 	</ItemGroup>
 
-	<ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
+	<ProjectExtensions>
+		<VisualStudio>
+			<UserProperties />
+		</VisualStudio>
+	</ProjectExtensions>
 </Project>

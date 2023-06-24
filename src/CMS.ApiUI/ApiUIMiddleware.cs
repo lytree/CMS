@@ -42,13 +42,9 @@ namespace CMS.ApiUI
 
 			_jsonSerializerOptions = new JsonSerializerOptions
 			{
-#if NET6_0
-			_jsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-#else
-				IgnoreNullValues = true,
-#endif
 				PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-			};
+			}; 
+			_jsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 			_jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false));
 		}
 

@@ -11,7 +11,7 @@
 		<PackageReference Include="FreeSql.Extensions.JsonMap" Version="3.2.697" />
 		<PackageReference Include="FreeSql.Repository" Version="3.2.697" />
 		<PackageReference Include="Mapster" Version="7.3.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.7" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.8" />
 		<PackageReference Include="OnceMi.AspNetCore.OSS" Version="1.1.9" />
 		<PackageReference Include="Yitter.IdGenerator" Version="1.0.14" />
 		<PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.3" />
