@@ -13,7 +13,7 @@ namespace CMS.Web.Service;
 
 public abstract class BaseService : IBaseService
 {
-	protected readonly object ServiceProviderLock = new object();
+	protected readonly object ServiceProviderLock = new();
 	protected IDictionary<Type, object> CachedServices = new Dictionary<Type, object>();
 	private ICacheTool _cache;
 	private ILoggerFactory _loggerFactory;

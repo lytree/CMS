@@ -14,17 +14,13 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using Mapster;
 using Yitter.IdGenerator;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using System.IO;
 using Microsoft.OpenApi.Any;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using MapsterMapper;
@@ -37,7 +33,6 @@ using System.Text.Json.Serialization;
 using FreeRedis;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Caching.Distributed;
 using CMS.Web.Startup;
 using Serilog;
 using CMS.Common.Helpers;
@@ -48,7 +43,6 @@ using CMS.Data.Auth;
 using CMS.Data;
 using CMS.Web.Service.User.Auth;
 using CMS.Web.Model.Consts;
-using Serilog.Events;
 using CMS.Web.RegisterModules;
 using CMS.Data.Attributes;
 using CMS.DynamicApi.Attributes;
@@ -59,7 +53,6 @@ using CMS.Web.Attributes;
 using CMS.Web.Tools.Cache;
 using CMS.Web.Extensions;
 using CMS.Web.Middleware;
-using CMS.Web.Service.User.User;
 using CMS.Web.Model.Dto;
 using Microsoft.Extensions.Logging;
 
@@ -95,22 +88,24 @@ public class HostApp
 			builder.ConfigureApplication();
 			//清空日志供应程序，避免.net自带日志输出到命令台
 			builder.Logging.ClearProviders();
-			//使用Serilog日志
-			builder.Host.UseSerilog();
+
 			var services = builder.Services;
 			var env = builder.Environment;
 			var configuration = builder.Configuration;
 
 
-
-
+			//添加配置
+			configuration.AddJsonFile("./Configs/logconfig.json", optional: true, reloadOnChange: true);
+			if (env.EnvironmentName.NotNull())
+			{
+				configuration.AddJsonFile($"./Configs/logconfig.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+			}
 			// Create the Serilog logger, and configure the sinks
-			Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration)
-				.MinimumLevel.Debug()
-				.MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-				.Enrich.FromLogContext()
-				.WriteTo.Console()
-				.CreateLogger();
+			Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).CreateLogger();
+						//使用Serilog日志
+			builder.Host.UseSerilog(Log.Logger);
+			//应用程序停止
+			Log.Information("Application start");
 			var configHelper = new ConfigHelper();
 			var appConfig = ConfigHelper.Get<AppConfig>("appconfig", env.EnvironmentName) ?? new AppConfig();
 

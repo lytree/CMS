@@ -11,7 +11,7 @@ using Microsoft.Extensions.Hosting;
 namespace CMS.Web.Aop.Filter;
 
 /// <summary>
-/// 出现异常时，如CMSException业务异常，会先执行方法过滤器 （LogActionFilterAttribute）的OnActionExecuted才会执行此异常过滤器。
+/// 出现异常时，如AppException业务异常，会先执行方法过滤器 （LogActionFilterAttribute）的OnActionExecuted才会执行此异常过滤器。
 /// </summary>
 public class ControllerExceptionFilter : IExceptionFilter, IAsyncExceptionFilter
 {
@@ -32,7 +32,7 @@ public class ControllerExceptionFilter : IExceptionFilter, IAsyncExceptionFilter
 			var appException = context.Exception is AppException;
 			if (_env.IsProduction())
 			{
-				message = appException ? context.Exception.Message : CMS.Web.Auth.StatusCodes.Status500InternalServerError.ToDescription();
+				message = appException ? context.Exception.Message : Auth.StatusCodes.Status500InternalServerError.ToDescription();
 			}
 			else
 			{
