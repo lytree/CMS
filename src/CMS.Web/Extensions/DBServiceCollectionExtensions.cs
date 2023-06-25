@@ -74,7 +74,7 @@ public static class DBServiceCollectionExtensions
 		//生成数据
 		if (dbConfig.GenerateData && !dbConfig.CreateDb && !dbConfig.SyncData)
 		{
-			DbHelper.GenerateDataAsync(fsql, appConfig, dbConfig).Wait();
+			DbHelper.GenerateDataAsync(fsql, dbConfig).Wait();
 		}
 
 		#region 初始化数据库
@@ -106,7 +106,7 @@ public static class DBServiceCollectionExtensions
 		//同步数据
 		if (dbConfig.SyncData)
 		{
-			DbHelper.SyncDataAsync(fsql, dbConfig, appConfig).Wait();
+			DbHelper.SyncDataAsync(fsql, dbConfig).Wait();
 		}
 
 		#endregion 初始化数据库

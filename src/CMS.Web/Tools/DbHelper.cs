@@ -232,8 +232,7 @@ public class DbHelper
 	/// <exception cref="Exception"></exception>
 	public static async Task SyncDataAsync(
 		IFreeSql db,
-		DbConfig dbConfig = null,
-		AppConfig appConfig = null
+		DbConfig dbConfig = null
 	)
 	{
 		try
@@ -323,7 +322,7 @@ public class DbHelper
 
 				foreach (ISyncData syncData in syncDatas)
 				{
-					await syncData.SyncDataAsync(db, dbConfig, appConfig);
+					await syncData.SyncDataAsync(db, dbConfig);
 				}
 
 				if (dbConfig.SyncDataCurd)
@@ -350,7 +349,7 @@ public class DbHelper
 	/// <param name="dbConfig"></param>
 	/// <returns></returns>
 	/// <exception cref="Exception"></exception>
-	public static async Task GenerateDataAsync(IFreeSql db, AppConfig appConfig = null, DbConfig dbConfig = null)
+	public static async Task GenerateDataAsync(IFreeSql db, DbConfig dbConfig = null)
 	{
 		try
 		{
@@ -366,7 +365,7 @@ public class DbHelper
 
 				foreach (IGenerateData generateData in generateDatas)
 				{
-					await generateData.GenerateDataAsync(db, appConfig);
+					await generateData.GenerateDataAsync(db);
 				}
 			}
 
@@ -378,137 +377,137 @@ public class DbHelper
 		}
 	}
 
-	/// <summary>
-	/// 注册数据库
-	/// </summary>
-	/// <param name="freeSqlCloud"></param>
-	/// <param name="user"></param>
-	/// <param name="dbConfig"></param>
-	/// <param name="appConfig"></param>
-	/// <param name="hostAppOptions"></param>
-	public static void RegisterDb(
-		FreeSqlCloud freeSqlCloud,
-		IUser user,
-		DbConfig dbConfig,
-		AppConfig appConfig,
-		HostAppOptions hostAppOptions
-	)
-	{
-		//注册数据库
-		var idelTime = dbConfig.IdleTime.HasValue && dbConfig.IdleTime.Value > 0 ? TimeSpan.FromMinutes(dbConfig.IdleTime.Value) : TimeSpan.MaxValue;
-		freeSqlCloud.Register(dbConfig.Key, () =>
-		{
-			//创建数据库
-			if (dbConfig.CreateDb)
-			{
-				CreateDatabaseAsync(dbConfig).Wait();
-			}
+	///// <summary>
+	///// 注册数据库
+	///// </summary>
+	///// <param name="freeSqlCloud"></param>
+	///// <param name="user"></param>
+	///// <param name="dbConfig"></param>
+	///// <param name="appConfig"></param>
+	///// <param name="hostAppOptions"></param>
+	//public static void RegisterDb(
+	//	FreeSqlCloud freeSqlCloud,
+	//	IUser user,
+	//	DbConfig dbConfig,
+	//	AppConfig appConfig,
+	//	HostAppOptions hostAppOptions
+	//)
+	//{
+	//	//注册数据库
+	//	var idelTime = dbConfig.IdleTime.HasValue && dbConfig.IdleTime.Value > 0 ? TimeSpan.FromMinutes(dbConfig.IdleTime.Value) : TimeSpan.MaxValue;
+	//	freeSqlCloud.Register(dbConfig.Key, () =>
+	//	{
+	//		//创建数据库
+	//		if (dbConfig.CreateDb)
+	//		{
+	//			CreateDatabaseAsync(dbConfig).Wait();
+	//		}
 
-			var providerType = dbConfig.ProviderType.NotNull() ? Type.GetType(dbConfig.ProviderType) : null;
-			var freeSqlBuilder = new FreeSqlBuilder()
-					.UseConnectionString(dbConfig.Type, dbConfig.ConnectionString, providerType)
-					.UseAutoSyncStructure(false)
-					.UseLazyLoading(false)
-					.UseNoneCommandParameter(true);
+	//		var providerType = dbConfig.ProviderType.NotNull() ? Type.GetType(dbConfig.ProviderType) : null;
+	//		var freeSqlBuilder = new FreeSqlBuilder()
+	//				.UseConnectionString(dbConfig.Type, dbConfig.ConnectionString, providerType)
+	//				.UseAutoSyncStructure(false)
+	//				.UseLazyLoading(false)
+	//				.UseNoneCommandParameter(true);
 
-			if (dbConfig.SlaveList?.Length > 0)
-			{
-				var slaveList = dbConfig.SlaveList.Select(a => a.ConnectionString).ToArray();
-				var slaveWeightList = dbConfig.SlaveList.Select(a => a.Weight).ToArray();
-				freeSqlBuilder.UseSlave(slaveList).UseSlaveWeight(slaveWeightList);
-			}
+	//		if (dbConfig.SlaveList?.Length > 0)
+	//		{
+	//			var slaveList = dbConfig.SlaveList.Select(a => a.ConnectionString).ToArray();
+	//			var slaveWeightList = dbConfig.SlaveList.Select(a => a.Weight).ToArray();
+	//			freeSqlBuilder.UseSlave(slaveList).UseSlaveWeight(slaveWeightList);
+	//		}
 
-			hostAppOptions?.ConfigureFreeSqlBuilder?.Invoke(freeSqlBuilder, dbConfig);
+	//		hostAppOptions?.ConfigureFreeSqlBuilder?.Invoke(freeSqlBuilder, dbConfig);
 
-			#region 监听所有命令
+	//		#region 监听所有命令
 
-			if (dbConfig.MonitorCommand)
-			{
-				freeSqlBuilder.UseMonitorCommand(cmd => { }, (cmd, traceLog) =>
-				{
-					//Console.WriteLine($"{cmd.CommandText}\n{traceLog}{Environment.NewLine}");
-					Console.WriteLine($"{cmd.CommandText}{Environment.NewLine}");
-				});
-			}
+	//		if (dbConfig.MonitorCommand)
+	//		{
+	//			freeSqlBuilder.UseMonitorCommand(cmd => { }, (cmd, traceLog) =>
+	//			{
+	//				//Console.WriteLine($"{cmd.CommandText}\n{traceLog}{Environment.NewLine}");
+	//				Console.WriteLine($"{cmd.CommandText}{Environment.NewLine}");
+	//			});
+	//		}
 
-			#endregion 监听所有命令
+	//		#endregion 监听所有命令
 
-			var fsql = freeSqlBuilder.Build();
+	//		var fsql = freeSqlBuilder.Build();
 
-			//生成数据
-			if (dbConfig.GenerateData && !dbConfig.CreateDb && !dbConfig.SyncData)
-			{
-				GenerateDataAsync(fsql, appConfig, dbConfig).Wait();
-			}
+	//		//生成数据
+	//		if (dbConfig.GenerateData && !dbConfig.CreateDb && !dbConfig.SyncData)
+	//		{
+	//			GenerateDataAsync(fsql, appConfig, dbConfig).Wait();
+	//		}
 
-			#region 初始化数据库
+	//		#region 初始化数据库
 
-			if (dbConfig.Type == DataType.Oracle)
-			{
-				fsql.CodeFirst.IsSyncStructureToUpper = true;
-			}
+	//		if (dbConfig.Type == DataType.Oracle)
+	//		{
+	//			fsql.CodeFirst.IsSyncStructureToUpper = true;
+	//		}
 
-			//同步结构
-			if (dbConfig.SyncStructure)
-			{
-				SyncStructure(fsql, dbConfig: dbConfig);
-			}
+	//		//同步结构
+	//		if (dbConfig.SyncStructure)
+	//		{
+	//			SyncStructure(fsql, dbConfig: dbConfig);
+	//		}
 
-			#region 审计数据
+	//		#region 审计数据
 
-			//计算服务器时间
-			var serverTime = fsql.Ado.QuerySingle(() => DateTime.UtcNow);
-			var timeOffset = DateTime.UtcNow.Subtract(serverTime);
-			TimeOffset = timeOffset;
-			fsql.Aop.AuditValue += (s, e) =>
-			{
-				AuditValue(e, timeOffset, user);
-			};
+	//		//计算服务器时间
+	//		var serverTime = fsql.Ado.QuerySingle(() => DateTime.UtcNow);
+	//		var timeOffset = DateTime.UtcNow.Subtract(serverTime);
+	//		TimeOffset = timeOffset;
+	//		fsql.Aop.AuditValue += (s, e) =>
+	//		{
+	//			AuditValue(e, timeOffset, user);
+	//		};
 
-			#endregion 审计数据
+	//		#endregion 审计数据
 
-			//同步数据
-			if (dbConfig.SyncData)
-			{
-				SyncDataAsync(fsql, dbConfig, appConfig).Wait();
-			}
+	//		//同步数据
+	//		if (dbConfig.SyncData)
+	//		{
+	//			SyncDataAsync(fsql, dbConfig, appConfig).Wait();
+	//		}
 
-			#endregion 初始化数据库
+	//		#endregion 初始化数据库
 
-			//软删除过滤器
-			fsql.GlobalFilter.ApplyOnly<IDelete>(FilterNames.Delete, a => a.IsDeleted == false);
+	//		//软删除过滤器
+	//		fsql.GlobalFilter.ApplyOnly<IDelete>(FilterNames.Delete, a => a.IsDeleted == false);
 
 
-			//配置实体
-			ConfigEntity(fsql, appConfig, dbConfig);
+	//		//配置实体
+	//		ConfigEntity(fsql, appConfig, dbConfig);
 
-			hostAppOptions?.ConfigureFreeSql?.Invoke(fsql, dbConfig);
+	//		hostAppOptions?.ConfigureFreeSql?.Invoke(fsql, dbConfig);
 
-			#region 监听Curd操作
+	//		#region 监听Curd操作
 
-			if (dbConfig.Curd)
-			{
-				fsql.Aop.CurdBefore += (s, e) =>
-				{
-					if (appConfig.MiniProfiler)
-					{
-						MiniProfiler.Current.CustomTiming("CurdBefore", e.Sql);
-					}
-					Console.WriteLine($"{e.Sql}{Environment.NewLine}");
-				};
-				fsql.Aop.CurdAfter += (s, e) =>
-				{
-					if (appConfig.MiniProfiler)
-					{
-						MiniProfiler.Current.CustomTiming("CurdAfter", $"{e.ElapsedMilliseconds}");
-					}
-				};
-			}
+	//		if (dbConfig.Curd)
+	//		{
+	//			fsql.Aop.CurdBefore += (s, e) =>
+	//			{
+	//				if (appConfig.MiniProfiler)
+	//				{
+	//					MiniProfiler.Current.CustomTiming("CurdBefore", e.Sql);
+	//				}
+	//				Console.WriteLine($"{e.Sql}{Environment.NewLine}");
+	//			};
+	//			fsql.Aop.CurdAfter += (s, e) =>
+	//			{
+	//				if (appConfig.MiniProfiler)
+	//				{
+	//					MiniProfiler.Current.CustomTiming("CurdAfter", $"{e.ElapsedMilliseconds}");
+	//				}
+	//			};
+	//		}
 
-			#endregion 监听Curd操作
+	//		#endregion 监听Curd操作
 
-			return fsql;
-		}, idelTime);
-	}
+	//		return fsql;
+	//	}, idelTime);
+	//}
 }
 

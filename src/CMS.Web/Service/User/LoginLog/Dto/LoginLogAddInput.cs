@@ -5,10 +5,6 @@
 /// </summary>
 public class LoginLogAddInput
 {
-	/// <summary>
-	/// 租户Id
-	/// </summary>
-	public long? TenantId { get; set; }
 
 	/// <summary>
 	/// 姓名

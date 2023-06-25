@@ -305,26 +305,5 @@ public class RoleService : BaseService, IRoleService, IDynamicApi
 		}
 	}
 
-	/// <summary>
-	/// 设置数据权限
-	/// </summary>
-	/// <param name="input"></param>
-	/// <returns></returns>
-	public async Task SetDataScopeAsync(RoleSetDataScopeInput input)
-	{
-		var entity = await _roleRepository.GetAsync(input.RoleId);
-		if (!(entity?.Id > 0))
-		{
-			throw ResultOutput.Exception("角色不存在");
-		}
 
-		Mapper.Map(input, entity);
-		await _roleRepository.UpdateAsync(entity);
-
-		var userIds = await _userRoleRepository.Select.Where(a => a.RoleId == entity.Id).ToListAsync(a => a.UserId);
-		foreach (var userId in userIds)
-		{
-			await Cache.DelAsync(CacheKeys.DataPermission + userId);
-		}
-	}
 }

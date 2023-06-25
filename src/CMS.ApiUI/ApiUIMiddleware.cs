@@ -24,7 +24,7 @@ namespace CMS.ApiUI
 {
 	public class ApiUIMiddleware
 	{
-		private const string EmbeddedFileNamespace = "ZhonTai.ApiUI.src.dist";
+		private const string EmbeddedFileNamespace = "CMS.ApiUI.src.dist";
 
 		private readonly ApiUIOptions _options;
 		private readonly StaticFileMiddleware _staticFileMiddleware;

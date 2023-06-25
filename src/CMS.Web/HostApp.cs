@@ -61,6 +61,7 @@ using CMS.Web.Extensions;
 using CMS.Web.Middleware;
 using CMS.Web.Service.User.User;
 using CMS.Web.Model.Dto;
+using Microsoft.Extensions.Logging;
 
 namespace CMS.Web;
 
@@ -653,8 +654,6 @@ public class HostApp
 			services.AddSingleton(redis);
 			//Redis缓存
 			services.AddSingleton<ICacheTool, RedisCacheTool>();
-			//分布式Redis缓存
-			services.AddSingleton<IDistributedCache>(new DistributedCache(redis));
 		}
 		else
 		{

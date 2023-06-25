@@ -18,7 +18,7 @@ namespace CMS.ApiUI
 		/// Gets or sets a Stream function for retrieving the swagger-ui page
 		/// </summary>
 		public Func<Stream> IndexStream { get; set; } = () => typeof(ApiUIOptions).GetTypeInfo().Assembly
-			.GetManifestResourceStream("ZhonTai.ApiUI.src.dist.index.html");
+			.GetManifestResourceStream("CMS.ApiUI.src.dist.index.html");
 
 		/// <summary>
 		/// Gets or sets a title for the swagger-ui page
