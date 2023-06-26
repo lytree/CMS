@@ -353,6 +353,9 @@ _site
 docs/api/*.yml
 docs/api/.manifest
 /identityserver4/LinCms.IdentityServer4/appsettings.Production.json
+<<<<<<< HEAD
+src/CMS.Web/Properties/launchSettings.json
+=======
 .vs/CMS/DesignTimeBuild/.dtbcache.v2
 .vs/CMS/DesignTimeBuild/.dtbcache.v2
 .vs/CMS/DesignTimeBuild/.dtbcache.v2
@@ -362,3 +365,4 @@ docs/api/.manifest
 .vs/CMS/v17/fileList.bin
 .vs/ProjectEvaluation/cms.metadata.v7.bin
 .vs/ProjectEvaluation/cms.projects.v7.bin
+>>>>>>> e24ba71d3efc1ef31cb2564805aa54d82272449f

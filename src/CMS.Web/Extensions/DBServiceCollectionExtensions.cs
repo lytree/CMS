@@ -13,10 +13,10 @@ using System.Text;
 using System.Threading.Tasks;
 using CMS.Web.Config;
 using CMS.Web.Startup;
-using CMS.Data.Tool;
 using FreeSql;
 using CMS.Data.Model.Core;
 using CMS.Web.Model.Consts;
+using CMS.Web.Tools;
 
 public static class DBServiceCollectionExtensions
 {
