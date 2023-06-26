@@ -14,8 +14,9 @@ using CMS.Data.Attributes;
 using CMS.Web.Startup;
 using CMS.Web.Config;
 using Yitter.IdGenerator;
+using CMS.Data;
 
-namespace CMS.Data.Tool;
+namespace CMS.Web.Tools;
 
 
 public class DbHelper

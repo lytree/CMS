@@ -55,6 +55,7 @@ using CMS.Web.Extensions;
 using CMS.Web.Middleware;
 using CMS.Web.Model.Dto;
 using Microsoft.Extensions.Logging;
+using CMS.Web.Enricher;
 
 namespace CMS.Web;
 
@@ -93,7 +94,6 @@ public class HostApp
 			var env = builder.Environment;
 			var configuration = builder.Configuration;
 
-
 			//添加配置
 			configuration.AddJsonFile("./Configs/logconfig.json", optional: true, reloadOnChange: true);
 			if (env.EnvironmentName.NotNull())
@@ -101,8 +101,8 @@ public class HostApp
 				configuration.AddJsonFile($"./Configs/logconfig.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
 			}
 			// Create the Serilog logger, and configure the sinks
-			Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).CreateLogger();
-						//使用Serilog日志
+			Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).Enrich.WithCallerInfo(includeFileInfo: true, allowedAssemblies: new List<string> { "CMS.Web","CMS.Data","CMS.Host" }, prefix: "").CreateLogger();
+			//使用Serilog日志
 			builder.Host.UseSerilog(Log.Logger);
 			//应用程序停止
 			Log.Information("Application start");
