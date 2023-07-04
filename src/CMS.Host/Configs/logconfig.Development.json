@@ -32,7 +32,7 @@
                 "Name": "Console",
                 "Args": {
                     "theme": "Serilog.Sinks.SystemConsole.Themes.AnsiConsoleTheme::Code, Serilog.Sinks.Console",
-                    "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{Level}] [{SourceFile}] [{LineNumber}] [{SourceContext}] [{Properties:lj}] {Message:lj}{NewLine}{Exception}"
+                    "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{Level}] [{SourceContext}]  {Message:lj}{NewLine}{Exception}"
                 }
             },
             {
@@ -40,7 +40,7 @@
                 "Args": {
                     "path": "../logs/all/all-.log", //日志保存路径
                     "rollingInterval": "Day",
-                    "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{Level}] {Message:lj}{NewLine}{Exception}", //输出格式
+                    "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{Level}] [{SourceContext}] {Message:lj}{NewLine}{Exception}", //输出格式
                     "fileSizeLimitBytes": 5242880, //单个日志文件大小
                     "retainedFileCountLimit": 10, //日志保留最大数量
                     "rollOnFileSizeLimit": true,
@@ -66,7 +66,7 @@
                                 "Name": "RollingFile",
                                 "Args": {
                                     "pathFormat": "D:/Code/VS/CMS/logs/Debug/{Date}.log",
-                                    "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss,fff} DEBUG {ClassName}:0 - [{Version}] [{HttpRequestIP}] [{AppName}] {Message:lj}{NewLine}{Exception}"
+                                    "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{Level}] [{SourceContext}] {Message:lj}{NewLine}{Exception}"
                                 }
                             }
                         ]
@@ -90,7 +90,7 @@
                                 "Name": "File",
                                 "Args": {
                                     "path": "../logs/Info/info-.log",
-                                    "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{Level}] {ClassName}:0 - [{Version}] [{HttpRequestIP}] [{AppName}] {Message:lj}{NewLine}{Exception}",
+                                    "outputTemplate": "{Timestamp:yyyy-MM-dd HH:mm:ss,fff} [{Level}] [{SourceContext}] {Message:lj}{NewLine}{Exception}",
                                     "rollingInterval": "Day",
                                     "fileSizeLimitBytes": 5242880, //单个日志文件大小
                                     "retainedFileCountLimit": 10, //日志保留最大数量
