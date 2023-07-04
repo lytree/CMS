@@ -48,4 +48,9 @@
 		<ProjectReference Include="..\CMS.Data\CMS.Data.csproj" />
 		<ProjectReference Include="..\CMS.DynamicApi\CMS.DynamicApi.csproj" />
 	</ItemGroup>
+
+
+	<ItemGroup>
+	  <Folder Include="Service\User\Captcha\" />
+	</ItemGroup>
 </Project>
