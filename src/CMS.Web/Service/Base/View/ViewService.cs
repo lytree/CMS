@@ -43,7 +43,7 @@ public class ViewService : BaseService, IViewService, IDynamicApi
 	/// </summary>
 	/// <param name="key"></param>
 	/// <returns></returns>
-	public async Task<List<ViewListOutput>> GetListAsync(string key)
+	public async Task<List<ViewListOutput>> GetListAsync(string? key)
 	{
 		var data = await _viewRepository
 			.WhereIf(key.NotNull(), a => a.Path.Contains(key) || a.Label.Contains(key))
