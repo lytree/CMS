@@ -22,7 +22,7 @@ public class AuthLoginInput
 	/// <summary>
 	/// 密码键
 	/// </summary>
-	public string PasswordKey { get; set; }
+	public string? PasswordKey { get; set; }
 
 	/// <summary>
 	/// 验证码Id

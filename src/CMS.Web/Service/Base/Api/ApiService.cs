@@ -44,7 +44,7 @@ public class ApiService : BaseService, IApiService, IDynamicApi
 	/// </summary>
 	/// <param name="key"></param>
 	/// <returns></returns>
-	public async Task<List<ApiListOutput>> GetListAsync(string key)
+	public async Task<List<ApiListOutput>> GetListAsync(string? key)
 	{
 		var data = await _apiRepository
 			.WhereIf(key.NotNull(), a => a.Path.Contains(key) || a.Label.Contains(key))
@@ -181,7 +181,7 @@ public class ApiService : BaseService, IApiService, IDynamicApi
 	/// <param name="input"></param>
 	/// <returns></returns>
 	[AdminTransaction]
-	public virtual async Task SyncAsync(ApiSyncInput input)
+	public virtual async Task SyncAsync(ApiSyncInput? input)
 	{
 		if (!(input?.Apis?.Count > 0)) return;
 
