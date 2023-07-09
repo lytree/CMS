@@ -1,5 +1,6 @@
 ﻿using CMS.Web.Model.Dto;
 using CMS.Web.Service.User.Role.Dto;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,6 +18,8 @@ public interface IRoleService
 	Task<PageOutput<RoleGetPageOutput>> GetPageAsync(PageInput<RoleGetPageDto> input);
 
 	Task<long> AddAsync(RoleAddInput input);
+
+	Task<List<RoleGetRoleUserListOutput>> GetRoleUserListAsync([FromQuery] RoleGetRoleUserListInput input);
 
 	Task AddRoleUserAsync(RoleAddRoleUserListInput input);
 

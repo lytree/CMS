@@ -10,8 +10,5 @@ public interface IData
     /// </summary>
     long? OwnerId { get; set; }
 
-    /// <summary>
-    /// 拥有者部门Id
-    /// </summary>
-    long? OwnerOrgId { get; set; }
+
 }

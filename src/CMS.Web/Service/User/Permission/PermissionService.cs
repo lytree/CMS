@@ -114,7 +114,7 @@ public class PermissionService : BaseService, IPermissionService, IDynamicApi
 	/// <param name="start"></param>
 	/// <param name="end"></param>
 	/// <returns></returns>
-	public async Task<List<PermissionListOutput>> GetListAsync(string key, DateTime? start, DateTime? end)
+	public async Task<List<PermissionListOutput>> GetListAsync(string? key, DateTime? start, DateTime? end)
 	{
 		if (end.HasValue)
 		{

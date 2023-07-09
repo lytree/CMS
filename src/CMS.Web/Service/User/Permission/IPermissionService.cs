@@ -22,7 +22,7 @@ public partial interface IPermissionService
 
 	Task<List<long>> GetRolePermissionListAsync(long roleId);
 
-	Task<List<PermissionListOutput>> GetListAsync(string key, DateTime? start, DateTime? end);
+	Task<List<PermissionListOutput>> GetListAsync(string? key, DateTime? start, DateTime? end);
 
 	Task<long> AddGroupAsync(PermissionAddGroupInput input);
 

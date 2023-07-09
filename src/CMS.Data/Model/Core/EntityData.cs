@@ -14,13 +14,6 @@ public class EntityData<TKey> : EntityBase, IData
     [Description("拥有者Id")]
     [Column(Position = -41)]
     public virtual long? OwnerId { get; set; }
-
-    /// <summary>
-    /// 拥有者部门Id
-    /// </summary>
-    [Description("拥有者部门Id")]
-    [Column(Position = -40)]
-    public virtual long? OwnerOrgId { get; set; }
 }
 
 /// <summary>
